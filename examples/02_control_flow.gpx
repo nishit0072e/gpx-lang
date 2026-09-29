@@ -1,0 +1,17 @@
+// Example 02: Control Flow (if / else, while)
+fn main() -> int {
+    let x: int = 15;
+    let sum: int = 0;
+
+    if x > 10 {
+        let i: int = 0;
+        while i < x {
+            sum = sum + i;
+            i = i + 1;
+        }
+    } else {
+        sum = -1;
+    }
+
+    return sum;
+}

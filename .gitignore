@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build artifacts
+*.exe
+*.o
+*.obj
+*.s
+*.c
+!compiler/
+!runtime/
+*.egg-info/
+dist/
+build/
+
+# Environment
+.venv/
+env/
+
+compiler/
+compiler_backup/
+tests/

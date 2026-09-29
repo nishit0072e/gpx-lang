@@ -1,0 +1,5 @@
+// Example 01: Arithmetic and Variables
+let a: int = 10;
+let b: int = 20;
+let c: int = a + b * 2;
+let d: int = (a + b) / 5;
