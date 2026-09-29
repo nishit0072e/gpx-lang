@@ -2,15 +2,14 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.spec
 
-# Build artifacts
+# Build & packaging artifacts
 *.exe
 *.o
 *.obj
 *.s
 *.c
-!compiler/
-!runtime/
 *.egg-info/
 dist/
 build/
@@ -19,6 +18,7 @@ build/
 .venv/
 env/
 
+# Private proprietary compiler implementation
 compiler/
 compiler_backup/
 tests/
