@@ -1,4 +1,5 @@
 # GPX Language Specification
+**Name:** GPX (Guided Programming eXperience)  
 **Version:** 0.1-draft  
 **Status:** Working Specification  
 **Architecture:** Target-Agnostic Frontend & IR -> Pluggable Multi-Backend (x86-64, ARM64, RISC-V, WebAssembly, C/LLVM)
@@ -7,7 +8,7 @@
 
 ## 1. Overview & Design Goals
 
-GPX is a modern, statically-typed, imperative programming language designed to combine high-level syntactic clarity with low-level systems control. It follows a clean modular compiler architecture so that a single codebase can compile to native binaries across architectures, run in WebAssembly sandboxes, or target embedded silicon.
+**GPX (Guided Programming eXperience)** is a modern, statically-typed, imperative systems programming language designed to combine high-level syntactic clarity with low-level systems control. It follows a clean modular compiler architecture so that a single codebase can compile to native binaries across architectures, run in WebAssembly sandboxes, or target embedded silicon.
 
 ### Core Goals
 - **Minimalist & Expressive:** Elegant syntax with zero grammatical ambiguities, friendly to humans and tooling.

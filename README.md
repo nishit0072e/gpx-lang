@@ -16,7 +16,7 @@
   <img src="assets/gpx-logo.svg" alt="GPX Systems Programming Language" width="100%">
 </p>
 
-<h1 align="center">GPX — Systems Programming Language</h1>
+<h1 align="center">GPX — Guided Programming eXperience</h1>
 
 <p align="center">
   <b>A High-Performance, Multi-Backend Compiler with Bare-Metal Speed &amp; Target-Agnostic IR</b><br>
@@ -40,6 +40,7 @@
 
 <p align="center">
   <a href="#overview">Overview</a> •
+  <a href="#the-vision">Vision</a> •
   <a href="#architecture-pipeline">Architecture</a> •
   <a href="#installation--getting-started">Installation</a> •
   <a href="#compiler-cli-usage">CLI Usage</a> •
@@ -49,15 +50,24 @@
 </p>
 
 
+<a id="the-vision"></a>
+> ### 💡 The Founder's Keynote
+> *"Most people look at compilers and see cold, impenetrable black boxes. We looked at them and asked an audacious question: What if compiling code wasn't a chore, but an exhilarating journey of discovery? What if every developer could peek behind the curtain of modern silicon and feel the raw pulse of the machine?*
+> 
+> *GPX was not born out of a checklist. It was born out of an insatiable obsession with how code comes alive. It stands for the **Guided Programming eXperience** — because the future belongs to builders who dare to master the machine from first principles."*
+> 
+> — **Nishit (@nishit0072e)**, Creator & Lead Architect
+
 ---
 
 ## Overview
 
-**GPX** is a modern, statically-typed systems programming language combining high-level syntactic clarity with bare-metal speed and predictability. 
+**GPX (Guided Programming eXperience)** is a modern, statically-typed systems language engineered for those who crave bare-metal speed without losing cognitive clarity. 
 
-Engineered with a **target-agnostic Three-Address Code (TAC) intermediate representation**, GPX compiles effortlessly to native desktop binaries (**x86-64**, **ARM64**), embedded silicon (**RISC-V RV32I**), WebAssembly, and portable ANSI **C99**.
+Every transformation in GPX — from tokenization and AST parsing to target-agnostic Three-Address Code (TAC) and bare-metal RISC-V assembly — is designed to be introspectable, predictable, and blindingly fast.
 
 ### Core Highlights
+* 🧭 **The Guided Experience:** Full compiler transparency. Step through tokens (`--tokens`), inspect ASTs (`--ast`), trace intermediate representation (`--ir`), and observe compiler optimization passes (`--opt`) with single-flag simplicity.
 * ⚡ **Zero-Overhead Runtime:** No garbage collection pauses, no hidden runtimes, and instant cold startups (~1ms).
 * 🛡️ **Strict Static Safety:** Compile-time type checking, lexical block scoping, and explicit type annotations.
 * 🧠 **Middle-End Optimization Engine:** Constant folding, algebraic simplification identities ($x \times 0 \rightarrow 0, x + 0 \rightarrow x$), and dead-code elimination (DCE).
