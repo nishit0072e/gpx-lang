@@ -16,7 +16,7 @@
   <img src="assets/gpx-logo.svg" alt="GPX Systems Programming Language" width="100%">
 </p>
 
-<h1 align="center">GPX — Guided Programming eXperience</h1>
+<h1 align="center">GPX - Guided Programming eXperience</h1>
 
 <p align="center">
   <b>A High-Performance, Multi-Backend Compiler with Bare-Metal Speed &amp; Target-Agnostic IR</b><br>
