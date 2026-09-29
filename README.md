@@ -1,5 +1,37 @@
 <p align="center">
-  <img src="assets/gpx-logo.svg" alt="GPX Systems Programming Language" width="100%">
+  <img src="assets/gpx-icon.svg" width="130" alt="GPX Emblem Icon">
+</p>
+
+<h1 align="center">GPX — Systems Programming Language</h1>
+
+<p align="center">
+  <b>A High-Performance, Multi-Backend Compiler with Bare-Metal Speed &amp; Target-Agnostic IR</b><br>
+  <i>Engineered by <b><a href="https://github.com/nishit0072e">Nishit (@nishit0072e)</a></b></i>
+</p>
+
+<p align="center">
+  <a href="https://github.com/nishit0072e/gpx-lang/releases"><img src="https://img.shields.io/github/v/release/nishit0072e/gpx-lang?color=7928ca&label=RELEASE&logo=github&style=for-the-badge" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-PROPRIETARY-0284c7.svg?style=for-the-badge" alt="License"></a>
+  <img src="https://img.shields.io/badge/PYTHON-V3.10%2B-2563eb.svg?logo=python&logoColor=white&style=for-the-badge" alt="Python">
+  <img src="https://img.shields.io/badge/CLI-NATIVE%20GPX-10b981.svg?style=for-the-badge" alt="CLI">
+</p>
+
+<p align="center">
+  <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
+  <img src="https://img.shields.io/badge/TESTS-28%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
+  <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
+  <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#architecture-pipeline">Architecture</a> •
+  <a href="#installation--getting-started">Installation</a> •
+  <a href="#compiler-cli-usage">CLI Usage</a> •
+  <a href="#repository-structure">Project Structure</a> •
+  <a href="#documentation">Documentation</a> •
+  <a href="#ownership--intellectual-property">License</a>
 </p>
 
 ```text
@@ -16,15 +48,6 @@
    ________________________     _____                           ______              ______
    ______________________      _____                          ______                ______
 ```
-
-<p align="center">
-  <a href="https://github.com/nishit0072e/gpx-lang/releases"><img src="https://img.shields.io/github/v/release/nishit0072e/gpx-lang?color=00f2fe&label=release&logo=github" alt="Release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Proprietary%20%2F%20All%20Rights%20Reserved-ff0080.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/tests-28%20passing-34d399.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/python-3.10%2B-3b82f6.svg?logo=python&logoColor=white" alt="Python Version">
-  <img src="https://img.shields.io/badge/targets-x86__64%20%7C%20ARM64%20%7C%20RISC--V%20%7C%20C99-7928ca.svg" alt="Targets">
-  <a href="https://github.com/nishit0072e"><img src="https://img.shields.io/badge/author-Nishit%20%28nishit0072e%29-0f172a?logo=github" alt="Author"></a>
-</p>
 
 ---
 
@@ -140,7 +163,8 @@ gpx examples/01_arithmetic.gpx --ir --opt
 ```
 gpx-lang/
 ├── assets/
-│   └── gpx-logo.svg           # Custom 3D text branding banner
+│   ├── gpx-icon.svg           # High-tech circular emblem badge
+│   └── gpx-logo.svg           # 3D text branding banner
 ├── docs/
 │   ├── language-spec.md       # Formal EBNF grammar, types & memory model
 │   ├── cli-guide.md           # CLI commands, flags, and testing guide
