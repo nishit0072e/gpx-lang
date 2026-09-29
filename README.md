@@ -54,9 +54,9 @@
 > ### 💡 The Founder's Keynote
 > *"Most people look at compilers and see cold, impenetrable black boxes. We looked at them and asked an audacious question: What if compiling code wasn't a chore, but an exhilarating journey of discovery? What if every developer could peek behind the curtain of modern silicon and feel the raw pulse of the machine?*
 > 
-> *GPX was not born out of a checklist. It was born out of an insatiable obsession with how code comes alive. It stands for the **Guided Programming eXperience** — because the future belongs to builders who dare to master the machine from first principles."*
+> *GPX was not born out of a checklist. It was born out of an insatiable obsession with how code comes alive. It stands for the **Guided Programming eXperience** - because the future belongs to builders who dare to master the machine from first principles."*
 > 
-> — **Nishit (@nishit0072e)**, Creator & Lead Architect
+> - **Nishit (@nishit0072e)**, Creator & Lead Architect
 
 ---
 
