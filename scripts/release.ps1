@@ -9,8 +9,19 @@ param (
 
 $ErrorActionPreference = "Stop"
 
+# Always navigate to the project root directory regardless of where the script was invoked from
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProjectRoot = Split-Path -Parent $ScriptDir
+Set-Location $ProjectRoot
+
+# Ensure version starts with 'v' (e.g. 0.2.0 -> v0.2.0)
+if (-not $Version.StartsWith("v")) {
+    $Version = "v$Version"
+}
+
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "  GPX Compiler: Packaging & Release $Version" -ForegroundColor Cyan
+Write-Host "  Working Directory: $ProjectRoot" -ForegroundColor DarkGray
 Write-Host "=========================================" -ForegroundColor Cyan
 
 # 1. Run local test suite
