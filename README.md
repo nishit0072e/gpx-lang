@@ -2,6 +2,21 @@
   <img src="assets/gpx-logo.svg" alt="GPX Systems Programming Language" width="100%">
 </p>
 
+```text
+              ______________________      ______________________         ______                ______
+            ________________________     ________________________        ______              ______
+          ______              ______    ______             ______        ______            ______
+        ______                         _____               ______         ______        ______
+       _____                          _____               ______           ______    ______
+      _____          ____________    ________________________               ____________
+     _____         ______________   ______________________                 ____________
+    _____                 ______   _____                                ______    ______
+   _____                 ______   _____                              ______        ______
+   ______              ______    _____                            ______            ______
+   ________________________     _____                           ______              ______
+   ______________________      _____                          ______                ______
+```
+
 <p align="center">
   <a href="https://github.com/nishit0072e/gpx-lang/releases"><img src="https://img.shields.io/github/v/release/nishit0072e/gpx-lang?color=00f2fe&label=release&logo=github" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Proprietary%20%2F%20All%20Rights%20Reserved-ff0080.svg" alt="License"></a>
