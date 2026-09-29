@@ -3,3 +3,6 @@ let a: int = 10;
 let b: int = 20;
 let c: int = a + b * 2;
 let d: int = (a + b) / 5;
+fn main() -> int{
+    return d;
+}
