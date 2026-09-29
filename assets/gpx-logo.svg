@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07090e" />
+      <stop offset="50%" stop-color="#0c121e" />
+      <stop offset="100%" stop-color="#040609" />
+    </linearGradient>
+
+    <!-- Neon Glow Filter -->
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- 3D Chrome Text Gradients -->
+    <linearGradient id="chrome-face" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="50%" stop-color="#4facfe" />
+      <stop offset="100%" stop-color="#0072ff" />
+    </linearGradient>
+
+    <linearGradient id="accent-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7928ca" />
+      <stop offset="100%" stop-color="#ff0080" />
+    </linearGradient>
+
+    <!-- Tech Grid Pattern -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(0, 242, 254, 0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="360" rx="16" fill="url(#bg)" />
+  <rect width="1200" height="360" rx="16" fill="url(#grid)" />
+
+  <!-- Ambient Light Glows -->
+  <circle cx="280" cy="180" r="160" fill="#00f2fe" opacity="0.08" filter="blur(40px)" />
+  <circle cx="920" cy="180" r="160" fill="#7928ca" opacity="0.08" filter="blur(40px)" />
+
+  <!-- Circuit Traces -->
+  <g stroke="rgba(0, 242, 254, 0.25)" stroke-width="1.5" fill="none">
+    <path d="M 60 60 H 220 L 260 100 H 380" />
+    <circle cx="60" cy="60" r="3" fill="#00f2fe" />
+    <circle cx="380" cy="100" r="3" fill="#00f2fe" />
+
+    <path d="M 1140 300 H 980 L 940 260 H 820" />
+    <circle cx="1140" cy="300" r="3" fill="#ff0080" />
+    <circle cx="820" cy="260" r="3" fill="#ff0080" />
+  </g>
+
+  <!-- 3D Isometric Text Group -->
+  <g transform="translate(100, 225)">
+    <!-- 3D Extrusion Depth Shadows -->
+    <text x="10" y="10" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="#01060d" letter-spacing="10">GPX</text>
+    <text x="8" y="8" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="#031122" letter-spacing="10">GPX</text>
+    <text x="6" y="6" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="#051c36" letter-spacing="10">GPX</text>
+    <text x="4" y="4" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="#08284e" letter-spacing="10">GPX</text>
+    <text x="2" y="2" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="#0d3b70" letter-spacing="10">GPX</text>
+
+    <!-- Glossy Front Face -->
+    <text x="0" y="0" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="url(#chrome-face)" filter="url(#glow-cyan)" letter-spacing="10">GPX</text>
+
+    <!-- Specular Highlight Line -->
+    <text x="0" y="0" font-family="'Inter', 'Montserrat', 'Segoe UI', system-ui, sans-serif" font-weight="900" font-size="150" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 30" opacity="0.6" letter-spacing="10">GPX</text>
+
+    <!-- Tagline & Description -->
+    <text x="500" y="-70" font-family="'Inter', 'Segoe UI', sans-serif" font-size="25" font-weight="700" fill="#ffffff" letter-spacing="5">SYSTEMS PROGRAMMING LANGUAGE</text>
+    <text x="500" y="-35" font-family="'Inter', 'Segoe UI', sans-serif" font-size="16" font-weight="400" fill="#94a3b8" letter-spacing="2">TARGET-AGNOSTIC IR • BARE-METAL SPEED • MULTI-BACKEND</text>
+
+    <!-- Chip Architecture Badges Graphic inside Logo -->
+    <g transform="translate(500, 5)">
+      <!-- RISC-V Badge -->
+      <rect x="0" y="0" width="100" height="28" rx="6" fill="rgba(0, 242, 254, 0.12)" stroke="rgba(0, 242, 254, 0.4)" stroke-width="1"/>
+      <text x="18" y="19" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#00f2fe">RISC-V</text>
+
+      <!-- x86-64 Badge -->
+      <rect x="110" y="0" width="100" height="28" rx="6" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
+      <text x="132" y="19" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#e2e8f0">x86-64</text>
+
+      <!-- ARM64 Badge -->
+      <rect x="220" y="0" width="100" height="28" rx="6" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
+      <text x="242" y="19" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#e2e8f0">ARM64</text>
+
+      <!-- C99 Badge -->
+      <rect x="330" y="0" width="90" height="28" rx="6" fill="rgba(121, 40, 202, 0.15)" stroke="rgba(121, 40, 202, 0.5)" stroke-width="1"/>
+      <text x="357" y="19" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#d946ef">C99</text>
+    </g>
+  </g>
+
+  <!-- Accent Border Line -->
+  <rect x="0" y="356" width="1200" height="4" fill="url(#accent-purple)" />
+</svg>
