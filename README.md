@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/gpx-icon.svg" width="130" alt="GPX Emblem Icon">
+  <img src="assets/gpx-logo.svg" alt="GPX Systems Programming Language" width="100%">
 </p>
 
 <h1 align="center">GPX — Systems Programming Language</h1>
@@ -163,7 +163,6 @@ gpx examples/01_arithmetic.gpx --ir --opt
 ```
 gpx-lang/
 ├── assets/
-│   ├── gpx-icon.svg           # High-tech circular emblem badge
 │   └── gpx-logo.svg           # 3D text branding banner
 ├── docs/
 │   ├── language-spec.md       # Formal EBNF grammar, types & memory model
