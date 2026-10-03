@@ -22,3 +22,4 @@ env/
 compiler/
 compiler_backup/
 tests/
+scripts/
