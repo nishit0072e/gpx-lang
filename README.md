@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-28%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-38%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -124,18 +124,20 @@ Every transformation in GPX — from tokenization and AST parsing to target-agno
 ## Installation & Getting Started
 
 ### Option 1: Standalone Binary (Recommended)
-Download the pre-compiled standalone `gpx.exe` binary directly from the [GitHub Releases](https://github.com/nishit0072e/gpx-lang/releases) page:
-1. Download **`gpx.exe`**.
-2. Add the directory containing `gpx.exe` to your system `PATH`.
-3. Verify installation:
-   ```bash
-   gpx --help
-   ```
+Download the pre-compiled standalone binary directly from the [GitHub Releases](https://github.com/nishit0072e/gpx-lang/releases) page:
+* **Windows:** Download **`gpx.exe`**.
+* **Linux (x86-64):** Download **`gpx`** (run `chmod +x gpx`).
+
+Add the binary to your system `PATH` and verify:
+```bash
+gpx --version
+gpx --help
+```
 
 ### Option 2: Universal Wheel Package
 For machines with Python 3.10+:
 ```bash
-pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.1.0/gpx_compiler-0.1.0-py3-none-any.whl
+pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.2.0/gpx_compiler-0.2.0-py3-none-any.whl
 ```
 
 ---

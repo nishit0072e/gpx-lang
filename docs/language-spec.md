@@ -1,6 +1,6 @@
 # GPX Language Specification
 **Name:** GPX (Guided Programming eXperience)  
-**Version:** 0.1-draft  
+**Version:** 0.2-draft  
 **Status:** Working Specification  
 **Architecture:** Target-Agnostic Frontend & IR -> Pluggable Multi-Backend (x86-64, ARM64, RISC-V, WebAssembly, C/LLVM)
 
