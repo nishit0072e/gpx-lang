@@ -1,0 +1,21 @@
+// GPX Legacy Data Types Showcase
+// Demonstrates: bool, byte, short, int, long, char, float, double
+
+fn main() -> double {
+    let b: byte = 10;
+    let s: short = 1000;
+    let i: int = 50000;
+    let l: long = 100000000;
+    let c: char = 'G';
+    let f: float = 3.14;
+    let d: double = 2.71828;
+    let flag: bool = true;
+
+    print(b);
+    print(c);
+    print(f);
+    print(d);
+
+    let total: double = b + s + i + d;
+    return total;
+}

@@ -78,18 +78,34 @@ Identifiers name variables, functions, and types.
 
 ## 3. Type System
 
-GPX is statically and strongly typed.
+GPX is statically and strongly typed, using predictable legacy type nomenclature with zero runtime overhead.
 
-### 3.1 Primitive Types
-- `int`: 32-bit signed integer (maps to RISC-V 32-bit word).
-- `bool`: 1-bit boolean, stored in a byte (values: `true` or `false`).
-- `char`: 8-bit unsigned ASCII character byte.
-- `void`: Represents unit / no value (used as function return type when omitted).
+### 3.1 Legacy Primitive Types
 
-### 3.2 Compound Types (Roadmap)
+| Type | Size | Description & Range |
+| :--- | :--- | :--- |
+| `bool` | 1 byte | Logical boolean (`true`, `false`) |
+| `byte` | 1 byte | 8-bit signed integer (`-128` to `127`) |
+| `short` | 2 bytes | 16-bit signed integer (`-32,768` to `32,767`) |
+| `int` | 4 bytes | 32-bit signed integer (`-2,147,483,648` to `2,147,483,647`) |
+| `long` | 8 bytes | 64-bit signed integer (`-9,223,372,036,854,775,808` to `9,223,372,036,854,775,807`) |
+| `char` | 1 byte | 8-bit character literal (e.g. `'A'`, `'\n'`) |
+| `float` | 4 bytes | 32-bit single-precision IEEE 754 floating point |
+| `double` | 8 bytes | 64-bit double-precision IEEE 754 floating point |
+| `string` | Pointer | Immutable string literal (`"..."`) |
+| `void` | 0 bytes | Unit / empty return type |
+
+### 3.2 Type Conversions & Numeric Promotion
+* **Literal Range Checking:** Integer constants are checked at compile time and can initialize any integer type (`byte`, `short`, `int`, `long`, `char`) provided the value fits within the target type's bounds.
+* **Implicit Widening:** Safe widening conversions are performed implicitly:
+  $$\text{byte} \longrightarrow \text{short} \longrightarrow \text{int} \longrightarrow \text{long} \longrightarrow \text{float} \longrightarrow \text{double}$$
+* **Arithmetic Promotion:** Binary arithmetic (`+`, `-`, `*`, `/`) between mixed numeric types promotes both operands to the higher-ranking type (e.g., `int + double` yields `double`, `byte + short` yields `int`).
+* **Integer-Only Operations:** Modulo (`%`) is strictly permitted on integer types and rejected on floating-point operands.
+
+### 3.3 Compound Types (Roadmap)
 - **Arrays (`T[N]`):** Contiguous, fixed-size sequence of elements of type `T`.
-- **Structs (`struct Name { ... }`):** User-defined record types (v0.7).
-- **Pointers (`*T`):** Direct memory addresses for low-level systems access (v0.7).
+- **Structs (`struct Name { ... }`):** User-defined record types.
+- **Pointers (`*T`):** Direct memory addresses for low-level systems access.
 
 ---
 
