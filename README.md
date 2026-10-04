@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-38%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-44%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">

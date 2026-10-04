@@ -1,0 +1,199 @@
+================================================================================
+                    GPX (Guided Programming eXperience)
+                 Current Stage, Architecture & Features Overview
+================================================================================
+Current Version : v0.2.0
+Status          : Working Alpha / Active Systems Development
+Test Suite      : 44/44 passing (0.02s execution time)
+Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
+Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel
+Author          : Nishit (@nishit0072e)
+================================================================================
+
+1. EXECUTIVE OVERVIEW
+--------------------------------------------------------------------------------
+GPX (Guided Programming eXperience) is a statically-typed systems programming 
+language designed to combine high-level syntactic clarity with low-level 
+silicon predictability and complete compiler introspection.
+
+It does not hide its compilation stages behind a black box. Every transformation—
+from source tokens and AST to target-agnostic Three-Address Code (TAC), middle-end
+optimizations, bare-metal RISC-V assembly, and native machine binaries—is fully
+inspectable with single-flag simplicity.
+
+
+2. CURRENT DEVELOPMENT STAGE (v0.2.0)
+--------------------------------------------------------------------------------
+* Fully working end-to-end compiler pipeline implemented in Python 3.10+.
+* Independent in-memory Virtual Machine (VM) capable of running code instantly
+  without disk writes or external toolchains.
+* Multi-backend code generator targeting:
+    - Native machine code (.exe on Windows, ELF on Linux) via auto-detected C99
+    - Bare-metal RISC-V RV32IM assembly with standard ABI calling conventions
+* System-wide global installation in WSL (/usr/local/bin/gpx).
+* Source code privacy: core compiler and tests are strictly isolated locally and
+  never exposed on public repositories.
+
+
+3. IMPLEMENTED LANGUAGE FEATURES
+--------------------------------------------------------------------------------
+A. Legacy Data Types (Complete First-Class Support)
+   -----------------------------------------------------------------------------
+   - byte   : 1 byte, signed 8-bit integer (-128 to 127)
+   - short  : 2 bytes, signed 16-bit integer (-32,768 to 32,767)
+   - int    : 4 bytes, signed 32-bit integer (-2,147,483,648 to 2,147,483,647)
+   - long   : 8 bytes, signed 64-bit integer (-2^63 to 2^63 - 1)
+   - char   : 1 byte, character literal (e.g., 'A', '\n', '\x41', '\101')
+   - float  : 4 bytes, single-precision IEEE 754 floating point (3.14f, 5f)
+   - double : 8 bytes, double-precision IEEE 754 floating point (2.71828, .125, 1.5e-3)
+   - bool   : 1 byte, logical boolean (true, false)
+   - string : Pointer, immutable string literal ("...")
+   - void   : 0 bytes, empty / unit return type
+
+B. Escape Sequences (Complete C/GPX Support)
+   -----------------------------------------------------------------------------
+   - \n   : Newline (0x0A)
+   - \t   : Horizontal tab (0x09)
+   - \r   : Carriage return (0x0D)
+   - \a   : Alert / bell (0x07)
+   - \b   : Backspace (0x08)
+   - \f   : Form feed (0x0C)
+   - \v   : Vertical tab (0x0B)
+   - \\   : Literal backslash (0x5C)
+   - \'   : Literal single quote (0x27)
+   - \"   : Literal double quote (0x22)
+   - \0   : Null byte (0x00)
+   - \xHH : Hexadecimal byte value (e.g. \x1b, \x41)
+   - \ooo : Octal byte value (e.g. \101)
+
+C. Static Typing & Promotion Rules
+   -----------------------------------------------------------------------------
+   - Compile-Time Literal Bounds Check:
+     Integer constants are strictly checked against target type capacities.
+     Assigning 200 to a byte produces a compile-time rejection.
+   - Safe Implicit Widening:
+     byte -> short -> int -> long -> float -> double
+   - Mixed Arithmetic Promotion:
+     Operations between differing numeric types automatically promote both
+     operands to the highest common rank (e.g., int * double -> double).
+   - Integer Guardrails:
+     Modulo operator (%) is restricted to integer types and rejected on floats.
+
+D. Syntax & Expressions
+   -----------------------------------------------------------------------------
+   - Variable Declaration : let x: int = 10;  OR  let x = 10;
+   - Reassignment         : x = 25;
+   - Arithmetic Operators : + , - , * , / , %
+   - Relational Operators : < , <= , > , >= , == , !=
+   - Logical Operators    : && , || , !
+   - Grouping Expressions : (a + b) * c
+   - Comments             : Single-line (//) and multi-line (/* ... */)
+
+E. Control Flow & Functions
+   -----------------------------------------------------------------------------
+   - If / Else Conditionals:
+       if condition {
+           // then branch
+       } else if other_condition {
+           // else-if branch
+       } else {
+           // else branch
+       }
+   - While Loops:
+       while count < 10 {
+           count = count + 1;
+       }
+   - Function Declarations & Calls:
+       fn add(a: int, b: int) -> int {
+           return a + b;
+       }
+   - Scoping & Symbol Tables:
+       Lexical block scoping with variable shadowing and redeclaration checks.
+   - Built-in Functions:
+       print(val)          -> polymorphic print supporting all legacy types.
+       printf(fmt, ...args)-> formatted printing across VM and native binaries.
+
+F. Format Specifiers Reference (printf)
+   -----------------------------------------------------------------------------
+   - %d, %i  : Signed integer (byte, short, int, long)
+   - %u      : Unsigned integer
+   - %ld     : 64-bit signed long integer
+   - %f      : Floating-point number (e.g. 3.141590)
+   - %.Nf    : Floating-point with precision N (e.g. %.2f -> 3.14)
+   - %lf     : Double precision floating-point number
+   - %g, %G  : Compact floating-point representation
+   - %e, %E  : Scientific notation (e.g. 1.500000e-03)
+   - %c      : Character
+   - %s      : String
+   - %b      : Boolean (prints "true" or "false")
+   - %x, %X  : Hexadecimal lowercase / uppercase
+   - %o      : Octal
+   - %%      : Literal percent sign
+
+
+4. COMPILER PIPELINE ARCHITECTURE
+--------------------------------------------------------------------------------
+Source Code (*.gpx)
+    │
+    ▼ [1. Lexer (compiler/lexer.py)]
+    Tokens stream with line & column tracking
+    │
+    ▼ [2. Parser (compiler/parser.py)]
+    Abstract Syntax Tree (AST) with precedence climbing
+    │
+    ▼ [3. Semantic Analyzer (compiler/semantic.py)]
+    Type inference, symbol tables, bounds check, safe promotions
+    │
+    ▼ [4. IR Generator (compiler/ir.py)]
+    Target-Agnostic Three-Address Code (TAC) Intermediate Representation
+    │
+    ▼ [5. Optimizer (compiler/optimizer.py)]
+    Constant folding, algebraic simplification, dead code elimination
+    │
+    ├─────────────────────────────┬─────────────────────────────┐
+    ▼                             ▼                             ▼
+[Built-in IR VM]        [C99 Transpiler]             [RISC-V Codegen]
+(compiler/ir_vm.py)     (codegen_c.py)               (codegen_riscv.py)
+In-memory execution     Auto-detects clang/gcc/cc    RV32IM bare-metal assembly
+Zero dependencies       Compiles native .exe/ELF     Standard ABI frames
+
+
+5. COMPILER CLI DIRECTIVES & FLAGS
+--------------------------------------------------------------------------------
+Command Syntax:
+  gpx [flags] [source_file.gpx]
+
+Flags & Options:
+  -h, --help            Show detailed compiler help menu
+  -v, --version         Show compiler version string
+  
+  --run                 Execute program directly via built-in IR Virtual Machine
+  --check               Perform static analysis, scope resolution & type check
+  --tokens              Print raw token stream from lexer
+  --ast                 Pretty-print hierarchical Abstract Syntax Tree
+  --ir                  Print Three-Address Code (TAC) Intermediate Representation
+  --opt                 Run middle-end optimizer passes on the TAC IR
+  --inspect, --debug    Full 6-stage pipeline inspection (tokens to codegen)
+
+  --target {c, riscv}   Select target backend (default: c)
+  --emit-c              Print generated C99 code to stdout
+  --emit-asm            Print generated RISC-V assembly to stdout
+  --emit                Print generated target code to stdout
+  --save-c              Preserve intermediate .c file when compiling native binary
+  -o OUTPUT             Emit output to specified file (.c, .s, or native executable)
+
+
+6. UPCOMING ROADMAP (NEXT MILESTONES)
+--------------------------------------------------------------------------------
+1. Loop Control Enhancements:
+   - break and continue statement support
+   - for loop support (C-style or range-based)
+2. Advanced Conditionals:
+   - switch / case multi-branch dispatch
+   - match pattern matching expressions
+3. Compound Data Types:
+   - Fixed-size arrays: let arr: int[10]; with indexing arr[i]
+   - User-defined structs: struct Point { int x; int y; }
+4. Systems Features:
+   - Raw pointers (*T) and address-of / dereference operators
+================================================================================

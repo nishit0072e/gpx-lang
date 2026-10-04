@@ -59,12 +59,35 @@ Identifiers name variables, functions, and types.
 - Must not collide with reserved keywords.
 
 ### 2.5 Literals
-- **Integer Literals:** Sequences of decimal digits `[0-9]+` (e.g., `0`, `42`, `1024`). Hexadecimal (`0x[0-9a-fA-F]+`) will be supported in v0.2.
+- **Integer Literals:** Sequences of decimal digits `[0-9]+` (e.g., `0`, `42`, `1024`). Optional `l` or `L` suffix specifies a 64-bit `long`.
+- **Floating-Point Literals:** Real numbers in standard decimal or scientific notation:
+  - Standard decimal fractions: `3.14`, `10.0`, `.5`, `.125` (leading dot supported).
+  - Scientific notation: `1.5e-3`, `2.0E+4`, `1e6`.
+  - Type suffixes: `f` or `F` designates a 32-bit single-precision `float` (e.g. `3.14f`, `5f`); `d`, `D`, or no suffix designates a 64-bit `double` (e.g. `2.71828`, `10.5d`).
 - **Boolean Literals:** `true` and `false`.
-- **String Literals:** Enclosed in double quotes `"..."` (e.g., `"Hello, RISC-V\n"`). Escape sequences: `\n`, `\t`, `\\`, `\"`.
-- **Character Literals:** Enclosed in single quotes `'...'` (e.g., `'a'`, `'\n'`).
+- **Character Literals:** Enclosed in single quotes `'...'` (e.g., `'a'`, `'\n'`, `'\x41'`).
+- **String Literals:** Enclosed in double quotes `"..."` (e.g., `"Hello, GPX\n"`).
 
-### 2.6 Operators & Delimiters
+### 2.6 Escape Sequences
+Both character and string literals support standard C/GPX escape sequences:
+
+| Escape Sequence | Description | Hex / ASCII |
+| :--- | :--- | :--- |
+| `\n` | Newline (Line Feed) | `0x0A` |
+| `\t` | Horizontal Tab | `0x09` |
+| `\r` | Carriage Return | `0x0D` |
+| `\a` | Alert / Bell | `0x07` |
+| `\b` | Backspace | `0x08` |
+| `\f` | Form Feed | `0x0C` |
+| `\v` | Vertical Tab | `0x0B` |
+| `\\` | Literal Backslash | `0x5C` |
+| `\'` | Literal Single Quote | `0x27` |
+| `\"` | Literal Double Quote | `0x22` |
+| `\0` | Null Character | `0x00` |
+| `\xHH` | Hexadecimal byte (1 to 2 hex digits, e.g. `\x1b`, `\x41`) | Custom |
+| `\ooo` | Octal byte (1 to 3 octal digits, e.g. `\101`) | Custom |
+
+### 2.7 Operators & Delimiters
 
 | Category | Symbols |
 | :--- | :--- |
@@ -265,3 +288,44 @@ fn main() -> int {
     return sum;
 }
 ```
+
+### 7.4 Floating-Point, Escape Sequences & Format Specifiers
+GPX provides built-in `printf(fmt, ...)` for formatted output across all backends:
+
+```gpx
+fn main() -> int {
+    let pi: float = 3.14159f;
+    let e: double = 2.718281828459;
+    let flag: bool = true;
+    let letter: char = 'G';
+    let label: string = "Release";
+
+    printf("=== %s %c ===\n", label, letter);
+    printf("Pi (2 decimals): %.2f\n", pi);
+    printf("Euler's e (4 decimals): %.4f\n", e);
+    printf("Boolean flag: %b\n", flag);
+    printf("Hexadecimal: 0x%X, Octal: 0%o\n", 255, 64);
+    printf("Literal Percent: 100%%\n");
+    return 0;
+}
+```
+
+#### Format Specifiers Reference
+
+| Specifier | Datatype | Example Input | Formatted Output |
+| :--- | :--- | :--- | :--- |
+| `%d`, `%i` | Signed Integer (`byte`, `short`, `int`, `long`) | `42`, `-10` | `42`, `-10` |
+| `%u` | Unsigned Integer | `42` | `42` |
+| `%ld` | 64-bit Long Integer | `922337203685477580` | `922337203685477580` |
+| `%f` | Floating Point (`float`, `double`) | `3.14159` | `3.141590` |
+| `%.Nf` | Float with precision $N$ | `3.14159` (with `%.2f`) | `3.14` |
+| `%lf` | Double Precision Float | `2.71828` | `2.718280` |
+| `%g`, `%G` | Compact Floating Point | `20000.0` | `20000` |
+| `%e`, `%E` | Scientific Notation | `0.0015` | `1.500000e-03` |
+| `%c` | Character (`char`) | `'X'` | `X` |
+| `%s` | String (`string`) | `"Hello"` | `Hello` |
+| `%b` | Boolean (`bool`) | `true`, `false` | `true`, `false` |
+| `%x`, `%X` | Hexadecimal (lower / upper) | `255` | `ff`, `FF` |
+| `%o` | Octal | `64` | `100` |
+| `%%` | Escaped Percent Symbol | N/A | `%` |
+

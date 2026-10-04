@@ -1,0 +1,48 @@
+// GPX Floating-Point, Escape Sequences & Format Specifiers Showcase
+// Demonstrates:
+// - Single-precision float and double-precision double literals
+// - Scientific notation and leading decimal fractions
+// - Escape sequences: \n, \t, \r, \a, \b, \f, \v, \\, \', \", \0, \xHH, \ooo
+// - Built-in printf with format specifiers: %d, %i, %u, %ld, %f, %.Nf, %lf, %g, %e, %c, %s, %b, %x, %o, %%
+
+fn main() -> int {
+    let pi: float = 3.14159f;
+    let e: double = 2.718281828459;
+    let fraction: double = .125;
+    let small_exp: double = 1.5e-3;
+    let big_exp: float = 2.0e4f;
+    
+    let answer: int = 42;
+    let big_num: long = 922337203685477580;
+    let letter: char = 'X';
+    let is_valid: bool = true;
+    let lang: string = "GPX Systems Language";
+
+    // Escape Sequences Demo
+    printf("=== Escape Sequences ===\n");
+    printf("Tab:\t[indented]\n");
+    printf("Quotes:\t\"GPX\" and \'C\'\n");
+    printf("Backslash:\tC:\\gpx\\bin\n");
+    printf("Hex Escape:\t\x47\x50\x58 (GPX)\n");
+    printf("Octal Escape:\t\107\120\130 (GPX)\n\n");
+
+    // Format Specifiers Demo
+    printf("=== Format Specifiers ===\n");
+    printf("Integer (%%d, %%i):      %d, %i\n", answer, - answer);
+    printf("Unsigned (%%u):          %u\n", answer);
+    printf("64-bit Long (%%ld):      %ld\n", big_num);
+    printf("Single Float (%%f):      %f\n", pi);
+    printf("Precision (%%.2f):       %.2f\n", pi);
+    printf("Precision (%%.4f):       %.4f\n", e);
+    printf("Leading Decimal (%%f):   %f\n", fraction);
+    printf("Scientific (%%e):        %e\n", small_exp);
+    printf("Compact Float (%%g):     %g\n", big_exp);
+    printf("Character (%%c):         %c\n", letter);
+    printf("String (%%s):            %s\n", lang);
+    printf("Boolean (%%b):           %b (valid), %b (not valid)\n", is_valid, false);
+    printf("Hexadecimal (%%x, %%X):  0x%x, 0x%X\n", 255, 4095);
+    printf("Octal (%%o):             0%o\n", 64);
+    printf("Literal Percent (%%%%):  100%%\n");
+
+    return 0;
+}
