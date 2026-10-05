@@ -23,6 +23,7 @@ compiler/
 compiler_backup/
 tests/
 scripts/
+editors/vscode/gpx-lang/
 # OS files
 desktop.ini
 Thumbs.db
