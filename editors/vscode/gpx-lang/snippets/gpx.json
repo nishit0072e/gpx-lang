@@ -1,0 +1,110 @@
+{
+  "Main Function": {
+    "prefix": "main",
+    "body": [
+      "fn main() -> int {",
+      "    ${0:// code here}",
+      "    return 0;",
+      "}"
+    ],
+    "description": "GPX main entry point function"
+  },
+  "Function Declaration": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:function_name}(${2:params}) -> ${3:void} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Declare a GPX function"
+  },
+  "Structure Declaration": {
+    "prefix": "struct",
+    "body": [
+      "struct ${1:Name} {",
+      "    ${2:field}: ${3:int};",
+      "}"
+    ],
+    "description": "Declare a GPX struct"
+  },
+  "Union Declaration": {
+    "prefix": "union",
+    "body": [
+      "union ${1:Name} {",
+      "    ${2:as_int}: ${3:int};",
+      "    ${4:as_float}: ${5:float};",
+      "}"
+    ],
+    "description": "Declare a GPX union"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:i} = 0; ${1:i} < ${2:10}; ${1:i} = ${1:i} + 1) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Standard 3-part for loop"
+  },
+  "For-Each Range Loop": {
+    "prefix": "foreach",
+    "body": [
+      "for ${1:item} in ${2:0}..${3:10} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Range-based for-each loop"
+  },
+  "Do-While Loop": {
+    "prefix": "do",
+    "body": [
+      "do {",
+      "    ${0}",
+      "} while (${1:condition});"
+    ],
+    "description": "Do-While loop construct"
+  },
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "While loop construct"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ifelse",
+    "body": [
+      "if ${1:condition} {",
+      "    ${2}",
+      "} else {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "If-Else statement"
+  },
+  "Printf Statement": {
+    "prefix": "printf",
+    "body": [
+      "printf(\"${1:%d\\n}\", ${2:val});"
+    ],
+    "description": "Built-in formatted printf"
+  },
+  "Print Statement": {
+    "prefix": "print",
+    "body": [
+      "print(${1:val});"
+    ],
+    "description": "Built-in print"
+  }
+}

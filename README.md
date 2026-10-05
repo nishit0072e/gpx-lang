@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-44%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-61%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -137,7 +137,7 @@ gpx --help
 ### Option 2: Universal Wheel Package
 For machines with Python 3.10+:
 ```bash
-pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.2.0/gpx_compiler-0.2.0-py3-none-any.whl
+pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.3.0/gpx_compiler-0.3.0-py3-none-any.whl
 ```
 
 ---

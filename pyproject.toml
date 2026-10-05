@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gpx-compiler"
-version = "0.2.0"
+version = "0.3.0"
 description = "GPX Programming Language Compiler - High performance systems compiler"
 authors = [{ name = "Nishit", email = "nsihitbayen2021@gmail.com" }]
 license = { text = "Proprietary. Copyright (c) 2026 Nishit. All rights reserved." }

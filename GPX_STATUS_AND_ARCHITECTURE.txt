@@ -4,7 +4,7 @@
 ================================================================================
 Current Version : v0.2.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 44/44 passing (0.02s execution time)
+Test Suite      : 61/61 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
 Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel
 Author          : Nishit (@nishit0072e)
@@ -22,11 +22,13 @@ optimizations, bare-metal RISC-V assembly, and native machine binaries—is full
 inspectable with single-flag simplicity.
 
 
-2. CURRENT DEVELOPMENT STAGE (v0.2.0)
+2. CURRENT DEVELOPMENT STAGE (v0.2.0+)
 --------------------------------------------------------------------------------
 * Fully working end-to-end compiler pipeline implemented in Python 3.10+.
 * Independent in-memory Virtual Machine (VM) capable of running code instantly
   without disk writes or external toolchains.
+* Complete loop constructs: while, do-while, C-style 3-part for, and range-based for-each.
+* Composite types: structures (`struct`) and shared-memory types (`union`).
 * Multi-backend code generator targeting:
     - Native machine code (.exe on Windows, ELF on Linux) via auto-detected C99
     - Bare-metal RISC-V RV32IM assembly with standard ABI calling conventions
@@ -50,7 +52,25 @@ A. Legacy Data Types (Complete First-Class Support)
    - string : Pointer, immutable string literal ("...")
    - void   : 0 bytes, empty / unit return type
 
-B. Escape Sequences (Complete C/GPX Support)
+B. Structures & Unions (Compound Data Types)
+   -----------------------------------------------------------------------------
+   - Struct Declaration:
+       struct Point {
+           x: int;
+           y: int;
+       }
+   - Struct Instantiation & Member Access:
+       let p = Point { x: 10, y: 20 };
+       p.x = 42;
+   - Union Declaration (Shared Memory):
+       union Data {
+           as_int: int;
+           as_float: float;
+       }
+       let d: Data;
+       d.as_int = 100;
+
+C. Escape Sequences (Complete C/GPX Support)
    -----------------------------------------------------------------------------
    - \n   : Newline (0x0A)
    - \t   : Horizontal tab (0x09)
@@ -66,7 +86,7 @@ B. Escape Sequences (Complete C/GPX Support)
    - \xHH : Hexadecimal byte value (e.g. \x1b, \x41)
    - \ooo : Octal byte value (e.g. \101)
 
-C. Static Typing & Promotion Rules
+D. Static Typing & Promotion Rules
    -----------------------------------------------------------------------------
    - Compile-Time Literal Bounds Check:
      Integer constants are strictly checked against target type capacities.
@@ -79,17 +99,28 @@ C. Static Typing & Promotion Rules
    - Integer Guardrails:
      Modulo operator (%) is restricted to integer types and rejected on floats.
 
-D. Syntax & Expressions
+E. Pointers & Memory Indirection (First-Class Systems Capability)
+   -----------------------------------------------------------------------------
+   - Pointer Types          : *T, **T (e.g. *int, *Point, **int)
+   - Address-Of Operator    : &var (obtains reference address of lvalue)
+   - Dereference Read       : let val = *ptr;
+   - Dereference Assignment : *ptr = new_val;
+   - Indirect Member Access : ptr->field, ptr->field = val;
+   - Null Pointer Literal   : null (can be assigned and compared with ==, !=)
+
+F. Syntax & Expressions
    -----------------------------------------------------------------------------
    - Variable Declaration : let x: int = 10;  OR  let x = 10;
    - Reassignment         : x = 25;
+   - Member Access        : obj.field  /  obj.field = val;
+   - Indirect Access      : ptr->field /  ptr->field = val;
    - Arithmetic Operators : + , - , * , / , %
    - Relational Operators : < , <= , > , >= , == , !=
    - Logical Operators    : && , || , !
    - Grouping Expressions : (a + b) * c
    - Comments             : Single-line (//) and multi-line (/* ... */)
 
-E. Control Flow & Functions
+G. Control Flow & Loops (All Constructs)
    -----------------------------------------------------------------------------
    - If / Else Conditionals:
        if condition {
@@ -103,17 +134,52 @@ E. Control Flow & Functions
        while count < 10 {
            count = count + 1;
        }
-   - Function Declarations & Calls:
+   - Do-While Loops (guaranteed at least one execution):
+       do {
+           attempts = attempts + 1;
+       } while attempts < 3;
+   - Standard For Loops (C-style 3-part):
+       for (let i = 0; i < 10; i = i + 1) {
+           sum = sum + i;
+       }
+   - For-Each Loops (Range-based iteration):
+       for item in 0..10 {
+           sum = sum + item;
+       }
+
+H. Functions & Recursion
+   -----------------------------------------------------------------------------
+   - Function Declarations & Signatures:
        fn add(a: int, b: int) -> int {
            return a + b;
        }
-   - Scoping & Symbol Tables:
-       Lexical block scoping with variable shadowing and redeclaration checks.
+   - Pass-by-Reference (Pointers):
+       fn swap(a: *int, b: *int) {
+           let temp = *a;
+           *a = *b;
+           *b = temp;
+       }
+   - Direct Recursion:
+       fn factorial(n: int) -> int {
+           if n <= 1 { return 1; }
+           return n * factorial(n - 1);
+       }
+   - Mutual Recursion:
+       fn is_even(n: int) -> bool {
+           if n == 0 { return true; }
+           return is_odd(n - 1);
+       }
+       fn is_odd(n: int) -> bool {
+           if n == 0 { return false; }
+           return is_even(n - 1);
+       }
+   - Multi-Pass Discovery:
+       Forward references permitted; functions can call routines declared later.
    - Built-in Functions:
-       print(val)          -> polymorphic print supporting all legacy types.
+       print(val)          -> polymorphic print supporting all types & pointers.
        printf(fmt, ...args)-> formatted printing across VM and native binaries.
 
-F. Format Specifiers Reference (printf)
+I. Format Specifiers Reference (printf)
    -----------------------------------------------------------------------------
    - %d, %i  : Signed integer (byte, short, int, long)
    - %u      : Unsigned integer
@@ -128,6 +194,7 @@ F. Format Specifiers Reference (printf)
    - %b      : Boolean (prints "true" or "false")
    - %x, %X  : Hexadecimal lowercase / uppercase
    - %o      : Octal
+   - %p      : Pointer memory address (e.g. 0x7ffd...)
    - %%      : Literal percent sign
 
 

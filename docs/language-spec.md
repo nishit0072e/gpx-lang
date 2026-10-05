@@ -49,9 +49,15 @@ The following identifiers are reserved keywords:
 | `return` | Return statement |
 | `if` | Conditional branch |
 | `else` | Alternative branch |
-| `while` | Loop statement |
+| `while` | While loop statement |
+| `do` | Do-while loop statement |
+| `for` | For loop / For-each statement |
+| `in` | Range iterator keyword |
+| `struct` | Structure composite type declaration |
+| `union` | Union shared-memory type declaration |
 | `true` | Boolean true |
 | `false` | Boolean false |
+| `null` | Null pointer constant |
 
 ### 2.4 Identifiers
 Identifiers name variables, functions, and types.
@@ -65,6 +71,7 @@ Identifiers name variables, functions, and types.
   - Scientific notation: `1.5e-3`, `2.0E+4`, `1e6`.
   - Type suffixes: `f` or `F` designates a 32-bit single-precision `float` (e.g. `3.14f`, `5f`); `d`, `D`, or no suffix designates a 64-bit `double` (e.g. `2.71828`, `10.5d`).
 - **Boolean Literals:** `true` and `false`.
+- **Pointer Literal:** `null` (represents a null pointer to any pointer type).
 - **Character Literals:** Enclosed in single quotes `'...'` (e.g., `'a'`, `'\n'`, `'\x41'`).
 - **String Literals:** Enclosed in double quotes `"..."` (e.g., `"Hello, GPX\n"`).
 
@@ -93,8 +100,10 @@ Both character and string literals support standard C/GPX escape sequences:
 | :--- | :--- |
 | **Arithmetic** | `+`, `-`, `*`, `/`, `%` |
 | **Assignment** | `=` |
+| **Pointers & Memory** | `&` (address-of), `*` (dereference), `->` (indirect member access) |
 | **Relational** | `==`, `!=`, `<`, `<=`, `>`, `>=` |
 | **Logical** | `&&`, `||`, `!` |
+| **Member & Range** | `.` (member access), `..` (range delimiter) |
 | **Punctuation** | `(`, `)`, `{`, `}`, `[`, `]`, `,`, `:`, `;`, `->` |
 
 ---
@@ -125,10 +134,73 @@ GPX is statically and strongly typed, using predictable legacy type nomenclature
 * **Arithmetic Promotion:** Binary arithmetic (`+`, `-`, `*`, `/`) between mixed numeric types promotes both operands to the higher-ranking type (e.g., `int + double` yields `double`, `byte + short` yields `int`).
 * **Integer-Only Operations:** Modulo (`%`) is strictly permitted on integer types and rejected on floating-point operands.
 
-### 3.3 Compound Types (Roadmap)
-- **Arrays (`T[N]`):** Contiguous, fixed-size sequence of elements of type `T`.
-- **Structs (`struct Name { ... }`):** User-defined record types.
-- **Pointers (`*T`):** Direct memory addresses for low-level systems access.
+### 3.3 Compound Types: Structures & Unions
+* **Structures (`struct Name { ... }`):** User-defined composite record types consisting of named fields with heterogeneous types. Stored contiguously in memory with native struct layout semantics.
+  ```gpx
+  struct Point {
+      x: int;
+      y: int;
+  }
+  let p = Point { x: 10, y: 20 };
+  p.x = 42;
+  ```
+* **Unions (`union Name { ... }`):** Shared-memory types where all members share the same memory location, allowing different interpretations of the underlying binary data.
+  ```gpx
+  union Data {
+      i: int;
+      f: float;
+  }
+  let d: Data;
+  d.i = 100;
+  ```
+
+### 3.4 Pointers & Memory Indirection
+GPX features first-class typed pointers for zero-overhead systems programming, low-level hardware control, and high-performance algorithms:
+* **Pointer Types (`*T`, `**T`):** Declared by prefixing any type with `*` (e.g. `*int`, `*Point`, `**int`).
+* **Address-Of Operator (`&`):** Obtains the memory address of an lvalue (variable, struct field, or dereference).
+* **Dereference Operator (`*`):** Reads or writes the value stored at the referenced memory address.
+  ```gpx
+  let x: int = 42;
+  let p: *int = &x;
+  *p = 100; // Directly mutates x
+  ```
+* **Indirect Member Access (`->`):** Accesses and assigns members on struct pointers without cumbersome `(*p).field` syntax:
+  ```gpx
+  let pt = Point { x: 1, y: 2 };
+  let ptr = &pt;
+  ptr->x = 50;
+  ```
+* **Null Literal (`null`):** Represents an empty/zero memory reference. Can be compared against pointers using `==` and `!=`.
+
+### 3.5 Functions, Pass-by-Reference & Recursion
+* **Pass-by-Reference:** Passing pointers allows functions to mutate caller state efficiently without copying:
+  ```gpx
+  fn swap(a: *int, b: *int) {
+      let temp = *a;
+      *a = *b;
+      *b = temp;
+  }
+  ```
+* **Direct Recursion:** Functions can call themselves recursively (e.g., factorial, fibonacci). Each recursive invocation maintains its own activation record / stack frame.
+  ```gpx
+  fn factorial(n: int) -> int {
+      if n <= 1 {
+          return 1;
+      }
+      return n * factorial(n - 1);
+  }
+  ```
+* **Mutual Recursion & Forward References:** Functions can call other functions declared later in the file. The semantic analyzer and backend compilers use multi-pass symbol discovery and forward declarations:
+  ```gpx
+  fn is_even(n: int) -> bool {
+      if n == 0 { return true; }
+      return is_odd(n - 1);
+  }
+  fn is_odd(n: int) -> bool {
+      if n == 0 { return false; }
+      return is_even(n - 1);
+  }
+  ```
 
 ---
 
@@ -137,29 +209,46 @@ GPX is statically and strongly typed, using predictable legacy type nomenclature
 ```ebnf
 Program         ::= TopLevelItem* EOF ;
 
-TopLevelItem    ::= FunctionDecl | VarDecl ;
+TopLevelItem    ::= FunctionDecl | StructDecl | UnionDecl | VarDecl | Statement ;
 
 (* Declarations *)
+StructDecl      ::= "struct" IDENTIFIER "{" StructField* "}" ";"? ;
+UnionDecl       ::= "union" IDENTIFIER "{" StructField* "}" ";"? ;
+StructField     ::= IDENTIFIER ":" Type ( ";" | "," )? ;
+
 VarDecl         ::= "let" IDENTIFIER ( ":" Type )? ( "=" Expression )? ";" ;
-FunctionDecl    ::= "fn" IDENTIFIER "(" ParamList? ")" ( "->" Type )? Block ;
+FunctionDecl    ::= "fn" IDENTIFIER "(" ParamList? ")" ( ( "->" | ":" ) Type )? Block ;
 ParamList       ::= Param ( "," Param )* ;
 Param           ::= IDENTIFIER ":" Type ;
 
-Type            ::= "int" | "bool" | "char" | "void" | Type "[" INTEGER "]" ;
+Type            ::= "*"? ( "int" | "long" | "byte" | "short" | "float" | "double" 
+                  | "bool" | "char" | "string" | "void" | IDENTIFIER ) ;
 
 (* Statements *)
 Statement       ::= VarDecl
+                  | DerefAssignStmt
+                  | IndirectMemberAssignStmt
+                  | MemberAssignStmt
                   | AssignStmt
                   | ReturnStmt
                   | IfStmt
                   | WhileStmt
+                  | DoWhileStmt
+                  | ForStmt
+                  | ForEachStmt
                   | ExprStmt
                   | Block ;
 
+DerefAssignStmt ::= "*" Expression "=" Expression ";" ;
+IndirectMemberAssignStmt ::= IDENTIFIER "->" IDENTIFIER "=" Expression ";" ;
+MemberAssignStmt::= IDENTIFIER "." IDENTIFIER "=" Expression ";" ;
 AssignStmt      ::= IDENTIFIER "=" Expression ";" ;
 ReturnStmt      ::= "return" Expression? ";" ;
 IfStmt          ::= "if" Expression Block ( "else" ( IfStmt | Block ) )? ;
-WhileStmt       ::= "while" Expression Block ;
+WhileStmt       ::= "while" ( "(" Expression ")" | Expression ) Block ;
+DoWhileStmt     ::= "do" Block "while" ( "(" Expression ")" | Expression ) ";" ;
+ForStmt         ::= "for" "(" ( VarDecl | AssignStmt )? ";" Expression? ";" ( MemberAssignStmt | AssignStmt | ExprStmt )? ")" Block ;
+ForEachStmt     ::= "for" IDENTIFIER "in" Expression ".." Expression Block ;
 ExprStmt        ::= Expression ";" ;
 Block           ::= "{" Statement* "}" ;
 
@@ -171,14 +260,22 @@ Equality        ::= Relational ( ( "==" | "!=" ) Relational )* ;
 Relational      ::= Additive ( ( "<" | "<=" | ">" | ">=" ) Additive )* ;
 Additive        ::= Multiplicative ( ( "+" | "-" ) Multiplicative )* ;
 Multiplicative  ::= Unary ( ( "*" | "/" | "%" ) Unary )* ;
-Unary           ::= ( "-" | "!" ) Unary | Primary ;
+Unary           ::= ( "-" | "!" | "&" | "*" ) Unary | Postfix ;
+Postfix         ::= Primary ( ( "." | "->" ) IDENTIFIER )* ;
 Primary         ::= INTEGER
+                  | FLOAT
+                  | CHAR
                   | STRING
                   | "true"
                   | "false"
+                  | "null"
+                  | StructInitExpr
                   | IDENTIFIER ( "(" ArgList? ")" )?
                   | "(" Expression ")" ;
 
+StructInitExpr  ::= IDENTIFIER "{" FieldInitList? "}" ;
+FieldInitList   ::= FieldInit ( ( "," | ";" ) FieldInit )* ( "," | ";" )? ;
+FieldInit       ::= IDENTIFIER ":" Expression ;
 ArgList         ::= Expression ( "," Expression )* ;
 ```
 
@@ -328,4 +425,56 @@ fn main() -> int {
 | `%x`, `%X` | Hexadecimal (lower / upper) | `255` | `ff`, `FF` |
 | `%o` | Octal | `64` | `100` |
 | `%%` | Escaped Percent Symbol | N/A | `%` |
+
+### 7.5 Structures, Unions & Advanced Loops
+Demonstrating composite records, memory unions, and all loop constructs (`for`, `for..in`, `do-while`, `while`):
+
+```gpx
+struct Vector2D {
+    x: int;
+    y: int;
+}
+
+union ValueSlot {
+    as_int: int;
+    as_float: float;
+}
+
+fn main() -> int {
+    // Structures
+    let v = Vector2D { x: 10, y: 20 };
+    v.x = 42;
+    printf("Vector: (%d, %d)\n", v.x, v.y);
+
+    // Unions
+    let slot: ValueSlot;
+    slot.as_int = 100;
+    slot.as_float = 3.14159;
+    printf("Slot float: %.2f\n", slot.as_float);
+
+    // 1. C-Style For Loop
+    for (let i = 0; i < 3; i = i + 1) {
+        printf("For loop i = %d\n", i);
+    }
+
+    // 2. Range For-Each Loop
+    for n in 1..4 {
+        printf("For-each n = %d\n", n);
+    }
+
+    // 3. Do-While Loop
+    let k = 0;
+    do {
+        k = k + 1;
+    } while (k < 3);
+
+    // 4. While Loop
+    while (k > 0) {
+        k = k - 1;
+    }
+
+    return 0;
+}
+```
+
 

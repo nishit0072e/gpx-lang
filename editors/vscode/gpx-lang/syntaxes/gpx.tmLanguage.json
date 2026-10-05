@@ -1,0 +1,214 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "GPX",
+  "scopeName": "source.gpx",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#characters" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#constants" },
+    { "include": "#numbers" },
+    { "include": "#operators" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.gpx",
+          "begin": "//",
+          "end": "$"
+        },
+        {
+          "name": "comment.block.gpx",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.gpx",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "include": "#escapes" },
+        { "include": "#format-specifiers" }
+      ]
+    },
+    "characters": {
+      "name": "string.quoted.single.gpx",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        { "include": "#escapes" }
+      ]
+    },
+    "escapes": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.gpx",
+          "match": "\\\\([ntrabfv\\\\'\"]|0|x[0-9a-fA-F]{1,2}|[0-7]{1,3})"
+        }
+      ]
+    },
+    "format-specifiers": {
+      "patterns": [
+        {
+          "name": "constant.other.placeholder.gpx",
+          "match": "%([-+ 0#]*[0-9]*(\\.[0-9]+)?[lhjztL]*(d|i|u|ld|f|lf|g|G|e|E|c|s|b|x|X|o|p|%))"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.gpx",
+          "match": "\\b(let|fn|struct|union)\\b"
+        },
+        {
+          "name": "keyword.control.gpx",
+          "match": "\\b(if|else|while|do|for|in|return)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.gpx",
+          "match": "\\*?\\b(byte|short|int|long|float|double|char|string|bool|void)\\b"
+        },
+        {
+          "name": "entity.name.type.gpx",
+          "match": "\\*?\\b[A-Z][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "support.function.builtin.gpx",
+          "match": "\\b(print|printf)\\b"
+        },
+        {
+          "match": "\\bfn\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "entity.name.function.gpx" }
+          }
+        },
+        {
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+          "captures": {
+            "1": { "name": "entity.name.function.call.gpx" }
+          }
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.gpx",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "constant.language.null.gpx",
+          "match": "\\b(null)\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.gpx",
+          "match": "\\b0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.octal.gpx",
+          "match": "\\b0[oO][0-7]+\\b"
+        },
+        {
+          "name": "constant.numeric.binary.gpx",
+          "match": "\\b0[bB][01]+\\b"
+        },
+        {
+          "name": "constant.numeric.float.gpx",
+          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?[fFdD]?\\b"
+        },
+        {
+          "name": "constant.numeric.float.leading-dot.gpx",
+          "match": "(?<![0-9a-zA-Z_])\\.[0-9]+([eE][+-]?[0-9]+)?[fFdD]?\\b"
+        },
+        {
+          "name": "constant.numeric.float.exp.gpx",
+          "match": "\\b[0-9]+[eE][+-]?[0-9]+[fFdD]?\\b"
+        },
+        {
+          "name": "constant.numeric.float.suffix.gpx",
+          "match": "\\b[0-9]+[fF]\\b"
+        },
+        {
+          "name": "constant.numeric.integer.gpx",
+          "match": "\\b[0-9]+[lL]?\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.range.gpx",
+          "match": "\\.\\."
+        },
+        {
+          "name": "keyword.operator.arrow.gpx",
+          "match": "->"
+        },
+        {
+          "name": "keyword.operator.comparison.gpx",
+          "match": "==|!=|<=|>=|<|>"
+        },
+        {
+          "name": "keyword.operator.logical.gpx",
+          "match": "&&|\\|\\||!"
+        },
+        {
+          "name": "keyword.operator.pointer.gpx",
+          "match": "&"
+        },
+        {
+          "name": "keyword.operator.arithmetic.gpx",
+          "match": "\\+|-|\\*|/|%"
+        },
+        {
+          "name": "keyword.operator.assignment.gpx",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.member.gpx",
+          "match": "\\."
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "match": "(?:\\.|->)\\s*([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "variable.other.property.gpx" }
+          }
+        },
+        {
+          "match": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=:)",
+          "captures": {
+            "1": { "name": "variable.other.member.gpx" }
+          }
+        },
+        {
+          "name": "variable.other.gpx",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    }
+  }
+}

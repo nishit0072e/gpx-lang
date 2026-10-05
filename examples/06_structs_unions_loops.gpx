@@ -1,0 +1,78 @@
+// GPX Example 06: Structures, Unions, and All Loop Constructs (for, for-each, do-while, while)
+
+struct Point {
+    x: int;
+    y: int;
+}
+
+struct Player {
+    score: int;
+    health: float;
+}
+
+union Payload {
+    as_int: int;
+    as_float: float;
+}
+
+fn main(): int {
+    printf("=== GPX Structures & Unions ===\n");
+
+    // 1. Structure Instantiation & Field Access
+    let pt = Point { x: 10, y: 25 };
+    printf("Initial Point: (%d, %d)\n", pt.x, pt.y);
+
+    pt.x = 50;
+    pt.y = 80;
+    printf("Modified Point: (%d, %d)\n", pt.x, pt.y);
+
+    let hero = Player { score: 1200, health: 98.5 };
+    printf("Player stats: score=%d, health=%.1f\n", hero.score, hero.health);
+
+    // 2. Union Usage (shared memory representation)
+    let data: Payload;
+    data.as_int = 42;
+    printf("Payload as int: %d\n", data.as_int);
+
+    data.as_float = 3.14159;
+    printf("Payload as float: %.5f\n", data.as_float);
+
+    printf("\n=== GPX Loop Constructs ===\n");
+
+    // 3. Traditional For Loop
+    printf("1. Standard for loop (0..4):\n");
+    let sum_for = 0;
+    for (let i = 0; i < 5; i = i + 1) {
+        printf("   i = %d\n", i);
+        sum_for = sum_for + i;
+    }
+    printf("   Sum: %d\n", sum_for);
+
+    // 4. For-Each Loop (Range-based)
+    printf("2. For-each range loop (10..15):\n");
+    let sum_foreach = 0;
+    for num in 10..15 {
+        printf("   num = %d\n", num);
+        sum_foreach = sum_foreach + num;
+    }
+    printf("   Sum: %d\n", sum_foreach);
+
+    // 5. Do-While Loop (Guaranteed at least one execution)
+    printf("3. Do-While loop:\n");
+    let attempts = 0;
+    do {
+        attempts = attempts + 1;
+        printf("   Attempt #%d\n", attempts);
+    } while (attempts < 3);
+
+    // 6. While Loop
+    printf("4. While loop (countdown):\n");
+    let countdown = 3;
+    while (countdown > 0) {
+        printf("   T-minus %d...\n", countdown);
+        countdown = countdown - 1;
+    }
+    printf("   Liftoff!\n");
+
+    return 0;
+}

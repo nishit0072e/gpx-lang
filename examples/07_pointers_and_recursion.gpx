@@ -1,0 +1,125 @@
+// -------------------------------------------------------------
+// GPX Language Example 07: Pointers, Functions & Recursion
+// Demonstrates:
+// 1. Pointer types (*int, *Point, **int) and address-of operator (&)
+// 2. Dereference read (*p) and dereference write (*p = val)
+// 3. Pass-by-pointer functions (swap)
+// 4. Direct recursion (factorial, fibonacci)
+// 5. Mutual recursion (is_even <-> is_odd)
+// 6. Struct pointers and indirect member access (->)
+// 7. Null pointer literal (null) and pointer comparison
+// -------------------------------------------------------------
+
+struct Point {
+    x: int;
+    y: int;
+}
+
+// Pass-by-pointer function
+fn swap(a: *int, b: *int) {
+    let temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Direct recursion: Factorial (n!)
+fn factorial(n: int) -> int {
+    if n <= 1 {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Direct recursion: Fibonacci number
+fn fib(n: int) -> int {
+    if n <= 0 {
+        return 0;
+    }
+    if n == 1 {
+        return 1;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+// Mutual recursion: is_even and is_odd
+fn is_even(n: int) -> bool {
+    if n == 0 {
+        return true;
+    }
+    return is_odd(n - 1);
+}
+
+fn is_odd(n: int) -> bool {
+    if n == 0 {
+        return false;
+    }
+    return is_even(n - 1);
+}
+
+// Struct manipulation via pointer
+fn translate_point(pt: *Point, dx: int, dy: int) {
+    pt->x = pt->x + dx;
+    pt->y = pt->y + dy;
+}
+
+fn main(): int {
+    printf("=== GPX Pointers & Recursion Showcase ===\n\n");
+
+    // 1. Basic Pointers & Dereferencing
+    let val: int = 42;
+    let ptr: *int = &val;
+    printf("[1] Initial val = %lld (via *ptr: %lld)\n", val, *ptr);
+    *ptr = 100;
+    printf("    After *ptr = 100, val = %lld\n\n", val);
+
+    // 2. Double Pointer
+    let pptr: **int = &ptr;
+    **pptr = 250;
+    printf("[2] After **pptr = 250, val = %lld\n\n", val);
+
+    // 3. Pass-by-reference using pointers
+    let a: int = 10;
+    let b: int = 99;
+    printf("[3] Before swap: a = %lld, b = %lld\n", a, b);
+    swap(&a, &b);
+    printf("    After swap:  a = %lld, b = %lld\n\n", a, b);
+
+    // 4. Direct Recursion
+    printf("[4] Direct Recursion:\n");
+    for i in 1..6 {
+        printf("    factorial(%lld) = %lld\n", i, factorial(i));
+    }
+    printf("\n    Fibonacci sequence up to N=8:\n    ");
+    for i in 0..9 {
+        printf("%lld ", fib(i));
+    }
+    printf("\n\n");
+
+    // 5. Mutual Recursion
+    printf("[5] Mutual Recursion:\n");
+    for n in 6..10 {
+        let even: bool = is_even(n);
+        let odd: bool = is_odd(n);
+        printf("    n = %lld -> is_even: %b, is_odd: %b\n", n, even, odd);
+    }
+    printf("\n");
+
+    // 6. Struct Pointer & Arrow Operator
+    let pt = Point { x: 10, y: 20 };
+    printf("[6] Initial Point: (%lld, %lld)\n", pt.x, pt.y);
+    translate_point(&pt, 15, -5);
+    printf("    After translate_point(&pt, 15, -5): (%lld, %lld)\n\n", pt.x, pt.y);
+
+    // 7. Null Pointers
+    let p_null: *int = null;
+    if p_null == null {
+        printf("[7] p_null is currently null.\n");
+    }
+    p_null = &val;
+    if p_null != null {
+        printf("    p_null now points to val: %lld\n", *p_null);
+    }
+
+    printf("\nAll tests completed successfully!\n");
+    return 0;
+}
