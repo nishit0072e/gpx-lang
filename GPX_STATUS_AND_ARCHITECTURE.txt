@@ -2,9 +2,9 @@
                     GPX (Guided Programming eXperience)
                  Current Stage, Architecture & Features Overview
 ================================================================================
-Current Version : v0.4.0
+Current Version : v0.5.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 72/72 passing (dual-platform Windows 11 & Linux WSL2)
+Test Suite      : 81/81 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
 Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel, VS Code VSIX
 Author          : Nishit (@nishit0072e)
@@ -207,6 +207,38 @@ I. Format Specifiers Reference (printf)
    - %o      : Octal
    - %p      : Pointer memory address (e.g. 0x7ffd...)
    - %%      : Literal percent sign
+
+J. First-Class Strings & Built-in Text Processing Library
+   -----------------------------------------------------------------------------
+   - Immutable String Type:
+       let s: string = "Hello World";
+       let null_str: string = null;
+   - String Concatenation Operator (+):
+       let greeting: string = "Hello, " + name + "!";
+   - Character Indexing Read:
+       let first_char: char = s[0]; // Returns char
+       // Attempting s[0] = 'X' is rejected at compile time (immutable).
+   - Lexicographical Comparisons:
+       == , != , < , <= , > , >=
+       Preserves true lexicographical string comparisons (avoids C pointer traps).
+   - Built-in Text Library:
+       * strlen(s) / str_len(s)             -> Length in characters
+       * str_concat(s1, s2)                 -> Dynamic concatenation
+       * substr(s, start, len)              -> Safe substring extraction
+       * str_char_at(s, idx)                -> Character at index with bounds check
+       * str_contains(s, sub)               -> Substring containment check (bool)
+       * str_starts_with(s, prefix)         -> Prefix predicate (bool)
+       * str_ends_with(s, suffix)           -> Suffix predicate (bool)
+       * str_index_of(s, sub)               -> 0-based index or -1
+       * int_to_str(val) / str_from_int     -> Integer to string conversion
+       * str_to_int(s)                      -> String to integer parsing
+       * str_to_upper(s)                    -> ASCII uppercase transformation
+       * str_to_lower(s)                    -> ASCII lowercase transformation
+       * str_trim(s)                        -> Whitespace trimming
+       * str_cmp(s1, s2)                    -> Lexicographical compare (-1, 0, 1)
+       * char_to_str(ch)                    -> Single character to string
+       * str_repeat(s, count)               -> Repeat string N times
+       * str_replace(s, old, new)           -> Replace all occurrences in string
 
 
 4. COMPILER PIPELINE ARCHITECTURE

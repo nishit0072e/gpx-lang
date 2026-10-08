@@ -225,6 +225,50 @@ GPX provides first-class fixed-size arrays with strict bounds checking and nativ
   *p = 100; // Mutates scores[0]
   ```
 
+### 3.7 First-Class Strings & Built-in Text Library
+GPX provides modern, first-class strings with memory safety, immutability, and full cross-platform runtime support:
+* **String Type (`string`):** Represents an immutable sequence of characters. Can be initialized with string literals or assigned `null`:
+  ```gpx
+  let name: string = "GPX Language";
+  let empty_ref: string = null;
+  ```
+* **String Concatenation (`+`):** The binary operator `+` joins strings cleanly:
+  ```gpx
+  let greeting: string = "Hello, " + name + "!";
+  ```
+* **Character Indexing Read (`s[i]`):** Reads a character from a string by zero-based integer index, returning type `char`:
+  ```gpx
+  let initial: char = name[0]; // 'G'
+  ```
+* **String Immutability:** Characters cannot be mutated in place (`s[i] = 'c'` is rejected at compile time with a semantic error).
+* **Lexicographical Comparisons:** String equality and ordering (`==`, `!=`, `<`, `<=`, `>`, `>=`) perform true lexicographical comparison (avoiding C-style pointer address comparison pitfalls):
+  ```gpx
+  if ("apple" < "banana") {
+      print("lexicographical order preserved");
+  }
+  ```
+* **Built-in String Library Functions:**
+
+| Built-in Function | Signature | Description |
+| :--- | :--- | :--- |
+| `strlen` / `str_len` | `(string) -> int` | Returns the number of characters in the string |
+| `str_concat` | `(string, string) -> string` | Concatenates two strings into a new string |
+| `substr` | `(string, int, int) -> string` | Extracts substring from `start` index with given `length` |
+| `str_char_at` | `(string, int) -> char` | Returns character at zero-based index |
+| `str_contains` | `(string, string) -> bool` | Checks whether string contains a substring |
+| `str_starts_with` | `(string, string) -> bool` | Checks whether string begins with prefix |
+| `str_ends_with` | `(string, string) -> bool` | Checks whether string ends with suffix |
+| `str_index_of` | `(string, string) -> int` | Returns zero-based index of substring, or -1 if not found |
+| `int_to_str` / `str_from_int` | `(int) -> string` | Converts an integer into its string representation |
+| `str_to_int` | `(string) -> int` | Parses an integer from a string |
+| `str_to_upper` | `(string) -> string` | Converts all ASCII characters to uppercase |
+| `str_to_lower` | `(string) -> string` | Converts all ASCII characters to lowercase |
+| `str_trim` | `(string) -> string` | Trims leading and trailing whitespace |
+| `str_cmp` | `(string, string) -> int` | Lexicographical compare: returns `< 0`, `0`, or `> 0` |
+| `char_to_str` | `(char) -> string` | Converts a single `char` into a 1-character string |
+| `str_repeat` | `(string, int) -> string` | Repeats a string `count` times |
+| `str_replace` | `(string, string, string) -> string` | Replaces occurrences of search pattern with replacement |
+
 ---
 
 ## 4. Formal Grammar (EBNF)

@@ -1,0 +1,128 @@
+// -------------------------------------------------------------
+// GPX Language Example 09: First-Class Strings & Text Processing
+// Demonstrates:
+// 1. First-class string type and null initialization
+// 2. String concatenation using operator (+)
+// 3. String character indexing s[i] returning char
+// 4. Lexicographical string comparisons (==, !=, <, <=, >, >=)
+// 5. String length query with strlen / str_len
+// 6. Substring extraction with substr
+// 7. Case conversions: str_to_upper, str_to_lower
+// 8. Trimming, repeating, and replacing: str_trim, str_repeat, str_replace
+// 9. Searching & predicates: str_contains, str_starts_with, str_ends_with, str_index_of
+// 10. Conversions between numbers, characters, and strings: int_to_str, str_to_int, char_to_str
+// -------------------------------------------------------------
+
+fn print_separator(): void {
+    let line: string = str_repeat("-", 45);
+    print(line);
+}
+
+fn count_vowels(text: string): int {
+    let count: int = 0;
+    let len: int = strlen(text);
+    let lower_text: string = str_to_lower(text);
+
+    for (let i: int = 0; i < len; i = i + 1) {
+        let ch: char = lower_text[i];
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+            count = count + 1;
+        }
+    }
+    return count;
+}
+
+fn main(): int {
+    printf("=== GPX Strings & Text Processing Demo ===\n\n");
+
+    // 1. String Concatenation (+)
+    let greeting: string = "Hello";
+    let audience: string = "GPX Developers";
+    let message: string = greeting + ", " + audience + "!";
+    printf("1. Concatenated Message: %s\n", message);
+    printf("   Length: %d characters\n\n", strlen(message));
+
+    // 2. Character Indexing
+    printf("2. Character Indexing:\n");
+    let word: string = "Antigravity";
+    for (let i: int = 0; i < strlen(word); i = i + 1) {
+        let c: char = word[i];
+        printf("   [%d] = '%c'\n", i, c);
+    }
+    printf("\n");
+
+    // 3. Lexicographical String Comparisons
+    print_separator();
+    printf("3. Lexicographical String Comparisons:\n");
+    let apple: string = "apple";
+    let banana: string = "banana";
+    let apple_copy: string = "apple";
+
+    if (apple == apple_copy) {
+        printf("   'apple' == 'apple' : true\n");
+    }
+    if (apple != banana) {
+        printf("   'apple' != 'banana': true\n");
+    }
+    if (apple < banana) {
+        printf("   'apple' < 'banana' : true (lexicographical order)\n");
+    }
+    if (banana > apple) {
+        printf("   'banana' > 'apple' : true\n");
+    }
+    printf("\n");
+
+    // 4. Case Conversion & Trimming
+    print_separator();
+    printf("4. Case Conversion & Trimming:\n");
+    let raw_input: string = "   GPX Modern Systems Language   ";
+    let clean: string = str_trim(raw_input);
+    let upper: string = str_to_upper(clean);
+    let lower: string = str_to_lower(clean);
+
+    printf("   Raw input  : '%s'\n", raw_input);
+    printf("   Trimmed    : '%s'\n", clean);
+    printf("   Upper case : '%s'\n", upper);
+    printf("   Lower case : '%s'\n\n", lower);
+
+    // 5. Searching, Substrings & Inspection
+    print_separator();
+    printf("5. Searching & Substring Operations:\n");
+    let sentence: string = "The quick brown fox jumps over the lazy dog";
+    let fox_idx: int = str_index_of(sentence, "fox");
+    let fox_sub: string = substr(sentence, fox_idx, 3);
+    let has_dog: bool = str_contains(sentence, "dog");
+    let starts_the: bool = str_starts_with(sentence, "The");
+    let ends_cat: bool = str_ends_with(sentence, "cat");
+
+    printf("   Full sentence : %s\n", sentence);
+    printf("   Index of 'fox': %d\n", fox_idx);
+    printf("   Extracted word: %s\n", fox_sub);
+    printf("   Contains 'dog': %b\n", has_dog);
+    printf("   Starts 'The'  : %b\n", starts_the);
+    printf("   Ends with 'cat': %b\n\n", ends_cat);
+
+    // 6. Conversions & Transformations
+    print_separator();
+    printf("6. Conversions & Transformations:\n");
+    let year: int = 2026;
+    let year_str: string = int_to_str(year);
+    let banner: string = "Release Year: " + year_str;
+    printf("   %s\n", banner);
+
+    let parsed_year: int = str_to_int("2026");
+    printf("   Parsed back to int: %d\n", parsed_year);
+
+    let template: string = "Target: [OS] with [ARCH]";
+    let step1: string = str_replace(template, "[OS]", "Linux WSL2 & Windows 11");
+    let final_str: string = str_replace(step1, "[ARCH]", "x86_64 Native");
+    printf("   Replaced template : %s\n", final_str);
+
+    // 7. Custom Analysis Function (Vowel Counter)
+    let vowels: int = count_vowels(sentence);
+    printf("   Vowel count in sentence: %d vowels\n\n", vowels);
+
+    print_separator();
+    printf("=== String Demo Completed Successfully ===\n");
+    return 0;
+}
