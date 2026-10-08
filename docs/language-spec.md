@@ -202,6 +202,29 @@ GPX features first-class typed pointers for zero-overhead systems programming, l
   }
   ```
 
+### 3.6 Fixed-Size Arrays & Indexing
+GPX provides first-class fixed-size arrays with strict bounds checking and native contiguous layouts:
+* **Array Type (`[T; N]`):** Denotes a contiguous sequence of `N` elements of type `T` (e.g. `[int; 5]`, `[double; 10]`, `[*char; 4]`).
+* **Array Literals (`[e1, e2, ...]`):** Initializes an array with a comma-separated list of values:
+  ```gpx
+  let scores: [int; 5] = [88, 92, 79, 95, 84];
+  ```
+* **Repeat Initialization (`[val; count]`):** Initializes all `count` elements with a given value:
+  ```gpx
+  let zeros: [int; 100] = [0; 100];
+  ```
+* **Default Initialization:** Declaring an array without an explicit initializer zeroes all elements:
+  ```gpx
+  let buffer: [int; 16]; // All 16 elements are 0
+  ```
+* **Indexing Read (`arr[i]`):** Reads an element by zero-based integer index. Compile-time integer constants are bounds-checked at compile time; runtime indices are checked dynamically in the VM.
+* **Indexing Mutation (`arr[i] = val;`):** Updates an element at a given index.
+* **Element Pointers (`&arr[i]`):** Returns a pointer `*T` to the specified array element, enabling pass-by-reference array mutation:
+  ```gpx
+  let p: *int = &scores[0];
+  *p = 100; // Mutates scores[0]
+  ```
+
 ---
 
 ## 4. Formal Grammar (EBNF)
@@ -222,13 +245,14 @@ ParamList       ::= Param ( "," Param )* ;
 Param           ::= IDENTIFIER ":" Type ;
 
 Type            ::= "*"? ( "int" | "long" | "byte" | "short" | "float" | "double" 
-                  | "bool" | "char" | "string" | "void" | IDENTIFIER ) ;
+                  | "bool" | "char" | "string" | "void" | IDENTIFIER | "[" Type ";" INTEGER "]" ) ;
 
 (* Statements *)
 Statement       ::= VarDecl
                   | DerefAssignStmt
                   | IndirectMemberAssignStmt
                   | MemberAssignStmt
+                  | IndexAssignStmt
                   | AssignStmt
                   | ReturnStmt
                   | IfStmt
@@ -242,12 +266,13 @@ Statement       ::= VarDecl
 DerefAssignStmt ::= "*" Expression "=" Expression ";" ;
 IndirectMemberAssignStmt ::= IDENTIFIER "->" IDENTIFIER "=" Expression ";" ;
 MemberAssignStmt::= IDENTIFIER "." IDENTIFIER "=" Expression ";" ;
+IndexAssignStmt ::= Expression "[" Expression "]" "=" Expression ";" ;
 AssignStmt      ::= IDENTIFIER "=" Expression ";" ;
 ReturnStmt      ::= "return" Expression? ";" ;
 IfStmt          ::= "if" Expression Block ( "else" ( IfStmt | Block ) )? ;
 WhileStmt       ::= "while" ( "(" Expression ")" | Expression ) Block ;
 DoWhileStmt     ::= "do" Block "while" ( "(" Expression ")" | Expression ) ";" ;
-ForStmt         ::= "for" "(" ( VarDecl | AssignStmt )? ";" Expression? ";" ( MemberAssignStmt | AssignStmt | ExprStmt )? ")" Block ;
+ForStmt         ::= "for" "(" ( VarDecl | AssignStmt | IndexAssignStmt )? ";" Expression? ";" ( MemberAssignStmt | IndexAssignStmt | AssignStmt | ExprStmt )? ")" Block ;
 ForEachStmt     ::= "for" IDENTIFIER "in" Expression ".." Expression Block ;
 ExprStmt        ::= Expression ";" ;
 Block           ::= "{" Statement* "}" ;
@@ -261,7 +286,7 @@ Relational      ::= Additive ( ( "<" | "<=" | ">" | ">=" ) Additive )* ;
 Additive        ::= Multiplicative ( ( "+" | "-" ) Multiplicative )* ;
 Multiplicative  ::= Unary ( ( "*" | "/" | "%" ) Unary )* ;
 Unary           ::= ( "-" | "!" | "&" | "*" ) Unary | Postfix ;
-Postfix         ::= Primary ( ( "." | "->" ) IDENTIFIER )* ;
+Postfix         ::= Primary ( ( "." | "->" ) IDENTIFIER | "[" Expression "]" )* ;
 Primary         ::= INTEGER
                   | FLOAT
                   | CHAR
@@ -269,10 +294,12 @@ Primary         ::= INTEGER
                   | "true"
                   | "false"
                   | "null"
+                  | ArrayLiteral
                   | StructInitExpr
                   | IDENTIFIER ( "(" ArgList? ")" )?
                   | "(" Expression ")" ;
 
+ArrayLiteral    ::= "[" ( ( Expression ( "," Expression )* ","? ) | ( Expression ";" Expression ) )? "]" ;
 StructInitExpr  ::= IDENTIFIER "{" FieldInitList? "}" ;
 FieldInitList   ::= FieldInit ( ( "," | ";" ) FieldInit )* ( "," | ";" )? ;
 FieldInit       ::= IDENTIFIER ":" Expression ;

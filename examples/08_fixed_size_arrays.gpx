@@ -1,0 +1,120 @@
+// -------------------------------------------------------------
+// GPX Language Example 08: Fixed-Size Arrays & Indexing
+// Demonstrates:
+// 1. Array type syntax: [T; N] (e.g. [int; 5], [double; 3])
+// 2. Array literal initialization: [10, 20, 30, 40, 50]
+// 3. Repeat initialization: [0; 8]
+// 4. Element access: arr[i]
+// 5. Element mutation: arr[i] = val
+// 6. Address-of array element: &arr[i] returning pointer *T
+// 7. Computing statistics (sum, max, reversal) with loops
+// 8. Formatted output with printf
+// -------------------------------------------------------------
+
+fn print_int_array(arr_ptr: *int, size: int) {
+    printf("[");
+    for (let i: int = 0; i < size; i = i + 1) {
+        printf("%d", *arr_ptr);
+        if i + 1 < size {
+            printf(", ");
+        }
+        // Pointer arithmetic in GPX: pass address of element or index
+    }
+    printf("]\n");
+}
+
+fn main(): int {
+    printf("=== GPX Fixed-Size Arrays Demo ===\n\n");
+
+    // 1. Literal Array Initialization
+    let scores: [int; 5] = [88, 92, 79, 95, 84];
+    printf("1. Initial scores: ");
+    for (let i: int = 0; i < 5; i = i + 1) {
+        printf("%d ", scores[i]);
+    }
+    printf("\n");
+
+    // 2. Array Element Mutation
+    scores[2] = 85;
+    printf("   Updated score at index 2: %d\n", scores[2]);
+
+    // 3. Repeat Initialization
+    let buffer: [int; 8] = [0; 8];
+    printf("\n2. Zero-initialized buffer: ");
+    for (let i: int = 0; i < 8; i = i + 1) {
+        printf("%d ", buffer[i]);
+    }
+    printf("\n");
+
+    // Populate buffer with powers of two
+    let val: int = 1;
+    for (let i: int = 0; i < 8; i = i + 1) {
+        buffer[i] = val;
+        val = val * 2;
+    }
+    printf("   Populated buffer with powers of 2: ");
+    for (let i: int = 0; i < 8; i = i + 1) {
+        printf("%d ", buffer[i]);
+    }
+    printf("\n");
+
+    // 4. Calculating Sum and Maximum
+    let sum: int = 0;
+    let max_val: int = scores[0];
+    for (let i: int = 0; i < 5; i = i + 1) {
+        sum = sum + scores[i];
+        if scores[i] > max_val {
+            max_val = scores[i];
+        }
+    }
+    printf("\n3. Statistics:\n");
+    printf("   Total Sum: %d\n", sum);
+    printf("   Max Score: %d\n", max_val);
+
+    // 5. Pointers to Array Elements (&arr[i])
+    printf("\n4. Pointer Manipulation on Array Elements:\n");
+    let ptr_to_first: *int = &scores[0];
+    let ptr_to_last: *int = &scores[4];
+    printf("   First element via pointer: %d\n", *ptr_to_first);
+    printf("   Last element via pointer: %d\n", *ptr_to_last);
+
+    // Mutate through pointer
+    *ptr_to_last = 100;
+    printf("   Mutated last element via *p = 100 -> scores[4] is now: %d\n", scores[4]);
+
+    // 6. In-place Array Reversal
+    let nums: [int; 6] = [1, 2, 3, 4, 5, 6];
+    printf("\n5. Array Reversal:\n");
+    printf("   Before: ");
+    for (let i: int = 0; i < 6; i = i + 1) {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
+
+    let left: int = 0;
+    let right: int = 5;
+    while left < right {
+        let temp: int = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
+        left = left + 1;
+        right = right - 1;
+    }
+
+    printf("   After:  ");
+    for (let i: int = 0; i < 6; i = i + 1) {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
+
+    // 7. Floating-point Array
+    let coords: [double; 3] = [1.25, 3.5, 7.75];
+    printf("\n6. Floating-point Coordinates: ");
+    for (let i: int = 0; i < 3; i = i + 1) {
+        printf("%.2f ", coords[i]);
+    }
+    printf("\n");
+
+    printf("\n=== All Array Tests Completed Successfully! ===\n");
+    return 0;
+}

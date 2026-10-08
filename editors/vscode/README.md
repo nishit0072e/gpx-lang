@@ -6,7 +6,7 @@ Official extension package for **GPX (Guided Programming eXperience)** providing
 
 ## Package
 
-- **VSIX Package:** [`gpx-lang-0.3.0.vsix`](gpx-lang-0.3.0.vsix)
+- **VSIX Package:** [`gpx-lang-0.4.0.vsix`](gpx-lang-0.4.0.vsix)
 
 ---
 
@@ -16,10 +16,10 @@ Official extension package for **GPX (Guided Programming eXperience)** providing
 
 ```bash
 # For VS Code:
-code --install-extension gpx-lang-0.3.0.vsix
+code --install-extension gpx-lang-0.4.0.vsix
 
 # For Antigravity IDE:
-antigravity-ide --install-extension gpx-lang-0.3.0.vsix
+antigravity-ide --install-extension gpx-lang-0.4.0.vsix
 ```
 
 ### Method 2: Graphical Interface (UI)
@@ -28,12 +28,13 @@ antigravity-ide --install-extension gpx-lang-0.3.0.vsix
 2. Press `Ctrl+Shift+X` (or click the **Extensions** icon on the sidebar).
 3. Click the `...` menu (Views and More Actions) in the top-right corner of the Extensions pane.
 4. Select **Install from VSIX...**.
-5. Select `gpx-lang-0.3.0.vsix` and click **Install**.
+5. Select `gpx-lang-0.4.0.vsix` and click **Install**.
 
 ---
 
 ## Features
 
-- **Rich Syntax Highlighting:** Supports all GPX keywords (`let`, `fn`, `struct`, `union`, `if`, `while`, `for`, `in`, `null`), legacy primitive types (`int`, `float`, `double`, `bool`, etc.), pointer types (`*T`, `**T`), escape sequences, and `printf` format placeholders (`%d`, `%f`, `%p`, etc.).
+- **Rich Syntax Highlighting:** Supports all GPX keywords (`let`, `fn`, `struct`, `union`, `if`, `while`, `for`, `in`, `null`), legacy primitive types (`int`, `float`, `double`, `bool`, etc.), pointer types (`*T`, `**T`), fixed-size array types (`[T; N]`), escape sequences, and `printf` format placeholders (`%d`, `%f`, `%p`, etc.).
 - **Pointers & Memory Operators:** Highlighting for `&`, `*`, `->`, and range `..`.
-- **Code Snippets:** Auto-completion for functions, structs, unions, loops, and printf templates.
+- **Arrays & Indexing:** Highlighting for `[T; N]`, array literals `[elem1, elem2]`, and element indexing `arr[i]`.
+- **Code Snippets:** Auto-completion for functions, structs, unions, loops, arrays, and printf templates.

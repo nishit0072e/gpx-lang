@@ -2,11 +2,11 @@
                     GPX (Guided Programming eXperience)
                  Current Stage, Architecture & Features Overview
 ================================================================================
-Current Version : v0.2.0
+Current Version : v0.4.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 61/61 passing (dual-platform Windows 11 & Linux WSL2)
+Test Suite      : 72/72 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
-Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel
+Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel, VS Code VSIX
 Author          : Nishit (@nishit0072e)
 ================================================================================
 
@@ -108,7 +108,18 @@ E. Pointers & Memory Indirection (First-Class Systems Capability)
    - Indirect Member Access : ptr->field, ptr->field = val;
    - Null Pointer Literal   : null (can be assigned and compared with ==, !=)
 
-F. Syntax & Expressions
+F. Fixed-Size Arrays & Indexing (Contiguous Memory Buffers)
+   -----------------------------------------------------------------------------
+   - Array Type Syntax      : [T; N] (e.g. [int; 5], [double; 10], [*char; 4])
+   - Literal Initialization : let arr: [int; 5] = [10, 20, 30, 40, 50];
+   - Repeat Initialization  : let zeros: [int; 100] = [0; 100];
+   - Default Zero-Init      : let buf: [int; 16]; // All 16 elements set to 0
+   - Indexing Read          : let x = arr[i];
+   - Indexing Assignment    : arr[i] = val;
+   - Address-Of Element     : let p: *int = &arr[i]; *p = 99;
+   - Bounds Checking        : Compile-time check for integer literals, dynamic check in VM
+
+G. Syntax & Expressions
    -----------------------------------------------------------------------------
    - Variable Declaration : let x: int = 10;  OR  let x = 10;
    - Reassignment         : x = 25;
