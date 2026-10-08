@@ -1,17 +1,20 @@
 // -------------------------------------------------------------
 // GPX Language Example 09: First-Class Strings & Text Processing
 // Demonstrates:
-// 1. First-class string type and null initialization
-// 2. String concatenation using operator (+)
-// 3. String character indexing s[i] returning char
-// 4. Lexicographical string comparisons (==, !=, <, <=, >, >=)
-// 5. String length query with strlen / str_len
-// 6. Substring extraction with substr
-// 7. Case conversions: str_to_upper, str_to_lower
-// 8. Trimming, repeating, and replacing: str_trim, str_repeat, str_replace
-// 9. Searching & predicates: str_contains, str_starts_with, str_ends_with, str_index_of
-// 10. Conversions between numbers, characters, and strings: int_to_str, str_to_int, char_to_str
+// 1. Including the dedicated string library header: #include <string.gpx>
+// 2. First-class string type and null initialization
+// 3. String concatenation using operator (+)
+// 4. String character indexing s[i] returning char
+// 5. Lexicographical string comparisons (==, !=, <, <=, >, >=)
+// 6. String length query with strlen / str_len
+// 7. Substring extraction with substr
+// 8. Case conversions: str_to_upper, str_to_lower
+// 9. Trimming, repeating, and replacing: str_trim, str_repeat, str_replace
+// 10. Searching & predicates: str_contains, str_starts_with, str_ends_with, str_index_of
+// 11. Conversions between numbers, characters, and strings: int_to_str, str_to_int, char_to_str
 // -------------------------------------------------------------
+
+#include <string.gpx>
 
 fn print_separator(): void {
     let line: string = str_repeat("-", 45);

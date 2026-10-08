@@ -1,0 +1,47 @@
+// ============================================================================
+// GPX Standard Library: String Operations Header (<string.gpx>)
+//
+// Official String Library providing high-performance text manipulation,
+// substring operations, search predicates, case conversions, and ASCII utilities.
+//
+// Usage:
+//   #include <string.gpx>
+//   // or
+//   #include "string.gpx"
+// ============================================================================
+
+// --- Core Length & Inspection ---
+fn strlen(s: string): int;
+fn str_len(s: string): int;
+
+// --- Indexing & Substrings ---
+fn str_char_at(s: string, index: int): char;
+fn substr(s: string, start: int, length: int): string;
+
+// --- Searching & Predicates ---
+fn str_contains(s: string, sub: string): bool;
+fn str_starts_with(s: string, prefix: string): bool;
+fn str_ends_with(s: string, suffix: string): bool;
+fn str_index_of(s: string, sub: string): int;
+
+// --- Concatenation, Case & Formatting ---
+fn str_concat(s1: string, s2: string): string;
+fn str_to_upper(s: string): string;
+fn str_to_lower(s: string): string;
+fn str_trim(s: string): string;
+fn str_repeat(s: string, count: int): string;
+fn str_replace(s: string, old_sub: string, new_sub: string): string;
+
+// --- Lexicographical Comparison ---
+fn str_cmp(s1: string, s2: string): int;
+
+// --- Type Conversions ---
+fn int_to_str(val: int): string;
+fn str_from_int(val: int): string;
+fn str_to_int(s: string): int;
+fn char_to_str(c: char): string;
+
+// --- High-Level Library Utilities ---
+fn str_is_empty(s: string): bool {
+    return strlen(s) == 0;
+}

@@ -4,7 +4,7 @@
 ================================================================================
 Current Version : v0.5.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 81/81 passing (dual-platform Windows 11 & Linux WSL2)
+Test Suite      : 83/83 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
 Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel, VS Code VSIX
 Author          : Nishit (@nishit0072e)
@@ -208,8 +208,11 @@ I. Format Specifiers Reference (printf)
    - %p      : Pointer memory address (e.g. 0x7ffd...)
    - %%      : Literal percent sign
 
-J. First-Class Strings & Built-in Text Processing Library
+J. First-Class Strings & String Library Header (<string.gpx>)
    -----------------------------------------------------------------------------
+   - Dedicated String Library Header:
+       #include <string.gpx> // or #include "string.gpx"
+       Enables standard string library routines via modular header inclusion.
    - Immutable String Type:
        let s: string = "Hello World";
        let null_str: string = null;
@@ -221,7 +224,7 @@ J. First-Class Strings & Built-in Text Processing Library
    - Lexicographical Comparisons:
        == , != , < , <= , > , >=
        Preserves true lexicographical string comparisons (avoids C pointer traps).
-   - Built-in Text Library:
+   - Standard String Library Functions (<string.gpx>):
        * strlen(s) / str_len(s)             -> Length in characters
        * str_concat(s1, s2)                 -> Dynamic concatenation
        * substr(s, start, len)              -> Safe substring extraction

@@ -225,8 +225,12 @@ GPX provides first-class fixed-size arrays with strict bounds checking and nativ
   *p = 100; // Mutates scores[0]
   ```
 
-### 3.7 First-Class Strings & Built-in Text Library
-GPX provides modern, first-class strings with memory safety, immutability, and full cross-platform runtime support:
+### 3.7 First-Class Strings & String Library Header (`<string.gpx>`)
+GPX provides modern, first-class strings with memory safety, immutability, and a dedicated standard library:
+* **String Library Header (`<string.gpx>`):** String operations are modularized into a separate standard library header. Including `<string.gpx>` enables all string manipulation functions:
+  ```gpx
+  #include <string.gpx>
+  ```
 * **String Type (`string`):** Represents an immutable sequence of characters. Can be initialized with string literals or assigned `null`:
   ```gpx
   let name: string = "GPX Language";
@@ -247,7 +251,7 @@ GPX provides modern, first-class strings with memory safety, immutability, and f
       print("lexicographical order preserved");
   }
   ```
-* **Built-in String Library Functions:**
+* **Standard String Library Functions (`<string.gpx>`):**
 
 | Built-in Function | Signature | Description |
 | :--- | :--- | :--- |
