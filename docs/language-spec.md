@@ -273,6 +273,56 @@ GPX provides modern, first-class strings with memory safety, immutability, and a
 | `str_repeat` | `(string, int) -> string` | Repeats a string `count` times |
 | `str_replace` | `(string, string, string) -> string` | Replaces occurrences of search pattern with replacement |
 
+### 3.8 Dynamic Memory Management & Memory Library Header (`<memory.gpx>`)
+GPX v0.6.0 introduces dynamic memory management with compile-time type introspection and safe heap emulation:
+* **Compile-Time `sizeof` Operator:** Introspects the byte size of any type or expression at compile time:
+  ```gpx
+  let s_int: int = sizeof(int);       // 4
+  let s_node: int = sizeof(Node);     // Size of struct Node
+  let s_ptr: int = sizeof(*void);     // 8 (64-bit target pointer)
+  let s_arr: int = sizeof([int; 10]); // 40 (4 * 10)
+  ```
+* **Memory Library Header (`<memory.gpx>`):** Dynamic allocation functions require including `<memory.gpx>`:
+  ```gpx
+  #include <memory.gpx>
+  ```
+* **Standard Memory Functions (`<memory.gpx>`):**
+
+| Function | Signature | Description |
+| :--- | :--- | :--- |
+| `malloc` | `(int) -> *void` | Allocates `size` uninitialized bytes on the heap |
+| `calloc` | `(int, int) -> *void` | Allocates and zero-initializes memory for `num` items of `size` bytes |
+| `realloc` | `(*void, int) -> *void` | Resizes an allocated heap memory block to `new_size` bytes |
+| `free` | `(*void) -> void` | Deallocates heap memory previously allocated by `malloc`, `calloc`, or `realloc` |
+| `memcpy` | `(*void, *void, int) -> *void` | Copies `n` bytes from source memory area to destination |
+| `memset` | `(*void, int, int) -> *void` | Fills `n` bytes of memory area with specified byte value |
+| `memcmp` | `(*void, *void, int) -> int` | Compares first `n` bytes of two memory areas |
+
+* **Dynamic Array Operations:** Pointers can be indexed directly (`ptr[i]`) for reading and writing dynamically allocated buffers:
+  ```gpx
+  let count: int = 10;
+  let arr: *int = malloc(sizeof(int) * count);
+  arr[0] = 42;
+  let val: int = arr[0];
+  free(arr);
+  ```
+* **Dynamic Data Structures:** Recursive structs (such as linked lists and binary trees) allocate nodes dynamically on the heap:
+  ```gpx
+  struct Node {
+      val: int,
+      next: *Node
+  }
+  let head: *Node = malloc(sizeof(Node));
+  head->val = 10;
+  head->next = null;
+  free(head);
+  ```
+* **Safety & Diagnostics:** The GPX IR Virtual Machine tracks active heap allocations, preventing and detecting:
+  - Double-free errors
+  - Use-after-free reads and writes
+  - Out-of-bounds pointer indexing past allocated block capacity
+  - Direct dereference or store through `*void` without concrete pointer type
+
 ---
 
 ## 4. Formal Grammar (EBNF)
@@ -342,6 +392,7 @@ Primary         ::= INTEGER
                   | "true"
                   | "false"
                   | "null"
+                  | "sizeof" "(" ( Type | Expression ) ")"
                   | ArrayLiteral
                   | StructInitExpr
                   | IDENTIFIER ( "(" ArgList? ")" )?

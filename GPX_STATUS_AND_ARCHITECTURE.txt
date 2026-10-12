@@ -2,9 +2,9 @@
                     GPX (Guided Programming eXperience)
                  Current Stage, Architecture & Features Overview
 ================================================================================
-Current Version : v0.5.0
+Current Version : v0.6.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 83/83 passing (dual-platform Windows 11 & Linux WSL2)
+Test Suite      : 98/98 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
 Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel, VS Code VSIX
 Author          : Nishit (@nishit0072e)
@@ -242,6 +242,35 @@ J. First-Class Strings & String Library Header (<string.gpx>)
        * char_to_str(ch)                    -> Single character to string
        * str_repeat(s, count)               -> Repeat string N times
        * str_replace(s, old, new)           -> Replace all occurrences in string
+
+K. Dynamic Memory Management & Memory Library Header (<memory.gpx>)
+   -----------------------------------------------------------------------------
+   - Dedicated Memory Library Header:
+       #include <memory.gpx> // or #include "memory.gpx"
+       Modular standard library header declaring heap allocation and buffer utilities.
+   - Compile-Time sizeof Operator:
+       sizeof(byte)   -> 1
+       sizeof(short)  -> 2
+       sizeof(int)    -> 4
+       sizeof(long)   -> 8
+       sizeof(double) -> 8
+       sizeof(*void)  -> 8 (target architecture pointer width)
+       sizeof(T) / sizeof(expr) introspects structs, unions, arrays, and primitives.
+   - Dynamic Memory Functions:
+       * malloc(size)          -> Heap allocation of uninitialized bytes
+       * calloc(num, size)     -> Heap allocation zero-initialized
+       * realloc(ptr, new_sz)  -> Dynamic reallocation / buffer resizing
+       * free(ptr)             -> Safe heap deallocation
+       * memcpy(dst, src, n)   -> Memory block copying
+       * memset(dst, val, n)   -> Memory block filling
+       * memcmp(s1, s2, n)     -> Memory block comparison
+   - Dynamic Arrays & Heap Indexing:
+       * Dynamic buffers accessed directly via ptr[i] indexing for read and write.
+   - Recursive Heap Data Structures:
+       * Supports linked lists, binary trees, dynamic graphs via struct pointer chaining.
+   - Runtime Heap Safety & Diagnostics:
+       * VM detects double-free, use-after-free, out-of-bounds heap indexing.
+       * Compiler rejects direct dereference or store through raw *void pointers.
 
 
 4. COMPILER PIPELINE ARCHITECTURE

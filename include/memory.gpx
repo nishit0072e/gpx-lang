@@ -1,0 +1,24 @@
+// ============================================================================
+// GPX Standard Library: Dynamic Memory Management Header (<memory.gpx>)
+//
+// Official Memory Library providing heap allocation routines (malloc, calloc,
+// realloc, free) and block memory manipulation operations (memcpy, memset, memcmp).
+//
+// Usage:
+//   #include <memory.gpx>
+//   // or
+//   #include "memory.gpx"
+// ============================================================================
+
+#pragma once
+
+// --- Heap Allocation & Deallocation ---
+fn malloc(size: int) -> *void;
+fn calloc(num: int, size: int) -> *void;
+fn realloc(ptr: *void, new_size: int) -> *void;
+fn free(ptr: *void): void;
+
+// --- Memory Block Operations ---
+fn memcpy(dest: *void, src: *void, n: int) -> *void;
+fn memset(dest: *void, val: int, n: int) -> *void;
+fn memcmp(s1: *void, s2: *void, n: int): int;

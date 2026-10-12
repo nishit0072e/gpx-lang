@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-61%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-98%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -183,7 +183,16 @@ gpx-lang/
 ├── examples/
 │   ├── 01_arithmetic.gpx      # Arithmetic and variable expressions
 │   ├── 02_control_flow.gpx    # Conditionals (if/else) and while loops
-│   └── 03_fibonacci.gpx       # Functions and recursion
+│   ├── 03_fibonacci.gpx       # Functions and recursion
+│   ├── 04_legacy_types.gpx    # Integer primitives (byte, short, int, long)
+│   ├── 05_floating_and_printf.gpx # Floats, doubles, and formatted printf
+│   ├── 06_structs_unions_loops.gpx # Structs, unions, and loop variants
+│   ├── 07_pointers_and_recursion.gpx # Pointers (&, *), indirect member access (->)
+│   ├── 08_fixed_size_arrays.gpx # Fixed-size arrays [T; N] and indexing
+│   ├── 09_strings_and_text.gpx  # String library header (<string.gpx>)
+│   └── 10_dynamic_memory_and_structures.gpx # Dynamic memory (<memory.gpx>) and heap structs
+├── include/                   # Standard library headers (string.gpx, memory.gpx)
+├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license
 └── README.md                  # Quickstart & documentation
 ```
