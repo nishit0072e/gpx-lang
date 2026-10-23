@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-116%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-130%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -137,7 +137,7 @@ gpx --help
 ### Option 2: Universal Wheel Package
 For machines with Python 3.10+:
 ```bash
-pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.3.0/gpx_compiler-0.3.0-py3-none-any.whl
+pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.8.0/gpx_compiler-0.8.0-py3-none-any.whl
 ```
 
 ---
@@ -190,8 +190,10 @@ gpx-lang/
 │   ├── 07_pointers_and_recursion.gpx # Pointers (&, *), indirect member access (->)
 │   ├── 08_fixed_size_arrays.gpx # Fixed-size arrays [T; N] and indexing
 │   ├── 09_strings_and_text.gpx  # String library header (<string.gpx>)
-│   └── 10_dynamic_memory_and_structures.gpx # Dynamic memory (<memory.gpx>) and heap structs
-├── include/                   # Standard library headers (string.gpx, memory.gpx)
+│   ├── 10_dynamic_memory_and_structures.gpx # Dynamic memory (<memory.gpx>) and heap structs
+│   ├── 11_file_io_and_casts.gpx # File I/O (<io.gpx>) and explicit casting ('as')
+│   └── 12_systems_enums_and_math.gpx # Bitwise ops, enums, switch, and math (<math.gpx>)
+├── include/                   # Standard library headers (io.gpx, string.gpx, memory.gpx, math.gpx)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license
 └── README.md                  # Quickstart & documentation

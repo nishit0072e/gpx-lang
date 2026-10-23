@@ -2,9 +2,9 @@
                     GPX (Guided Programming eXperience)
                  Current Stage, Architecture & Features Overview
 ================================================================================
-Current Version : v0.7.0
+Current Version : v0.8.0
 Status          : Working Alpha / Active Systems Development
-Test Suite      : 116/116 passing (dual-platform Windows 11 & Linux WSL2)
+Test Suite      : 130/130 passing (dual-platform Windows 11 & Linux WSL2)
 Platforms       : Windows 11 (x86-64), Linux (WSL2 / Ubuntu 22.04 LTS x86-64)
 Artifacts       : Standalone Windows .exe, Standalone Linux ELF, Universal Python Wheel, VS Code VSIX
 Author          : Nishit (@nishit0072e)

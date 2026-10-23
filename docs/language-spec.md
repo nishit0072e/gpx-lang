@@ -606,4 +606,57 @@ fn main() -> int {
 }
 ```
 
+---
 
+## 9. Systems Programming, Constants, Enums & Math Library (v0.8.0)
+
+GPX v0.8.0 introduces first-class systems capabilities for low-level flag manipulation, scoped enums, multi-branch control flow, and hardware-accelerated mathematics.
+
+### 9.1 Bitwise Operators
+* Binary bitwise: `&` (AND), `|` (OR), `^` (XOR), `<<` (left shift), `>>` (right shift)
+* Unary bitwise: `~` (one's complement bitwise NOT)
+* Operands: Works natively on all integer primitives (`byte`, `short`, `int`, `long`, `char`) and `enum` types.
+
+### 9.2 Compile-Time Constants (`const`)
+```gpx
+const BUFFER_SIZE: int = 1024;
+const PI: double = 3.141592653589793;
+```
+Constants are evaluated at compile time and protected against runtime reassignment.
+
+### 9.3 Enumerations (`enum`)
+```gpx
+enum ProtocolState {
+    Init = 0,
+    Handshake,
+    Active = 10,
+    Terminated = 500
+}
+
+let s: int = ProtocolState::Active;
+```
+Enum variants can be accessed via scoped resolution (`Enum::Variant`) or direct identifier resolution.
+
+### 9.4 Multi-Branch Control Flow (`switch`)
+```gpx
+switch (code) {
+    case 100:
+        handle_init();
+        break;
+    case ProtocolState::Active:
+        handle_active();
+        break;
+    default:
+        handle_fallback();
+        break;
+}
+```
+
+### 9.5 Standard Mathematics Library (`<math.gpx>`)
+```gpx
+#include <math.gpx>
+
+let hyp: double = sqrt(pow(a, 2.0) + pow(b, 2.0));
+let bounded: double = min(100.0, max(0.0, score));
+```
+Includes constants `PI`, `E`, and functions `sqrt`, `pow`, `abs`, `fabs`, `floor`, `ceil`, `round`, `sin`, `cos`, `tan`, `log`, `exp`, `min`, `max`.

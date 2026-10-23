@@ -1,0 +1,33 @@
+// ============================================================================
+// GPX Standard Library: Mathematics Header (<math.gpx>)
+//
+// Official Standard Math Library providing fundamental mathematical functions
+// and mathematical constants.
+//
+// Usage:
+//   #include <math.gpx>
+//   // or
+//   #include "math.gpx"
+// ============================================================================
+
+#pragma once
+
+// --- Mathematical Constants ---
+const PI: double = 3.141592653589793;
+const E: double = 2.718281828459045;
+
+// --- Elementary & Transcendental Functions ---
+fn sqrt(x: double): double;
+fn pow(base: double, exponent: double): double;
+fn abs(x: int): int;
+fn fabs(x: double): double;
+fn floor(x: double): double;
+fn ceil(x: double): double;
+fn round(x: double): double;
+fn sin(x: double): double;
+fn cos(x: double): double;
+fn tan(x: double): double;
+fn log(x: double): double;
+fn exp(x: double): double;
+fn min(a: double, b: double): double;
+fn max(a: double, b: double): double;

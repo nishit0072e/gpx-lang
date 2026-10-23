@@ -1,0 +1,125 @@
+// ============================================================================
+// Example 12: Systems Programming, Enumerations & Standard Math Library
+// GPX Milestone v0.8.0 Feature Showcase
+// ============================================================================
+
+#include <math.gpx>
+
+// 1. Compile-Time Constants
+const MAX_PACKETS: int = 256;
+const PROTOCOL_VERSION: string = "GPX-NET-v2";
+
+// 2. Enumeration for Network Connection State
+enum ConnectionState {
+    Disconnected = 0,
+    Connecting,
+    Connected = 10,
+    Disconnecting,
+    Error = 500
+}
+
+// 3. Bitwise Flags for Permissions / Packet Header
+const FLAG_READ: int    = 1 << 0; // 0b0001 (1)
+const FLAG_WRITE: int   = 1 << 1; // 0b0010 (2)
+const FLAG_EXECUTE: int = 1 << 2; // 0b0100 (4)
+const FLAG_ADMIN: int   = 1 << 3; // 0b1000 (8)
+
+fn format_state(state: int): string {
+    let desc: string = "Unknown State";
+    switch (state) {
+        case ConnectionState::Disconnected:
+            desc = "State: Disconnected (0)";
+            break;
+        case ConnectionState::Connecting:
+            desc = "State: Handshake in progress...";
+            break;
+        case ConnectionState::Connected:
+            desc = "State: Connected (Active Session)";
+            break;
+        case ConnectionState::Disconnecting:
+            desc = "State: Teardown in progress...";
+            break;
+        case ConnectionState::Error:
+            desc = "State: Fatal Error Encountered";
+            break;
+        default:
+            desc = "State: Unrecognized State ID";
+            break;
+    }
+    return desc;
+}
+
+fn test_bitwise_flags() {
+    printf("--- 1. Bitwise Systems Operations ---\\n");
+    let perms: int = FLAG_READ | FLAG_WRITE; // 1 | 2 = 3
+    printf("Initial permissions (READ | WRITE): %d\\n", perms);
+
+    // Grant ADMIN flag
+    perms = perms | FLAG_ADMIN; // 3 | 8 = 11
+    printf("After granting ADMIN: %d\\n", perms);
+
+    // Check if WRITE flag is active
+    let has_write: bool = (perms & FLAG_WRITE) != 0;
+    if (has_write) {
+        printf("Has WRITE permission: YES\\n");
+    } else {
+        printf("Has WRITE permission: NO\\n");
+    }
+
+    // Toggle EXECUTE flag using XOR
+    perms = perms ^ FLAG_EXECUTE;
+    printf("After toggling EXECUTE with XOR: %d\\n", perms);
+
+    // Invert mask using Bitwise NOT
+    let inverted: int = ~perms;
+    printf("Bitwise NOT of permissions: %lld\\n", inverted as long);
+
+    // Bit-shifting demo
+    let base: int = 1;
+    let shifted: int = base << 5; // 32
+    printf("1 << 5 = %d, shifted >> 2 = %d\\n", shifted, shifted >> 2);
+}
+
+fn test_math_library() {
+    printf("\\n--- 2. Standard Math Library (<math.gpx>) ---\\n");
+    printf("Constant PI = %.8f\\n", PI);
+    printf("Constant E  = %.8f\\n", E);
+
+    let val: double = 16.0;
+    let sq: double = sqrt(val);
+    let pw: double = pow(2.0, 10.0);
+    printf("sqrt(%.1f) = %.1f\\n", val, sq);
+    printf("pow(2, 10) = %.1f\\n", pw);
+
+    let negative_val: double = -42.85;
+    printf("fabs(%.2f) = %.2f\\n", negative_val, fabs(negative_val));
+    printf("floor(3.8) = %.1f, ceil(3.2) = %.1f, round(3.6) = %.1f\\n",
+           floor(3.8), ceil(3.2), round(3.6));
+
+    let small: double = min(12.34, 56.78);
+    let large: double = max(12.34, 56.78);
+    printf("min(12.34, 56.78) = %.2f, max(12.34, 56.78) = %.2f\\n", small, large);
+}
+
+fn main() -> int {
+    printf("==================================================\\n");
+    printf(" GPX Milestone v0.8.0 Systems, Enums & Math Demo \\n");
+    printf(" Protocol: %s (Max Packets: %d)\\n", PROTOCOL_VERSION, MAX_PACKETS);
+    printf("==================================================\\n\\n");
+
+    test_bitwise_flags();
+
+    printf("\\n--- 3. State Machine & Switch Control Flow ---\\n");
+    printf("%s\\n", format_state(ConnectionState::Disconnected));
+    printf("%s\\n", format_state(ConnectionState::Connecting));
+    printf("%s\\n", format_state(ConnectionState::Connected));
+    printf("%s\\n", format_state(ConnectionState::Error));
+    printf("%s\\n", format_state(999));
+
+    test_math_library();
+
+    printf("\\n==================================================\\n");
+    printf(" Demo executed successfully on GPX v0.8.0!\\n");
+    printf("==================================================\\n");
+    return 0;
+}
