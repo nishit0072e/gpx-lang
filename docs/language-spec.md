@@ -55,6 +55,9 @@ The following identifiers are reserved keywords:
 | `in` | Range iterator keyword |
 | `struct` | Structure composite type declaration |
 | `union` | Union shared-memory type declaration |
+| `break` | Loop termination statement |
+| `continue` | Loop cycle skip statement |
+| `as` | Explicit type casting operator |
 | `true` | Boolean true |
 | `false` | Boolean false |
 | `null` | Null pointer constant |

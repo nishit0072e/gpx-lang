@@ -1,0 +1,30 @@
+// ============================================================================
+// GPX Standard Library: Input / Output Operations Header (<io.gpx>)
+//
+// Official File I/O & Stream Library providing standard stream operations
+// (fopen, fclose, fread, fwrite, fseek, ftell, feof, fflush)
+// and high-level file utilities (read_file, write_file, append_file, file_exists).
+//
+// Usage:
+//   #include <io.gpx>
+//   // or
+//   #include "io.gpx"
+// ============================================================================
+
+#pragma once
+
+// --- File Stream Operations ---
+fn fopen(filename: string, mode: string) -> *void;
+fn fclose(stream: *void): int;
+fn fread(ptr: *void, size: int, count: int, stream: *void): int;
+fn fwrite(ptr: *void, size: int, count: int, stream: *void): int;
+fn fseek(stream: *void, offset: int, whence: int): int;
+fn ftell(stream: *void): int;
+fn feof(stream: *void): int;
+fn fflush(stream: *void): int;
+
+// --- High-Level Convenience File Operations ---
+fn read_file(path: string): string;
+fn write_file(path: string, content: string): int;
+fn append_file(path: string, content: string): int;
+fn file_exists(path: string): int;

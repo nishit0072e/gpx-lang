@@ -1,0 +1,103 @@
+// ============================================================================
+// GPX Language Example 11: Loop Controls, Explicit Type Casts & File I/O
+// ============================================================================
+// Demonstrates new GPX v0.7.0 systems programming capabilities:
+// 1. Loop flow control: 'break' and 'continue' across while, for, and do-while loops
+// 2. Explicit type casting: 'expr as Type' (numeric conversions, pointer casts)
+// 3. High-level & Stream File I/O using standard library <io.gpx>
+// ============================================================================
+
+#include <io.gpx>
+#include <string.gpx>
+
+fn demonstrate_loop_controls(): void {
+    printf("--- 1. Loop Flow Controls (break & continue) ---\n");
+
+    // Skip odd numbers using continue, stop when reaching 8 using break
+    printf("Even numbers under 8: ");
+    for (let i: int = 0; i < 20; i = i + 1) {
+        if (i % 2 != 0) {
+            continue;
+        }
+        if (i >= 8) {
+            break;
+        }
+        printf("%lld ", i as long);
+    }
+    printf("\n");
+
+    // While loop with early break
+    let count: int = 0;
+    while (true) {
+        count = count + 1;
+        if (count == 3) {
+            break;
+        }
+    }
+    printf("While loop terminated cleanly at count = %lld\n\n", count as long);
+}
+
+fn demonstrate_type_casts(): void {
+    printf("--- 2. Explicit Type Casting ('as' operator) ---\n");
+
+    let pi: double = 3.1415926535;
+    let pi_truncated: int = pi as int;
+    let ascii_code: int = 65;
+    let letter: char = ascii_code as char;
+    let flag_int: int = 1;
+    let flag_bool: bool = flag_int as bool;
+
+    printf("Original double: %.4f\n", pi);
+    printf("Truncated via 'pi as int': %lld\n", pi_truncated as long);
+    printf("Character from 65 via '65 as char': %c\n", letter);
+    printf("Boolean from 1 via '1 as bool': %b\n\n", flag_bool);
+}
+
+fn demonstrate_file_io(): void {
+    printf("--- 3. File I/O with Standard Library <io.gpx> ---\n");
+
+    let log_path: string = "gpx_demo_output.txt";
+
+    // 1. Write file
+    let initial_msg: string = "Hello from GPX v0.7.0 File I/O!\n";
+    let w_ok: int = write_file(log_path, initial_msg);
+    if (w_ok == 1) {
+        printf("Successfully wrote initial file: %s\n", log_path);
+    }
+
+    // 2. Verify file existence
+    if (file_exists(log_path) == 1) {
+        printf("File existence confirmed: %s\n", log_path);
+    }
+
+    // 3. Append to file
+    let append_msg: string = "Appended line: High-performance systems programming.\n";
+    append_file(log_path, append_msg);
+    printf("Appended line to file.\n");
+
+    // 4. Read back complete contents
+    let file_content: string = read_file(log_path);
+    printf("Read back content:\n%s", file_content);
+
+    // 5. Stream operations using fopen, ftell, fseek, fclose
+    let fp: *void = fopen(log_path, "r");
+    if (fp != null) {
+        fseek(fp, 0, 2); // 2 = SEEK_END
+        let file_size: int = ftell(fp);
+        printf("Stream verified file size: %lld bytes\n", file_size as long);
+        fclose(fp);
+    }
+    printf("\nAll v0.7.0 systems demonstrations completed successfully!\n");
+}
+
+fn main(): int {
+    printf("====================================================\n");
+    printf(" GPX v0.7.0: Loops Controls, Casts & File I/O Demo \n");
+    printf("====================================================\n\n");
+
+    demonstrate_loop_controls();
+    demonstrate_type_casts();
+    demonstrate_file_io();
+
+    return 0;
+}
