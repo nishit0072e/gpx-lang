@@ -1,0 +1,31 @@
+// ============================================================================
+// GPX Standard Library: 2D Canvas & Turtle Graphics Header (<draw.gpx>)
+// ============================================================================
+
+#pragma once
+
+// --- Canvas Initialization & Management ---
+fn draw_init(width: int, height: int): int;
+fn draw_clear(r: int, g: int, b: int): int;
+fn draw_set_pen(r: int, g: int, b: int, width: int): int;
+fn draw_pen_up(): int;
+fn draw_pen_down(): int;
+
+// --- Turtle Navigation ---
+fn draw_forward(distance: double): int;
+fn draw_backward(distance: double): int;
+fn draw_left(angle_degrees: double): int;
+fn draw_right(angle_degrees: double): int;
+fn draw_goto(x: double, y: double): int;
+fn draw_get_x(): double;
+fn draw_get_y(): double;
+fn draw_get_angle(): double;
+
+// --- Direct Geometric Shapes ---
+fn draw_line(x1: int, y1: int, x2: int, y2: int): int;
+fn draw_rect(x: int, y: int, width: int, height: int, fill: int): int;
+fn draw_circle(cx: int, cy: int, radius: int, fill: int): int;
+
+// --- Export & Render Utilities ---
+fn draw_render_ppm(filepath: string): int;
+fn draw_render_svg(filepath: string): int;

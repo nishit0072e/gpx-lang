@@ -660,3 +660,76 @@ let hyp: double = sqrt(pow(a, 2.0) + pow(b, 2.0));
 let bounded: double = min(100.0, max(0.0, score));
 ```
 Includes constants `PI`, `E`, and functions `sqrt`, `pow`, `abs`, `fabs`, `floor`, `ceil`, `round`, `sin`, `cos`, `tan`, `log`, `exp`, `min`, `max`.
+
+
+---
+
+## 10. Beginner-Friendly / Dual-Audience Syntax & 2D Turtle Graphics (v0.9.0)
+
+GPX v0.9.0 introduces an accessible, beginner-friendly programming experience designed for young learners and educators while retaining bare-metal compilation power.
+
+### 10.1 Automatic Semicolon Insertion (ASI) & Scripting
+* Semicolons are optional. Statements can be terminated by a clean newline.
+* Scripting mode allows top-level statements and expressions without requiring a boilerplate `fn main() -> int { ... }`.
+
+### 10.2 Logical Keywords & Parenthesis-Free Control Flow
+* English logical keywords `and`, `or`, and `not` are supported interchangeably with `&&`, `||`, and `!`.
+* Parentheses around conditions in `if`, `while`, `when`, and `repeat` are optional:
+```gpx
+let temperature = 25
+let sunny = true
+
+if temperature > 20 and sunny {
+    print("Great day to play outside!")
+}
+```
+
+### 10.3 Beginner `repeat` Loop & `when` Construct
+* `repeat N { ... }` simplifies definite iteration without requiring loop counters:
+```gpx
+repeat 5 {
+    print("Hello from GPX!")
+}
+```
+* `when` offers a friendly alternative to `switch`:
+```gpx
+when command {
+    case "start":
+        print("Starting engine")
+        break
+    default:
+        print("Unknown command")
+}
+```
+
+### 10.4 Variadic `print(...)`
+* Space-separated output of any number of expressions across all types:
+```gpx
+print("Hero:", name, "Level:", 10, "Status:", true)
+```
+
+### 10.5 2D Turtle & Canvas Graphics Module (`<draw.gpx>`)
+```gpx
+#include <draw.gpx>
+
+draw_init(400, 400)
+draw_clear(255, 255, 255)
+draw_set_pen(255, 140, 0, 2)
+draw_goto(200.0, 200.0)
+
+repeat 5 {
+    draw_forward(100.0)
+    draw_right(144.0)
+}
+
+draw_render_svg("star.svg")
+draw_render_ppm("star.ppm")
+```
+Functions include: `draw_init`, `draw_clear`, `draw_set_pen`, `draw_pen_up`, `draw_pen_down`, `draw_forward`, `draw_backward`, `draw_left`, `draw_right`, `draw_goto`, `draw_get_x`, `draw_get_y`, `draw_get_angle`, `draw_line`, `draw_rect`, `draw_circle`, `draw_render_ppm`, `draw_render_svg`.
+
+### 10.6 Language Server Protocol (`--lsp`)
+The compiler provides a standard JSON-RPC 2.0 language server via:
+```bash
+gpx --lsp
+```
+Providing real-time diagnostics, autocompletion, and hover documentation to editors.

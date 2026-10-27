@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-130%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-139%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -137,7 +137,7 @@ gpx --help
 ### Option 2: Universal Wheel Package
 For machines with Python 3.10+:
 ```bash
-pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.8.0/gpx_compiler-0.8.0-py3-none-any.whl
+pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.9.0/gpx_compiler-0.9.0-py3-none-any.whl
 ```
 
 ---
@@ -146,25 +146,28 @@ pip install https://github.com/nishit0072e/gpx-lang/releases/download/v0.8.0/gpx
 
 ```bash
 # 1. Run program directly in the VM (instant execution, zero binary created)
-gpx examples/03_fibonacci.gpx --run
+gpx examples/13_beginner_friendly_syntax.gpx --run
 
 # 2. Compile to a Native Windows Executable (.exe)
 gpx examples/03_fibonacci.gpx -o fib.exe
 .\fib.exe
 
-# 3. Compile to Executable AND preserve intermediate C code
+# 3. Launch the Integrated Language Server (LSP) for VS Code / Editors
+gpx --lsp
+
+# 4. Compile to Executable AND preserve intermediate C code
 gpx examples/03_fibonacci.gpx -o fib.exe --save-c
 
-# 4. End-to-end Pipeline Diagnostics & Stage Inspection
+# 5. End-to-end Pipeline Diagnostics & Stage Inspection
 gpx examples/03_fibonacci.gpx --inspect
 
-# 5. Emit Bare-Metal RISC-V RV32I Assembly
+# 6. Emit Bare-Metal RISC-V RV32I Assembly
 gpx examples/03_fibonacci.gpx --target riscv --emit
 
-# 6. Type Check without Compiling
+# 7. Type Check without Compiling
 gpx examples/03_fibonacci.gpx --check
 
-# 7. View Intermediate Representation (TAC) with Optimizations
+# 8. View Intermediate Representation (TAC) with Optimizations
 gpx examples/01_arithmetic.gpx --ir --opt
 ```
 
@@ -192,8 +195,9 @@ gpx-lang/
 │   ├── 09_strings_and_text.gpx  # String library header (<string.gpx>)
 │   ├── 10_dynamic_memory_and_structures.gpx # Dynamic memory (<memory.gpx>) and heap structs
 │   ├── 11_file_io_and_casts.gpx # File I/O (<io.gpx>) and explicit casting ('as')
-│   └── 12_systems_enums_and_math.gpx # Bitwise ops, enums, switch, and math (<math.gpx>)
-├── include/                   # Standard library headers (io.gpx, string.gpx, memory.gpx, math.gpx)
+│   ├── 12_systems_enums_and_math.gpx # Bitwise ops, enums, switch, and math (<math.gpx>)
+│   └── 13_beginner_friendly_syntax.gpx # Friendly scripting, repeat loops, 2D turtle graphics (<draw.gpx>)
+├── include/                   # Standard library headers (io.gpx, string.gpx, memory.gpx, math.gpx, draw.gpx)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license
 └── README.md                  # Quickstart & documentation

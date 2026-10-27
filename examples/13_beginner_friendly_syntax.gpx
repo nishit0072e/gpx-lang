@@ -1,0 +1,71 @@
+// ==============================================================================
+// GPX Example 13: Beginner-Friendly & Child-Accessible Syntax
+// ==============================================================================
+// This example demonstrates how natural, enjoyable, and frustration-free GPX is
+// for young learners and beginners, while compiling down to pure bare-metal C:
+//   1. Zero mandatory semicolons (Automatic Semicolon Insertion on newlines)
+//   2. Effortless printing with multi-argument print(...)
+//   3. Natural english logical words: 'and', 'or', 'not'
+//   4. Intuitive 'repeat N { ... }' loops without counter setup boilerplate
+//   5. Friendly 'when ... { case ... }' pattern matching
+//   6. Clean control flow without mandatory parentheses
+// ==============================================================================
+
+fn main() {
+    print("=== Welcome to GPX Junior & Professional Mode! ===")
+    print("")
+
+    // 1. Natural variable definitions without semicolon fuss
+    let hero_name = "Pixel"
+    let stars_collected = 10
+    let bonus_points = 5
+    let total_score = stars_collected + bonus_points
+
+    // 2. Multi-argument print takes any combination of strings, numbers, booleans
+    print("Hero:", hero_name, "| Total Score:", total_score)
+
+    // 3. Natural 'repeat' loop: perfect for games, animations, and learning
+    print("")
+    print("Collecting energy stars:")
+    repeat 3 {
+        print("  * Ping! Energy boosted by 1 star!")
+    }
+
+    // 4. English logical keywords: 'and', 'or', 'not'
+    print("")
+    let is_sunny = true
+    let is_raining = false
+    let has_energy = total_score > 10
+
+    if is_sunny and not is_raining {
+        print("The weather is perfect for outdoor questing!")
+    }
+
+    if has_energy or is_sunny {
+        print("Our hero is energized and ready for battle!")
+    }
+
+    // 5. Friendly 'when' statement
+    print("")
+    let badge_rank = 1
+    when badge_rank {
+        case 1:
+            print("Rank: Gold Champion!")
+            break
+        case 2:
+            print("Rank: Silver Explorer!")
+            break
+        default:
+            print("Rank: Brave Beginner!")
+    }
+
+    // 6. Range loops still work smoothly for structured counting
+    print("")
+    print("Counting down to launch:")
+    for second in 1..4 {
+        print("  Tick:", second)
+    }
+
+    print("")
+    print("Quest completed successfully!")
+}
