@@ -7,14 +7,18 @@ on:
       - main
     paths:
       - 'docs/**'
+      - '!docs/*.pdf'
       - 'README.md'
       - '.github/workflows/docs.yml'
-    paths-ignore:
-      - 'docs/*.pdf'
   pull_request:
     branches:
       - master
       - main
+    paths:
+      - 'docs/**'
+      - '!docs/*.pdf'
+      - 'README.md'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -39,6 +43,11 @@ jobs:
           working_directory: docs
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
+      - name: Fix Workspace Permissions
+        run: |
+          sudo chown -R $USER:$USER "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Upload PDF Manual as Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -51,7 +60,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action [Docs Bot]"
-          git add docs/gpx-specification.pdf
+          git add -f docs/gpx-specification.pdf
           if git diff --staged --quiet; then
             echo "No changes in compiled PDF."
           else
@@ -66,4 +75,5 @@ jobs:
           files: docs/gpx-specification.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
