@@ -1,0 +1,41 @@
+// ============================================================================
+// Example 36: Audio Waveform Synthesizer & WAV Exporter (<sound.gpx>)
+// Demonstrates all 5 chiptune synthesis waveforms (Square, Sine, Triangle,
+// Sawtooth, White Noise) with frequency sweeps and WAV file generation.
+// ============================================================================
+
+#include <sound.gpx>
+
+fn synthesize_and_report(name: string, wave_id: int, start_freq: int, end_freq: int, duration_ms: int, wav_filename: string) {
+    printf("Synthesizing %s Wave (%lld Hz -> %lld Hz, %lld ms)...\n", name, start_freq, end_freq, duration_ms);
+    sound_synth_tone(wave_id, start_freq, end_freq, duration_ms, 60);
+
+    let ok: int = sound_export_wav(wav_filename, wave_id, start_freq, duration_ms);
+    if (ok == 1) {
+        printf("  -> Exported to '%s' successfully\n", wav_filename);
+    } else {
+        printf("  -> Export failed!\n");
+    }
+}
+
+fn main() -> int {
+    print("=== GPX 8-BIT AUDIO WAVEFORM SYNTHESIZER ===");
+
+    // 1. Square Wave (NES / Game Boy Lead)
+    synthesize_and_report("Square (Chiptune)", SOUND_WAVE_SQUARE, 440, 440, 250, "synth_square.wav");
+
+    // 2. Sine Wave (Pure Flute Tone)
+    synthesize_and_report("Sine (Pure Pitch)", SOUND_WAVE_SINE, 523, 523, 250, "synth_sine.wav");
+
+    // 3. Triangle Wave (Warm Synth Bass)
+    synthesize_and_report("Triangle (Bass)", SOUND_WAVE_TRIANGLE, 110, 110, 300, "synth_triangle.wav");
+
+    // 4. Sawtooth Wave (Bright Brass Lead)
+    synthesize_and_report("Sawtooth (Brass)", SOUND_WAVE_SAWTOOTH, 330, 330, 250, "synth_sawtooth.wav");
+
+    // 5. White Noise (Percussive Snare / Splash)
+    synthesize_and_report("Noise (Percussion)", SOUND_WAVE_NOISE, 200, 50, 200, "synth_noise.wav");
+
+    print("All 5 waveforms synthesized and exported to WAV successfully!");
+    return 0;
+}

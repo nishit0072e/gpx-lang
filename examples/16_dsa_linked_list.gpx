@@ -1,0 +1,45 @@
+// ============================================================================
+// GPX Example 16: Doubly-Linked List
+//
+// Demonstrates fast bidirectional insertion (push_front / push_back),
+// search, removal from head and tail, and traversal.
+// ============================================================================
+
+#include <linkedlist.gpx>
+
+fn main() {
+    print("=== GPX Doubly-Linked List Demo ===");
+
+    let list: *LinkedList = ll_create();
+    print("Is empty:", ll_is_empty(list));
+
+    print("\n--- Inserting Nodes ---");
+    // Build list: 10 <-> 20 <-> 30
+    ll_push_back(list, 20);
+    ll_push_front(list, 10); // 10 becomes head
+    ll_push_back(list, 30);  // 30 becomes tail
+    print("Length after insertions:", ll_len(list));
+
+    print("\n--- Traversing List Elements ---");
+    for i in 0..ll_len(list) {
+        print("  Node at index", i, "=>", ll_get(list, i));
+    }
+
+    print("\n--- Search and Membership ---");
+    print("Contains 20?", ll_contains(list, 20));
+    print("Contains 99?", ll_contains(list, 99));
+
+    print("\n--- Popping from Head and Tail ---");
+    let first: int = ll_pop_front(list);
+    print("Popped from front:", first);
+
+    let last: int = ll_pop_back(list);
+    print("Popped from back: ", last);
+
+    print("Remaining node count:", ll_len(list));
+    print("Remaining single node:", ll_get(list, 0));
+
+    // Free the entire list
+    ll_free(list);
+    print("\nLinked list memory successfully freed!");
+}

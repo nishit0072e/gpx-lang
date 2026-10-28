@@ -1,0 +1,137 @@
+// ============================================================================
+// GPX Standard Library: Binary Search Tree (<tree.gpx>)
+//
+// Fast ordered binary search tree supporting logarithmic insertion,
+// membership search, extrema queries (min/max), and recursive reclamation.
+// ============================================================================
+
+#pragma once
+#include <memory.gpx>
+
+struct BSTNode {
+    val: int,
+    left: *BSTNode,
+    right: *BSTNode
+}
+
+struct BST {
+    root: *BSTNode,
+    count: int
+}
+
+fn bst_create() -> *BST {
+    let t: *BST = malloc(sizeof(BST));
+    if t == null {
+        return null;
+    }
+    t->root = null;
+    t->count = 0;
+    return t;
+}
+
+fn bst_count(t: *BST) -> int {
+    if t == null {
+        return 0;
+    }
+    return t->count;
+}
+
+fn bst_is_empty(t: *BST) -> bool {
+    if t == null {
+        return true;
+    }
+    return t->count == 0;
+}
+
+fn bst_insert(t: *BST, val: int) {
+    if t == null {
+        return;
+    }
+    let node: *BSTNode = malloc(sizeof(BSTNode));
+    node->val = val;
+    node->left = null;
+    node->right = null;
+
+    if t->root == null {
+        t->root = node;
+        t->count = 1;
+        return;
+    }
+
+    let curr: *BSTNode = t->root;
+    while true {
+        if val < curr->val {
+            if curr->left == null {
+                curr->left = node;
+                t->count = t->count + 1;
+                return;
+            }
+            curr = curr->left;
+        } else if val > curr->val {
+            if curr->right == null {
+                curr->right = node;
+                t->count = t->count + 1;
+                return;
+            }
+            curr = curr->right;
+        } else {
+            // Value already exists (duplicate key policy)
+            free(node);
+            return;
+        }
+    }
+}
+
+fn bst_search(t: *BST, val: int) -> bool {
+    if t == null or t->root == null {
+        return false;
+    }
+    let curr: *BSTNode = t->root;
+    while curr != null {
+        if val == curr->val {
+            return true;
+        } else if val < curr->val {
+            curr = curr->left;
+        } else {
+            curr = curr->right;
+        }
+    }
+    return false;
+}
+
+fn bst_min(t: *BST) -> int {
+    if t == null or t->root == null {
+        return 0;
+    }
+    let curr: *BSTNode = t->root;
+    while curr->left != null {
+        curr = curr->left;
+    }
+    return curr->val;
+}
+
+fn bst_max(t: *BST) -> int {
+    if t == null or t->root == null {
+        return 0;
+    }
+    let curr: *BSTNode = t->root;
+    while curr->right != null {
+        curr = curr->right;
+    }
+    return curr->val;
+}
+
+fn _bst_node_free(node: *BSTNode) {
+    if node != null {
+        _bst_node_free(node->left);
+        _bst_node_free(node->right);
+        free(node);
+    }
+}
+
+fn bst_free(t: *BST) {
+    if t != null {
+        _bst_node_free(t->root);
+        free(t);
+    }
+}

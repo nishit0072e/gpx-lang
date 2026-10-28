@@ -1,0 +1,163 @@
+// ============================================================================
+// GPX Standard Library: Doubly-Linked List (<linkedlist.gpx>)
+//
+// Dynamic doubly-linked list with bidirectional traversal, fast push/pop
+// at head and tail, and safe memory reclamation.
+// ============================================================================
+
+#pragma once
+#include <memory.gpx>
+
+struct DListNode {
+    val: int,
+    prev: *DListNode,
+    next: *DListNode
+}
+
+struct LinkedList {
+    head: *DListNode,
+    tail: *DListNode,
+    size: int
+}
+
+fn ll_create() -> *LinkedList {
+    let ll: *LinkedList = malloc(sizeof(LinkedList));
+    if ll == null {
+        return null;
+    }
+    ll->head = null;
+    ll->tail = null;
+    ll->size = 0;
+    return ll;
+}
+
+fn ll_len(ll: *LinkedList) -> int {
+    if ll == null {
+        return 0;
+    }
+    return ll->size;
+}
+
+fn ll_is_empty(ll: *LinkedList) -> bool {
+    if ll == null {
+        return true;
+    }
+    return ll->size == 0;
+}
+
+fn ll_push_back(ll: *LinkedList, val: int) {
+    if ll == null {
+        return;
+    }
+    let node: *DListNode = malloc(sizeof(DListNode));
+    node->val = val;
+    node->next = null;
+    node->prev = ll->tail;
+
+    if ll->tail != null {
+        let t: *DListNode = ll->tail;
+        t->next = node;
+    } else {
+        ll->head = node;
+    }
+    ll->tail = node;
+    ll->size = ll->size + 1;
+}
+
+fn ll_push_front(ll: *LinkedList, val: int) {
+    if ll == null {
+        return;
+    }
+    let node: *DListNode = malloc(sizeof(DListNode));
+    node->val = val;
+    node->prev = null;
+    node->next = ll->head;
+
+    if ll->head != null {
+        let h: *DListNode = ll->head;
+        h->prev = node;
+    } else {
+        ll->tail = node;
+    }
+    ll->head = node;
+    ll->size = ll->size + 1;
+}
+
+fn ll_pop_back(ll: *LinkedList) -> int {
+    if ll == null or ll->tail == null {
+        return 0;
+    }
+    let node: *DListNode = ll->tail;
+    let val: int = node->val;
+    ll->tail = node->prev;
+    if ll->tail != null {
+        let t: *DListNode = ll->tail;
+        t->next = null;
+    } else {
+        ll->head = null;
+    }
+    free(node);
+    ll->size = ll->size - 1;
+    return val;
+}
+
+fn ll_pop_front(ll: *LinkedList) -> int {
+    if ll == null or ll->head == null {
+        return 0;
+    }
+    let node: *DListNode = ll->head;
+    let val: int = node->val;
+    ll->head = node->next;
+    if ll->head != null {
+        let h: *DListNode = ll->head;
+        h->prev = null;
+    } else {
+        ll->tail = null;
+    }
+    free(node);
+    ll->size = ll->size - 1;
+    return val;
+}
+
+fn ll_get(ll: *LinkedList, idx: int) -> int {
+    if ll == null or idx < 0 or idx >= ll->size {
+        return 0;
+    }
+    let curr: *DListNode = ll->head;
+    let i: int = 0;
+    while i < idx and curr != null {
+        curr = curr->next;
+        i = i + 1;
+    }
+    if curr != null {
+        return curr->val;
+    }
+    return 0;
+}
+
+fn ll_contains(ll: *LinkedList, val: int) -> bool {
+    if ll == null {
+        return false;
+    }
+    let curr: *DListNode = ll->head;
+    while curr != null {
+        if curr->val == val {
+            return true;
+        }
+        curr = curr->next;
+    }
+    return false;
+}
+
+fn ll_free(ll: *LinkedList) {
+    if ll == null {
+        return;
+    }
+    let curr: *DListNode = ll->head;
+    while curr != null {
+        let nxt: *DListNode = curr->next;
+        free(curr);
+        curr = nxt;
+    }
+    free(ll);
+}

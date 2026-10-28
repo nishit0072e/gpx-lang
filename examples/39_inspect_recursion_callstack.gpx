@@ -1,0 +1,40 @@
+// ============================================================================
+// Example 39: Recursion & Call Stack Frame Inspection
+// Designed for stepping through recursive calls with:
+//   gpx --step examples/39_inspect_recursion_callstack.gpx
+//
+// Demonstrates:
+// 1. Recursive function calls pushing activation records to the Call Stack
+// 2. Base case detection and stack frame unwinding
+// 3. Euclidean Greatest Common Divisor (GCD) algorithm
+// 4. Recursive Fibonacci sequence computation
+// ============================================================================
+
+fn gcd(a: int, b: int) -> int {
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+fn fib(n: int) -> int {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+fn main() -> int {
+    print("=== GPX RECURSION & CALL STACK INSPECTION DEMO ===");
+
+    let g1: int = gcd(48, 18);
+    printf("GCD(48, 18) = %lld\n", g1);
+
+    let g2: int = gcd(1071, 462);
+    printf("GCD(1071, 462) = %lld\n", g2);
+
+    let f5: int = fib(5);
+    printf("Fibonacci(5) = %lld\n", f5);
+
+    return 0;
+}

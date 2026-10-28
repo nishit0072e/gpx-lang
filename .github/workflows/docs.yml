@@ -1,0 +1,69 @@
+name: Documentation & Manual Build
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '.github/workflows/docs.yml'
+    paths-ignore:
+      - 'docs/*.pdf'
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-docs:
+    name: Build PDF Manual & Verify Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Compile LaTeX Specification & Manual to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: gpx-specification.tex
+          working_directory: docs
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Upload PDF Manual as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpx-specification-pdf
+          path: docs/gpx-specification.pdf
+          if-no-files-found: error
+
+      - name: Commit & Update PDF in Repository
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action [Docs Bot]"
+          git add docs/gpx-specification.pdf
+          if git diff --staged --quiet; then
+            echo "No changes in compiled PDF."
+          else
+            git commit -m "docs(manual): auto-compile updated LaTeX specification PDF [skip ci]"
+            git push origin ${{ github.ref_name }}
+          fi
+
+      - name: Release Asset Upload (on Tagged Release)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: docs/gpx-specification.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

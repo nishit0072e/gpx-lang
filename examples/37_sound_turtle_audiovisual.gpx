@@ -1,0 +1,44 @@
+// ============================================================================
+// Example 37: Audiovisual Turtle Graphics & Sound Synthesis
+// Combines 2D vector turtle graphics (<draw.gpx>) with sound synthesis (<sound.gpx>)
+// to produce interactive generative art with musical tone feedback.
+// ============================================================================
+
+#include <draw.gpx>
+#include <sound.gpx>
+
+fn main() -> int {
+    print("=== GPX AUDIOVISUAL TURTLE & SOUND DEMO ===");
+    print("Drawing rainbow musical polygon spiral...");
+
+    draw_init(500, 500);
+    draw_clear(20, 24, 35);  // Sleek dark background
+    draw_goto(250.0, 250.0);
+
+    let colors_r: [int; 6] = [255, 255, 76,  0,   0,   200,];
+    let colors_g: [int; 6] = [80,  180, 220, 220, 100, 50,];
+    let colors_b: [int; 6] = [80,  0,   80,  255, 255, 255,];
+
+    let base_pitch: int = 220;  // A3
+
+    for step in 1..25 {
+        let col_idx: int = step % 6;
+        let r: int = colors_r[col_idx];
+        let g: int = colors_g[col_idx];
+        let b: int = colors_b[col_idx];
+        draw_set_pen(r, g, b, 2);
+
+        let dist: double = (step as double) * 7.5;
+        draw_forward(dist);
+        draw_left(61.0);  // Slight angle offset creates hypnotic spiral
+
+        // Ascending musical tone matching the growing geometry
+        let pitch: int = base_pitch + (step * 25);
+        sound_beep(pitch, 40);
+    }
+
+    draw_render_svg("musical_spiral.svg");
+    print("Musical spiral vector SVG exported to 'musical_spiral.svg'!");
+    sound_sfx_powerup();
+    return 0;
+}

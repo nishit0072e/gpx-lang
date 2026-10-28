@@ -1,0 +1,163 @@
+// ============================================================================
+// GPX Example 30: OOP LRU Cache (Least Recently Used Cache)
+//
+// Demonstrates a high-performance LRU Cache combining doubly-linked list
+// node splicing with automatic eviction of the least recently used keys.
+// ============================================================================
+
+#include <memory.gpx>
+
+struct CacheNode {
+    key: int,
+    val: int,
+    prev: *CacheNode,
+    next: *CacheNode
+}
+
+struct LRUCache {
+    capacity: int,
+    size: int,
+    head: *CacheNode,
+    tail: *CacheNode
+}
+
+// 1. Constructor
+fn LRUCache::new(capacity: int) -> LRUCache {
+    let cap: int = capacity;
+    if cap <= 0 { cap = 3; }
+    return LRUCache {
+        capacity: cap,
+        size: 0,
+        head: null,
+        tail: null
+    };
+}
+
+// 2. Detach a node from its current position
+fn (self: *LRUCache) remove_node(node: *CacheNode) {
+    if node->prev != null {
+        let p: *CacheNode = node->prev;
+        p->next = node->next;
+    } else {
+        self->head = node->next;
+    }
+
+    if node->next != null {
+        let n: *CacheNode = node->next;
+        n->prev = node->prev;
+    } else {
+        self->tail = node->prev;
+    }
+}
+
+// 3. Prepend node to head (Most Recently Used position)
+fn (self: *LRUCache) add_to_head(node: *CacheNode) {
+    node->next = self->head;
+    node->prev = null;
+    if self->head != null {
+        let h: *CacheNode = self->head;
+        h->prev = node;
+    }
+    self->head = node;
+    if self->tail == null {
+        self->tail = node;
+    }
+}
+
+// 4. Retrieve item by key and promote to head
+fn (self: *LRUCache) get(key: int) -> int {
+    let curr: *CacheNode = self->head;
+    while curr != null {
+        if curr->key == key {
+            // Found! Promote to most recently used
+            self->remove_node(curr);
+            self->add_to_head(curr);
+            return curr->val;
+        }
+        curr = curr->next;
+    }
+    return -1; // Cache miss
+}
+
+// 5. Insert or update key-value pair, evicting tail if capacity is exceeded
+fn (self: *LRUCache) put(key: int, val: int) {
+    // Check if key already exists
+    let curr: *CacheNode = self->head;
+    while curr != null {
+        if curr->key == key {
+            curr->val = val;
+            self->remove_node(curr);
+            self->add_to_head(curr);
+            return;
+        }
+        curr = curr->next;
+    }
+
+    // If cache is full, evict the least recently used node (tail)
+    if self->size >= self->capacity && self->tail != null {
+        let lru: *CacheNode = self->tail;
+        print("  [Eviction] Cache full! Evicting LRU key #", lru->key, "(value:", lru->val, ")");
+        self->remove_node(lru);
+        free(lru);
+        self->size = self->size - 1;
+    }
+
+    // Insert new node at head (MRU)
+    let new_node: *CacheNode = malloc(sizeof(CacheNode));
+    new_node->key = key;
+    new_node->val = val;
+    new_node->prev = null;
+    new_node->next = null;
+    self->add_to_head(new_node);
+    self->size = self->size + 1;
+    print("  Cached key #", key, "=> value:", val);
+}
+
+// 6. Print current cache order from MRU to LRU
+fn (self: LRUCache) print_state() {
+    print("  [MRU -> LRU]:");
+    let curr: *CacheNode = self.head;
+    while curr != null {
+        print("    Key:", curr->key, "| Value:", curr->val);
+        curr = curr->next;
+    }
+}
+
+// 7. Cleanup
+fn (self: *LRUCache) destroy() {
+    let curr: *CacheNode = self->head;
+    while curr != null {
+        let next_node: *CacheNode = curr->next;
+        free(curr);
+        curr = next_node;
+    }
+}
+
+fn main() {
+    print("=== GPX OOP LRU Cache Demo (Capacity = 3) ===");
+
+    let cache = LRUCache::new(3);
+
+    print("\n--- 1. Filling Cache to Capacity (3 items) ---");
+    cache.put(1, 100);
+    cache.put(2, 200);
+    cache.put(3, 300);
+    cache.print_state();
+
+    print("\n--- 2. Accessing Key 1 (Promoting to MRU) ---");
+    print("Retrieved key 1 =>", cache.get(1));
+    cache.print_state();
+
+    print("\n--- 3. Inserting Key 4 (Triggers Eviction of Key 2) ---");
+    // Since key 1 was promoted, key 2 is now the LRU tail!
+    cache.put(4, 400);
+    cache.print_state();
+
+    print("\n--- 4. Querying Evicted Key vs Present Key ---");
+    print("Get key 2 (was evicted):", cache.get(2), "(returns -1 for miss)");
+    print("Get key 3 (present):    ", cache.get(3));
+    print("Get key 4 (present):    ", cache.get(4));
+
+    cache.destroy();
+    print("\nLRU cache memory safely cleaned up!");
+}

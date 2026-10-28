@@ -1,0 +1,97 @@
+// ============================================================================
+// GPX Example 32: Stack-Based Expression Evaluator (Reverse Polish Notation)
+//
+// Demonstrates using a LIFO Stack to evaluate postfix arithmetic expressions
+// (RPN), commonly used in compilers, calculators, and stack virtual machines.
+// ============================================================================
+
+#include <stack.gpx>
+#include <string.gpx>
+
+// Evaluates a sequence of tokens in Reverse Polish Notation (Postfix)
+// e.g. ["5", "3", "+", "2", "*"] calculates (5 + 3) * 2 = 16
+fn evaluate_postfix_3(a: string, b: string, c: string) -> int {
+    let s: *Stack = stack_create(8);
+    let tokens: [string; 3] = [a, b, c];
+
+    for i in 0..3 {
+        let tok: string = tokens[i];
+        if str_cmp(tok, "+") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left + right);
+        } else if str_cmp(tok, "-") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left - right);
+        } else if str_cmp(tok, "*") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left * right);
+        } else if str_cmp(tok, "/") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left / right);
+        } else {
+            stack_push(s, str_to_int(tok));
+        }
+    }
+    let res: int = stack_pop(s);
+    stack_free(s);
+    return res;
+}
+
+fn evaluate_postfix_5(t0: string, t1: string, t2: string, t3: string, t4: string) -> int {
+    let s: *Stack = stack_create(8);
+    let tokens: [string; 5] = [t0, t1, t2, t3, t4];
+
+    for i in 0..5 {
+        let tok: string = tokens[i];
+        if str_cmp(tok, "+") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left + right);
+        } else if str_cmp(tok, "-") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left - right);
+        } else if str_cmp(tok, "*") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left * right);
+        } else if str_cmp(tok, "/") == 0 {
+            let right: int = stack_pop(s);
+            let left: int = stack_pop(s);
+            stack_push(s, left / right);
+        } else {
+            stack_push(s, str_to_int(tok));
+        }
+    }
+    let res: int = stack_pop(s);
+    stack_free(s);
+    return res;
+}
+
+fn main() {
+    print("=== GPX Stack Expression Evaluator (RPN) Demo ===");
+
+    // Expression 1: "10 20 +" => 10 + 20 = 30
+    print("\n--- Expression 1 ---");
+    print("Postfix: 10 20 +");
+    let ans1: int = evaluate_postfix_3("10", "20", "+");
+    print("Result: ", ans1);
+
+    // Expression 2: "5 3 + 2 *" => (5 + 3) * 2 = 16
+    print("\n--- Expression 2 ---");
+    print("Postfix: 5 3 + 2 *");
+    let ans2: int = evaluate_postfix_5("5", "3", "+", "2", "*");
+    print("Result: ", ans2);
+
+    // Expression 3: "50 10 - 4 /" => (50 - 10) / 4 = 10
+    print("\n--- Expression 3 ---");
+    print("Postfix: 50 10 - 4 /");
+    let ans3: int = evaluate_postfix_5("50", "10", "-", "4", "/");
+    print("Result: ", ans3);
+
+    print("\nStack expression evaluation completed successfully!");
+}

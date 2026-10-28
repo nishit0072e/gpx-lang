@@ -1,0 +1,40 @@
+// ============================================================================
+// Example 33: 8-Bit Audio & Sound Synthesizer Demo (<sound.gpx>)
+// Demonstrates retro 8-bit sound effects, note playback, and WAV export.
+// ============================================================================
+
+#include <sound.gpx>
+
+fn main() -> int {
+    print("=== GPX 8-BIT AUDIO SYNTHESIZER DEMO ===");
+
+    // 1. Convert musical notes to frequencies
+    let c4: int = sound_note_to_freq("C4");
+    let e4: int = sound_note_to_freq("E4");
+    let g4: int = sound_note_to_freq("G4");
+    let c5: int = sound_note_to_freq("C5");
+
+    printf("C4 = %lld Hz\n", c4);
+    printf("E4 = %lld Hz\n", e4);
+    printf("G4 = %lld Hz\n", g4);
+    printf("C5 = %lld Hz\n", c5);
+
+    // 2. Play 8-Bit Sound Effects (SFX)
+    print("Playing Laser SFX...");
+    sound_sfx_laser();
+
+    print("Playing Coin SFX...");
+    sound_sfx_coin();
+
+    print("Playing Powerup SFX...");
+    sound_sfx_powerup();
+
+    // 3. Export custom waveforms to PCM .wav files
+    print("Exporting chiptune sounds to WAV files...");
+    sound_export_wav("square_tone.wav", SOUND_WAVE_SQUARE, 440, 300);
+    sound_export_wav("sine_melody.wav", SOUND_WAVE_SINE, 523, 300);
+    sound_save_sfx_wav("coin.wav", 2);
+
+    print("All audio generated and exported successfully!");
+    return 0;
+}

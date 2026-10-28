@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "GPX: Interactive Debugger (Terminal)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "gpx \"${file}\" --step"
+    },
+    {
+      "name": "GPX: Visual Debugger (DAP)",
+      "type": "gpx",
+      "request": "launch",
+      "program": "${file}",
+      "stopOnEntry": true
+    },
+    {
+      "name": "GPX: Direct Run (VM)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "gpx \"${file}\" --run"
+    }
+  ]
+}

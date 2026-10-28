@@ -1,0 +1,100 @@
+// ============================================================================
+// GPX Example 24: Object-Oriented Banking Simulation
+//
+// Demonstrates encapsulation, constructors, balance state mutation,
+// transaction validation, and inter-object transfers.
+// ============================================================================
+
+struct BankAccount {
+    id: int,
+    holder: string,
+    balance: int
+}
+
+// Static Constructor
+fn BankAccount::new(id: int, holder: string, initial_deposit: int) -> BankAccount {
+    let starting_balance: int = initial_deposit;
+    if starting_balance < 0 { starting_balance = 0; }
+    return BankAccount {
+        id: id,
+        holder: holder,
+        balance: starting_balance
+    };
+}
+
+// Deposit funds
+fn (self: *BankAccount) deposit(amount: int) {
+    if amount <= 0 {
+        print("  [Error] Deposit amount must be positive!");
+        return;
+    }
+    self->balance = self->balance + amount;
+    print("  Deposited $", amount, "into account #", self->id, "(New balance: $", self->balance, ")");
+}
+
+// Withdraw funds with overdraft protection
+fn (self: *BankAccount) withdraw(amount: int) -> bool {
+    if amount <= 0 {
+        print("  [Error] Withdrawal amount must be positive!");
+        return false;
+    }
+    if self->balance < amount {
+        print("  [Declined] Insufficient funds in account #", self->id, "- requested $", amount, ", available $", self->balance);
+        return false;
+    }
+    self->balance = self->balance - amount;
+    print("  Withdrew $", amount, "from account #", self->id, "(Remaining: $", self->balance, ")");
+    return true;
+}
+
+// Print statement (read-only value receiver)
+fn (self: BankAccount) print_statement() {
+    print("  --------------------------------------");
+    print("  Account #:", self.id, " | Holder:", self.holder);
+    print("  Current Balance: $", self.balance);
+    print("  --------------------------------------");
+}
+
+// Transfer money from this account to another account
+fn (self: *BankAccount) transfer_to(recipient: *BankAccount, amount: int) -> bool {
+    print("Initiating transfer of $", amount, "from", self->holder, "to", recipient->holder, "...");
+    if self->withdraw(amount) {
+        recipient->deposit(amount);
+        print("Transfer completed successfully!\n");
+        return true;
+    }
+    print("Transfer failed due to insufficient funds.\n");
+    return false;
+}
+
+fn main() {
+    print("=== GPX OOP Banking Simulation ===");
+
+    // Create accounts
+    let alice = BankAccount::new(101, "Alice Smith", 500);
+    let bob   = BankAccount::new(102, "Bob Jones",   100);
+
+    print("\nInitial Statements:");
+    alice.print_statement();
+    bob.print_statement();
+
+    // Perform deposits and withdrawals
+    print("\nTransactions:");
+    alice.deposit(150);
+    bob.withdraw(50);
+
+    // Overdraft test
+    print("\nOverdraft Test:");
+    bob.withdraw(200);
+
+    // Inter-account transfer
+    print("\nTransfer Test:");
+    alice.transfer_to(&bob, 250);
+
+    // Final statements
+    print("Final Statements:");
+    alice.print_statement();
+    bob.print_statement();
+
+    print("\nBanking simulation completed successfully!");
+}

@@ -10,6 +10,7 @@ __pycache__/
 *.obj
 *.s
 *.c
+*.wav
 *.egg-info/
 dist/
 build/

@@ -1,0 +1,82 @@
+// ============================================================================
+// GPX Example 27: OOP String Builder & Text Formatter
+//
+// Demonstrates a mutable StringBuilder class encapsulating string
+// concatenation, formatting helpers, and text document construction.
+// ============================================================================
+
+#include <string.gpx>
+
+struct StringBuilder {
+    content: string
+}
+
+// 1. Constructor
+fn StringBuilder::new() -> StringBuilder {
+    return StringBuilder { content: "" };
+}
+
+// 2. Append string
+fn (self: *StringBuilder) append(s: string) {
+    self->content = self->content + s;
+}
+
+// 3. Append string followed by newline
+fn (self: *StringBuilder) append_line(s: string) {
+    self->content = self->content + s + "\n";
+}
+
+// 4. Append horizontal separator
+fn (self: *StringBuilder) append_divider(length: int) {
+    for i in 0..length {
+        self->content = self->content + "=";
+    }
+    self->content = self->content + "\n";
+}
+
+// 5. Get compiled string
+fn (self: StringBuilder) to_string() -> string {
+    return self.content;
+}
+
+// 6. Character length
+fn (self: StringBuilder) len() -> int {
+    return strlen(self.content);
+}
+
+// 7. Clear buffer
+fn (self: *StringBuilder) clear() {
+    self->content = "";
+}
+
+fn main() {
+    print("=== GPX OOP StringBuilder Demo ===");
+
+    let sb = StringBuilder::new();
+
+    // Build formatted report
+    sb.append_divider(36);
+    sb.append_line("       SYSTEM STATUS REPORT         ");
+    sb.append_divider(36);
+    sb.append("OS Version:        ");
+    sb.append_line("GPX Core 0.9.0");
+    sb.append("Compiler Backend:  ");
+    sb.append_line("C99 / GCC Native");
+    sb.append("Memory Integrity:  ");
+    sb.append_line("100% OK");
+    sb.append("Cross-Platform:    ");
+    sb.append_line("Windows 11 & WSL2");
+    sb.append_divider(36);
+
+    print("\n--- Generated Report Content ---");
+    print(sb.to_string());
+    print("Total document character length:", sb.len());
+
+    print("\n--- Clearing and Reusing StringBuilder ---");
+    sb.clear();
+    print("Length after clear:", sb.len());
+    sb.append("Fresh new message generated with recycled StringBuilder!");
+    print(sb.to_string());
+
+    print("\nStringBuilder demonstration completed successfully!");
+}

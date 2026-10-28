@@ -1,0 +1,95 @@
+// ============================================================================
+// GPX Example 29: Dijkstra's Shortest Path Algorithm on Weighted Graph
+//
+// Demonstrates finding the minimum cost path from a source router/city
+// to all other network destinations using Dijkstra's greedy algorithm.
+// ============================================================================
+
+#include <graph.gpx>
+#include <memory.gpx>
+
+fn dijkstra(g: *Graph, src: int, dist_out: *int) {
+    if g == null || src < 0 || src >= g->vertices || dist_out == null { return; }
+
+    let visited: *int = calloc(g->vertices, sizeof(int));
+    let inf: int = 999999;
+
+    // Initialize all distances to infinity, source to 0
+    for i in 0..g->vertices {
+        dist_out[i] = inf;
+    }
+    dist_out[src] = 0;
+
+    for count in 0..(g->vertices - 1) {
+        // Find unvisited vertex with smallest provisional distance
+        let min_val: int = inf;
+        let u: int = -1;
+
+        for v in 0..g->vertices {
+            if visited[v] == 0 && dist_out[v] < min_val {
+                min_val = dist_out[v];
+                u = v;
+            }
+        }
+
+        if u == -1 { break; }
+        visited[u] = 1;
+
+        // Relax adjacent neighbors
+        for v in 0..g->vertices {
+            let weight: int = graph_get_edge(g, u, v);
+            if weight > 0 && visited[v] == 0 {
+                let new_dist: int = dist_out[u] + weight;
+                if new_dist < dist_out[v] {
+                    dist_out[v] = new_dist;
+                }
+            }
+        }
+    }
+    free(visited);
+}
+
+fn main() {
+    print("=== GPX Dijkstra's Shortest Path Demo ===");
+
+    // Create a 5-node routing network:
+    //   Nodes: 0 (Server), 1 (Router A), 2 (Router B), 3 (Switch C), 4 (Client D)
+    let g: *Graph = graph_create(5, false);
+
+    print("\n--- Network Topology & Link Latencies (ms) ---");
+    // Connect edges with weights (latency cost):
+    //   0 -[4]-> 1
+    //   0 -[2]-> 2
+    //   1 -[5]-> 3
+    //   2 -[1]-> 1  (indirect via 2 saves cost: 0->2->1 is 3ms vs direct 4ms!)
+    //   2 -[8]-> 4
+    //   3 -[6]-> 4
+    //   1 -[3]-> 4
+    graph_add_edge(g, 0, 1, 4);
+    graph_add_edge(g, 0, 2, 2);
+    graph_add_edge(g, 2, 1, 1);
+    graph_add_edge(g, 1, 3, 5);
+    graph_add_edge(g, 2, 4, 8);
+    graph_add_edge(g, 1, 4, 3);
+    graph_add_edge(g, 3, 4, 6);
+
+    print("Edge 0-1 (Direct Server to Router A):  4 ms");
+    print("Edge 0-2 (Server to Router B):         2 ms");
+    print("Edge 2-1 (Router B to Router A link):  1 ms");
+    print("Edge 1-4 (Router A to Client D):       3 ms");
+
+    let dist: *int = malloc(5 * sizeof(int));
+    dijkstra(g, 0, dist);
+
+    print("\n--- Shortest Path Distances from Source (Node 0) ---");
+    print("Node 0 (Server)   -> Cost:", dist[0], "ms");
+    print("Node 1 (Router A) -> Cost:", dist[1], "ms (via Node 2: 2 + 1 = 3 ms!)");
+    print("Node 2 (Router B) -> Cost:", dist[2], "ms");
+    print("Node 3 (Switch C) -> Cost:", dist[3], "ms");
+    print("Node 4 (Client D) -> Cost:", dist[4], "ms (0 -> 2 -> 1 -> 4 = 6 ms!)");
+
+    free(dist);
+    graph_free(g);
+
+    print("\nDijkstra calculation completed successfully!");
+}

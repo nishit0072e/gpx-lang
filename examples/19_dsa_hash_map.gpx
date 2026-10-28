@@ -1,0 +1,46 @@
+// ============================================================================
+// GPX Example 19: Hash Map (Chaining Bucket Table)
+//
+// Demonstrates fast O(1) dictionary lookups, string hashing, and key removal.
+// ============================================================================
+
+#include <hashmap.gpx>
+
+fn main() {
+    print("=== GPX Hash Map Demo ===");
+
+    // Create a hash map with 8 buckets
+    let scores: *HashMap = map_create(8);
+
+    print("\n--- Inserting Key-Value Pairs ---");
+    map_put(scores, "Alice", 95);
+    map_put(scores, "Bob",   82);
+    map_put(scores, "Carol", 91);
+    map_put(scores, "Dave",  78);
+
+    print("Total entries in map:", map_len(scores));
+
+    print("\n--- Looking Up Values ---");
+    print("Alice score:", map_get(scores, "Alice"));
+    print("Bob score:  ", map_get(scores, "Bob"));
+    print("Carol score:", map_get(scores, "Carol"));
+    print("Dave score: ", map_get(scores, "Dave"));
+
+    print("\n--- Membership Queries ---");
+    print("Is Carol in map? ", map_has(scores, "Carol"));
+    print("Is Xavier in map?", map_has(scores, "Xavier"));
+
+    print("\n--- Updating an Existing Key ---");
+    map_put(scores, "Bob", 88); // Bob retook the quiz!
+    print("Bob updated score:", map_get(scores, "Bob"));
+
+    print("\n--- Removing a Key ---");
+    let removed: bool = map_remove(scores, "Dave");
+    print("Removed Dave?", removed);
+    print("Has Dave now? ", map_has(scores, "Dave"));
+    print("Remaining entries:", map_len(scores));
+
+    // Cleanup
+    map_free(scores);
+    print("\nHash map memory successfully freed!");
+}

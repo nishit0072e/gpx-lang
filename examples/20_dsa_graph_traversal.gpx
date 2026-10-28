@@ -1,0 +1,57 @@
+// ============================================================================
+// GPX Example 20: Graph Representation and Traversals (BFS & DFS)
+//
+// Demonstrates an adjacency matrix graph, edge queries, vertex degrees,
+// Breadth-First Search (BFS), and Depth-First Search (DFS).
+// ============================================================================
+
+#include <graph.gpx>
+#include <memory.gpx>
+
+fn main() {
+    print("=== GPX Graph Demo (BFS & DFS) ===");
+
+    // Create an undirected graph with 5 vertices (0, 1, 2, 3, 4)
+    let g: *Graph = graph_create(5, false);
+
+    // Build the network edges:
+    //      0
+    //     / \
+    //    1   2
+    //    |   |
+    //    3   4
+    print("\n--- Connecting Graph Edges ---");
+    graph_add_edge(g, 0, 1, 1);
+    graph_add_edge(g, 0, 2, 1);
+    graph_add_edge(g, 1, 3, 1);
+    graph_add_edge(g, 2, 4, 1);
+
+    print("Edge 0 <-> 1 exists?", graph_has_edge(g, 0, 1));
+    print("Edge 1 <-> 4 exists?", graph_has_edge(g, 1, 4));
+    print("Degree of vertex 0: ", graph_degree(g, 0));
+    print("Degree of vertex 1: ", graph_degree(g, 1));
+
+    // Breadth-First Search (level-by-level traversal)
+    print("\n--- Breadth-First Search (BFS) starting at 0 ---");
+    let bfs_order: *int = malloc(5 * sizeof(int));
+    let bfs_total: int = graph_bfs(g, 0, bfs_order);
+    print("BFS reachable vertices count:", bfs_total);
+    for i in 0..bfs_total {
+        print("  Visited step", i, "-> vertex", bfs_order[i]);
+    }
+    free(bfs_order);
+
+    // Depth-First Search (deep dive traversal)
+    print("\n--- Depth-First Search (DFS) starting at 0 ---");
+    let dfs_order: *int = malloc(5 * sizeof(int));
+    let dfs_total: int = graph_dfs(g, 0, dfs_order);
+    print("DFS reachable vertices count:", dfs_total);
+    for i in 0..dfs_total {
+        print("  Visited step", i, "-> vertex", dfs_order[i]);
+    }
+    free(dfs_order);
+
+    // Clean up
+    graph_free(g);
+    print("\nGraph memory successfully freed!");
+}

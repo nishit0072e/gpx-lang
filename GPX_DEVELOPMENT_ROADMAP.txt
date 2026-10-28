@@ -1,0 +1,86 @@
+================================================================================
+          GPX PROGRAMMING LANGUAGE — OFFICIAL DEVELOPMENT ROADMAP
+================================================================================
+Generated: October 2026
+Lead Architect: Nishit (@nishit0072e)
+Current Version: v0.9.0
+
+--------------------------------------------------------------------------------
+1. OBJECT-ORIENTED STRUCT METHODS & RECEIVER SYNTAX
+--------------------------------------------------------------------------------
+Goal: Provide clean object-oriented syntax sugar on top of zero-overhead C structs.
+* Method declarations with pointer or value receivers:
+    fn (self: *Vector) add(other: *Vector) -> Vector { ... }
+* Method invocation syntax:
+    vec.add(&other)
+    player.move(10, 20)
+* Associated functions / constructors:
+    Vector::new(x, y)
+* Full transpilation to high-performance C function dispatch:
+    Vector_add(&vec, &other)
+
+--------------------------------------------------------------------------------
+2. DATA STRUCTURES & ALGORITHMS (DSA) STANDARD SUITE
+--------------------------------------------------------------------------------
+Goal: Comprehensive, production-grade standard library for algorithms & collections.
+* Dynamic Arrays & Lists (<list.gpx>):
+    - Growable contiguous vector: list_create, list_push, list_pop, list_get, list_free
+    - OO syntax: list.push(item), list.pop(), list.len()
+* Linked Lists (<linkedlist.gpx>):
+    - Singly and doubly linked lists with node manipulation, insert, remove, traverse
+* Stacks & Queues (<stack.gpx>, <queue.gpx>):
+    - LIFO Stack: push, pop, peek, is_empty
+    - FIFO Queue & Circular Ring Buffer: enqueue, dequeue, peek, is_empty
+* Hash Tables & Maps (<hashmap.gpx>, <hash.gpx>):
+    - Key-value hash map with open addressing / robin hood hashing
+    - Hashing algorithms: FNV-1a, MurmurHash3, djb2
+    - Operations: map.set(key, val), map.get(key), map.has(key), map.delete(key)
+* Trees & Binary Search Trees (<tree.gpx>):
+    - BST and AVL self-balancing tree implementations: insert, search, min, max
+    - Tree traversals: in-order, pre-order, post-order, level-order
+* Graphs & Pathfinding (<graph.gpx>):
+    - Adjacency list / matrix representations
+    - Algorithms: Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra's shortest path
+* Sorting & Searching Algorithms (<algorithms.gpx>):
+    - Sorting: Quicksort, Mergesort, Heapsort, Insertion sort, Bubble sort
+    - Searching: Binary search, Linear search
+* Storage Management (<memory.gpx>):
+    - Heap memory tracking, memory pool allocators, arena allocators
+
+--------------------------------------------------------------------------------
+3. INTERACTIVE REPL & LIVE GRAPHICAL CANVAS
+--------------------------------------------------------------------------------
+Goal: Instant feedback loop for children, students, and rapid prototyping.
+* In-terminal interactive read-eval-print loop (`gpx --repl` or `gpx`)
+* Multi-line input, history, auto-completion, inspection commands
+* Live graphical canvas window popping up immediately during `draw_*` operations
+* HTML5 / Browser Web Playground integration
+
+--------------------------------------------------------------------------------
+4. 8-BIT AUDIO & SOUND SYNTHESIS MODULE (<sound.gpx>)
+--------------------------------------------------------------------------------
+Goal: Built-in sound generation for games and creative coding.
+* Pure software synthesizer without external heavy library dependencies
+* Frequency tone generator: sound_beep(freq_hz, duration_ms)
+* Musical notation playback: sound_play_note("C4", 500), sound_play_melody(...)
+* Multi-channel waveform generation: Square, Triangle, Sine, Noise
+* Direct export to standard PCM .wav audio files
+
+--------------------------------------------------------------------------------
+5. MULTI-FILE MODULE IMPORT SYSTEM & NAMESPACES
+--------------------------------------------------------------------------------
+Goal: Scale GPX applications across multiple files and packages cleanly.
+* Keyword `import`:
+    import "math_utils.gpx" as math;
+    import { Vector, Matrix } from "geometry.gpx";
+* Namespace resolution and circular dependency prevention
+* Package manifest and local dependency management
+
+--------------------------------------------------------------------------------
+6. WEBASSEMBLY (WASM) COMPILER TARGET
+--------------------------------------------------------------------------------
+Goal: Run GPX everywhere at native speed in modern web browsers.
+* CLI flag: `gpx source.gpx --target wasm -o app.wasm`
+* Direct execution inside web workers and Node.js
+* Direct DOM and HTML5 Canvas API interoperability
+================================================================================

@@ -1,0 +1,14 @@
+#include <draw.gpx>
+
+draw_init(400, 400)
+draw_clear(255, 255, 255)
+draw_set_pen(255, 140, 0, 3)
+draw_goto(200.0, 200.0)
+
+repeat 5 {
+    draw_forward(120.0)
+    draw_right(144.0)
+}
+
+draw_render_svg("star.svg")
+print("Star generated successfully!")

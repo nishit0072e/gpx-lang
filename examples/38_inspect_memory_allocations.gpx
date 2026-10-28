@@ -1,0 +1,55 @@
+// ============================================================================
+// Example 38: Real-Time Memory & Instruction Inspection (<memory.gpx>)
+// Designed specifically for interactive execution with:
+//   gpx --step examples/38_inspect_memory_allocations.gpx
+//
+// Demonstrates:
+// 1. Dynamic heap allocation tracking in the Inspector
+// 2. Struct pointer mutations and field updates
+// 3. Linked node references in memory
+// 4. Memory deallocation (free) and use-after-free detection
+// 5. Time-Travel Debugging: step backward with 'b' to un-free a block!
+// ============================================================================
+
+#include <memory.gpx>
+
+struct Node {
+    val: int,
+    id: int,
+    next: *Node,
+}
+
+fn main() -> int {
+    print("=== GPX REAL-TIME MEMORY INSPECTION DEMO ===");
+
+    // Step 1: Allocate Node 1 on heap (Inspector shows Block #1 ACTIVE)
+    let n1: *Node = malloc(sizeof(Node));
+    n1->id = 101;
+    n1->val = 42;
+    n1->next = null;
+
+    // Step 2: Allocate Node 2 on heap (Inspector shows Block #2 ACTIVE)
+    let n2: *Node = malloc(sizeof(Node));
+    n2->id = 102;
+    n2->val = 84;
+    n2->next = null;
+
+    // Step 3: Link Node 1 -> Node 2
+    n1->next = n2;
+
+    printf("Node 1: ID=%lld, Val=%lld\n", n1->id, n1->val);
+    printf("Node 2: ID=%lld, Val=%lld\n", n2->id, n2->val);
+
+    // Step 4: Access through pointer traversal
+    let target: *Node = n1->next;
+    printf("Traversed to Node: ID=%lld, Val=%lld\n", target->id, target->val);
+
+    // Step 5: Free Node 2 (Inspector will mark Block #2 as FREED)
+    free(n2);
+    print("Node 2 freed.");
+
+    // Step 6: Free Node 1
+    free(n1);
+    print("Node 1 freed. All allocations cleaned up!");
+    return 0;
+}

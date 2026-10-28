@@ -1,0 +1,117 @@
+// ============================================================================
+// GPX Example 26: OOP Game Character Battle Simulation
+//
+// Demonstrates object-oriented RPG combat mechanics, health tracking,
+// attack calculations with defense mitigation, and round-based battle loops.
+// ============================================================================
+
+struct Fighter {
+    name: string,
+    hp: int,
+    max_hp: int,
+    attack: int,
+    defense: int
+}
+
+// 1. Fighter Constructor
+fn Fighter::new(name: string, max_hp: int, attack: int, defense: int) -> Fighter {
+    return Fighter {
+        name: name,
+        hp: max_hp,
+        max_hp: max_hp,
+        attack: attack,
+        defense: defense
+    };
+}
+
+// 2. Health check
+fn (self: Fighter) is_alive() -> bool {
+    return self.hp > 0;
+}
+
+// 3. Print combat stats
+fn (self: Fighter) print_status() {
+    print("  [", self.name, "] HP:", self.hp, "/", self.max_hp, "| ATK:", self.attack, "| DEF:", self.defense);
+}
+
+// 4. Take damage with defense mitigation
+fn (self: *Fighter) take_damage(incoming: int) -> int {
+    let effective: int = incoming - self->defense;
+    if effective < 1 { effective = 1; } // Minimum 1 damage
+
+    self->hp = self->hp - effective;
+    if self->hp < 0 { self->hp = 0; }
+    return effective;
+}
+
+// 5. Heal fighter
+fn (self: *Fighter) heal(amount: int) {
+    if !self->is_alive() {
+        print("  [Failed]", self->name, "is already defeated and cannot be healed!");
+        return;
+    }
+    self->hp = self->hp + amount;
+    if self->hp > self->max_hp {
+        self->hp = self->max_hp;
+    }
+    print("  +", self->name, "healed for", amount, "HP! (Current HP:", self->hp, "/", self->max_hp, ")");
+}
+
+// 6. Attack opponent target
+fn (self: *Fighter) attack_opponent(target: *Fighter) {
+    if !self->is_alive() {
+        return;
+    }
+    print(self->name, "strikes", target->name, "with", self->attack, "raw power!");
+    let dealt: int = target->take_damage(self->attack);
+    print("  -> Dealt", dealt, "damage! (", target->name, "HP is now", target->hp, "/", target->max_hp, ")");
+
+    if !target->is_alive() {
+        print("  *** [DEFEATED]", target->name, "has fallen in battle! ***");
+    }
+}
+
+fn main() {
+    print("=== GPX OOP Arena Combat Simulation ===");
+
+    // Create combatants
+    let hero   = Fighter::new("Sir Valen (Knight)", 120, 32, 8);
+    let dragon = Fighter::new("Ignis (Fire Drake)", 100, 26, 4);
+
+    print("\n--- Combatants Entering the Arena ---");
+    hero.print_status();
+    dragon.print_status();
+
+    print("\n--- The Battle Begins! ---");
+    let round: int = 1;
+
+    while hero.is_alive() && dragon.is_alive() {
+        print("\n--- Round", round, "---");
+
+        // Hero attacks dragon
+        hero.attack_opponent(&dragon);
+
+        // Dragon counter-attacks if still alive
+        if dragon.is_alive() {
+            dragon.attack_opponent(&hero);
+        }
+
+        // Tactical mid-battle heal if low on health
+        if hero.is_alive() && hero.hp < 40 {
+            print("\nSir Valen uses a Healing Potion!");
+            hero.heal(30);
+        }
+
+        round = round + 1;
+    }
+
+    print("\n=== Battle Results ===");
+    hero.print_status();
+    dragon.print_status();
+
+    if hero.is_alive() {
+        print("\nVictory! Sir Valen has triumphed over the Fire Drake!");
+    } else {
+        print("\nDefeat! Ignis reigns victorious!");
+    }
+}

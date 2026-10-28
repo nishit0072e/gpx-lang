@@ -31,8 +31,8 @@
 </p>
 
 <p align="center">
-  <a href="docs/language-spec.md"><img src="https://img.shields.io/badge/DOCS-PASSING-06b6d4.svg?style=for-the-badge" alt="Docs"></a>
-  <img src="https://img.shields.io/badge/TESTS-139%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <a href="https://github.com/nishit0072e/gpx-lang/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/nishit0072e/gpx-lang/docs.yml?branch=master&label=DOCS&style=for-the-badge&logo=github&color=06b6d4" alt="Docs Status"></a>
+  <img src="https://img.shields.io/badge/TESTS-171%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -177,11 +177,15 @@ gpx examples/01_arithmetic.gpx --ir --opt
 
 ```
 gpx-lang/
+├── .github/
+│   └── workflows/docs.yml     # Automated LaTeX multi-pass PDF docs builder
 ├── assets/
 │   └── gpx-logo.svg           # 3D text branding banner
 ├── docs/
+│   ├── gpx-specification.tex  # Comprehensive formal language & architecture manual (LaTeX)
 │   ├── language-spec.md       # Formal EBNF grammar, types & memory model
 │   ├── cli-guide.md           # CLI commands, flags, and testing guide
+│   ├── repl-guide.md          # Interactive REPL, audio synthesizer, and DAP debugger
 │   └── language-comparison.md # Performance & architecture vs C, Rust, Go, Zig
 ├── examples/
 │   ├── 01_arithmetic.gpx      # Arithmetic and variable expressions
@@ -196,8 +200,14 @@ gpx-lang/
 │   ├── 10_dynamic_memory_and_structures.gpx # Dynamic memory (<memory.gpx>) and heap structs
 │   ├── 11_file_io_and_casts.gpx # File I/O (<io.gpx>) and explicit casting ('as')
 │   ├── 12_systems_enums_and_math.gpx # Bitwise ops, enums, switch, and math (<math.gpx>)
-│   └── 13_beginner_friendly_syntax.gpx # Friendly scripting, repeat loops, 2D turtle graphics (<draw.gpx>)
-├── include/                   # Standard library headers (io.gpx, string.gpx, memory.gpx, math.gpx, draw.gpx)
+│   ├── 13_beginner_friendly_syntax.gpx # Friendly scripting, repeat loops, 2D turtle graphics (<draw.gpx>)
+│   ├── 14_sound_synth_audio.gpx # 8-bit sound synthesis, square/sine waves, notes (<sound.gpx>)
+│   ├── 15_oop_methods_geometry.gpx # OOP struct receiver methods (Point.distance_to, etc.)
+│   ├── 16_dsa_vectors_lists.gpx # Dynamic array vector / list standard library (<list.gpx>)
+│   ├── 17_dsa_hashmap_lookup.gpx # Hash table dictionary standard library (<hashmap.gpx>)
+│   ├── 18_dsa_binary_search_tree.gpx # Binary search tree standard library (<tree.gpx>)
+│   └── 19_dsa_graph_traversal.gpx # Graph adjacency list traversal (<graph.gpx>)
+├── include/                   # Standard library headers (io, string, memory, math, sound, list, hashmap, etc.)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license
 └── README.md                  # Quickstart & documentation
@@ -205,10 +215,10 @@ gpx-lang/
 
 ---
 
-## Documentation
-
+* 📘 [`docs/gpx-specification.tex`](docs/gpx-specification.tex): Formal language specification and reference manual (automatically compiled to PDF by GitHub Actions).
 * 📖 [`docs/language-spec.md`](docs/language-spec.md): Complete EBNF grammar, types, scoping rules, and memory model.
 * 🛠️ [`docs/cli-guide.md`](docs/cli-guide.md): Complete CLI reference, testing, debugging (`--inspect`), and code generation guide.
+* 💻 [`docs/repl-guide.md`](docs/repl-guide.md): Interactive REPL guide, audio synthesizer commands, and Real-Time Memory Inspector (`--step`).
 * ⚖️ [`docs/language-comparison.md`](docs/language-comparison.md): Comprehensive analysis comparing GPX against C, Rust, Go, and Zig across speed, memory, and scaling.
 
 ---

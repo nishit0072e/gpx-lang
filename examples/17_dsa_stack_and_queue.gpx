@@ -1,0 +1,53 @@
+// ============================================================================
+// GPX Example 17: Stack (LIFO) and Queue (FIFO)
+//
+// Demonstrates Last-In-First-Out stack and First-In-First-Out circular queue.
+// ============================================================================
+
+#include <stack.gpx>
+#include <queue.gpx>
+
+fn main() {
+    print("=== GPX Stack (LIFO) Demo ===");
+    let s: *Stack = stack_create(4);
+
+    print("Pushing: 100, 200, 300");
+    stack_push(s, 100);
+    stack_push(s, 200);
+    stack_push(s, 300);
+
+    print("Stack top (peek):", stack_peek(s));
+    print("Stack height:    ", stack_len(s));
+
+    print("\nPopping all elements (notice reversed order):");
+    while !stack_is_empty(s) {
+        print("  Popped:", stack_pop(s));
+    }
+    stack_free(s);
+
+
+    print("\n=== GPX Queue (FIFO) Demo ===");
+    let q: *Queue = queue_create(4);
+
+    print("Enqueuing: 10, 20, 30");
+    queue_enqueue(q, 10);
+    queue_enqueue(q, 20);
+    queue_enqueue(q, 30);
+
+    print("Queue front (peek):", queue_peek(q));
+    print("Queue count:       ", queue_len(q));
+
+    print("\nDequeuing elements (notice original FIFO order):");
+    print("  Dequeued:", queue_dequeue(q));
+    print("  Dequeued:", queue_dequeue(q));
+
+    print("Enqueuing: 40 into circular buffer");
+    queue_enqueue(q, 40);
+
+    while !queue_is_empty(q) {
+        print("  Dequeued:", queue_dequeue(q));
+    }
+    queue_free(q);
+
+    print("\nStack and Queue successfully demonstrated and cleaned up!");
+}

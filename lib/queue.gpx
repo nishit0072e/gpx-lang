@@ -1,0 +1,96 @@
+// ============================================================================
+// GPX Standard Library: FIFO Queue (<queue.gpx>)
+//
+// High-performance circular ring-buffer First-In-First-Out queue with
+// dynamic capacity resizing.
+// ============================================================================
+
+#pragma once
+#include <memory.gpx>
+
+struct Queue {
+    items: *int,
+    head: int,
+    tail: int,
+    count: int,
+    capacity: int
+}
+
+fn queue_create(cap: int) -> *Queue {
+    if cap < 4 {
+        cap = 4;
+    }
+    let q: *Queue = malloc(sizeof(Queue));
+    if q == null {
+        return null;
+    }
+    q->items = malloc(sizeof(int) * cap);
+    q->head = 0;
+    q->tail = 0;
+    q->count = 0;
+    q->capacity = cap;
+    return q;
+}
+
+fn queue_len(q: *Queue) -> int {
+    if q == null {
+        return 0;
+    }
+    return q->count;
+}
+
+fn queue_is_empty(q: *Queue) -> bool {
+    if q == null {
+        return true;
+    }
+    return q->count == 0;
+}
+
+fn queue_enqueue(q: *Queue, val: int) -> bool {
+    if q == null {
+        return false;
+    }
+    if q->count >= q->capacity {
+        let new_cap: int = q->capacity * 2;
+        let new_items: *int = malloc(sizeof(int) * new_cap);
+        for i in 0..q->count {
+            let idx = (q->head + i) % q->capacity;
+            new_items[i] = q->items[idx];
+        }
+        free(q->items);
+        q->items = new_items;
+        q->head = 0;
+        q->tail = q->count;
+        q->capacity = new_cap;
+    }
+    q->items[q->tail] = val;
+    q->tail = (q->tail + 1) % q->capacity;
+    q->count = q->count + 1;
+    return true;
+}
+
+fn queue_dequeue(q: *Queue) -> int {
+    if q == null or q->count == 0 {
+        return 0;
+    }
+    let val: int = q->items[q->head];
+    q->head = (q->head + 1) % q->capacity;
+    q->count = q->count - 1;
+    return val;
+}
+
+fn queue_peek(q: *Queue) -> int {
+    if q == null or q->count == 0 {
+        return 0;
+    }
+    return q->items[q->head];
+}
+
+fn queue_free(q: *Queue) {
+    if q != null {
+        if q->items != null {
+            free(q->items);
+        }
+        free(q);
+    }
+}

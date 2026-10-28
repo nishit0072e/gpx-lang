@@ -1,0 +1,60 @@
+#pragma once
+#include <memory.gpx>
+
+// ============================================================================
+// GPX Standard Library: Arena & Bump Allocator (Storage Management)
+// ============================================================================
+
+struct Arena {
+    buffer: *byte,
+    capacity: int,
+    offset: int
+}
+
+fn arena_create(capacity: int) -> *Arena {
+    let cap: int = capacity;
+    if cap <= 0 { cap = 4096; }
+    let a: *Arena = malloc(sizeof(Arena));
+    a->buffer = malloc(cap);
+    a->capacity = cap;
+    a->offset = 0;
+    return a;
+}
+
+fn arena_alloc(a: *Arena, bytes: int) -> *byte {
+    if a == null || bytes <= 0 { return null; }
+    let rem: int = a->offset % 8;
+    let aligned: int = a->offset;
+    if rem != 0 {
+        aligned = aligned + (8 - rem);
+    }
+    if aligned + bytes > a->capacity {
+        return null;
+    }
+    let ptr: *byte = &a->buffer[aligned];
+    a->offset = aligned + bytes;
+    return ptr;
+}
+
+fn arena_reset(a: *Arena) {
+    if a == null { return; }
+    a->offset = 0;
+}
+
+fn arena_used(a: *Arena) -> int {
+    if a == null { return 0; }
+    return a->offset;
+}
+
+fn arena_remaining(a: *Arena) -> int {
+    if a == null { return 0; }
+    return a->capacity - a->offset;
+}
+
+fn arena_free(a: *Arena) {
+    if a == null { return; }
+    if a->buffer != null {
+        free(a->buffer);
+    }
+    free(a);
+}

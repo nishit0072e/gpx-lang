@@ -1,0 +1,271 @@
+\documentclass[11pt,a4paper]{report}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{tcolorbox}
+
+% --- Color Palette ---
+\definecolor{gpxprimary}{RGB}{14, 116, 144}    % Deep Cyan
+\definecolor{gpxsecondary}{RGB}{99, 102, 241}  % Indigo
+\definecolor{gpxdark}{RGB}{15, 23, 42}         % Slate Dark
+\definecolor{gpxbg}{RGB}{248, 250, 252}        % Light Gray Code BG
+\definecolor{gpxkeyword}{RGB}{185, 28, 28}     % Crimson
+\definecolor{gpxtype}{RGB}{2, 132, 199}        % Cerulean
+\definecolor{gpxstring}{RGB}{22, 101, 52}      % Forest Green
+\definecolor{gpxcomment}{RGB}{100, 116, 139}   % Slate Muted
+
+% --- Hyperref Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=gpxprimary,
+    filecolor=gpxsecondary,
+    urlcolor=gpxprimary,
+    citecolor=gpxsecondary,
+    pdftitle={GPX Programming Language Specification & Reference Manual},
+    pdfauthor={Nishit (@nishit0072e)},
+    pdfsubject={Systems Programming Language Specification},
+    pdfkeywords={GPX, compiler, systems programming, RISC-V, TAC, debugger, synthesizer}
+}
+
+% --- Syntax Highlighting for GPX ---
+\lstdefinelanguage{gpx}{
+    keywords={let, const, fn, return, if, else, while, for, repeat, when, match, break, continue, struct, union, enum, as, sizeof, null, true, false, in},
+    keywordstyle=\color{gpxkeyword}\bfseries,
+    keywords=[2]{int, double, float, char, bool, void, string, byte, short, long, *int, *void, *char, List, Node, Stack, Queue, HashMap, BSTNode, Graph},
+    keywordstyle=[2]{\color{gpxtype}\bfseries},
+    keywords=[3]{print, printf, type, typeof, malloc, free, realloc, calloc, fopen, fclose, fread, fwrite, draw_init, draw_forward, draw_left, draw_right, draw_render_svg, sound_sfx_coin, sound_sfx_laser, sound_play_note, sound_note_to_freq, list_create, list_push, list_pop, list_len},
+    keywordstyle=[3]{\color{gpxsecondary}\bfseries},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{gpxcomment}\itshape,
+    string=[b]",
+    morestring=[b]',
+    stringstyle=\color{gpxstring}
+}
+
+\lstset{
+    language=gpx,
+    backgroundcolor=\color{gpxbg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=8pt,
+    numberstyle=\tiny\color{gpxcomment},
+    frame=single,
+    rulecolor=\color{gray!30},
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=4
+}
+
+% --- Headers & Footers ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{gpxcomment}{\small GPX Language Specification v0.9.1}}
+\fancyhead[R]{\textcolor{gpxcomment}{\small \nouppercase{\leftmark}}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Title Page ---
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    
+    {\Huge \bfseries \color{gpxprimary} GPX Programming Language}\\[0.5cm]
+    {\LARGE \textbf{Guided Programming eXperience}}\\[0.2cm]
+    {\large \textit{Official Language Specification, Architecture \& Reference Manual}}\\[1.5cm]
+    
+    \rule{0.6\textwidth}{1.5pt}\\[1.5cm]
+    
+    {\large \textbf{Version 0.9.1}}\\[0.8cm]
+    
+    \textbf{Lead Architect:}\\
+    Nishit (@nishit0072e)\\[0.4cm]
+    
+    \textbf{Release Date:}\\
+    October 2026\\[2cm]
+    
+    \begin{tcolorbox}[colback=gpxbg,colframe=gpxprimary,arc=3mm,width=0.85\textwidth]
+        \centering
+        \small
+        \textit{"Most people look at compilers and see cold, impenetrable black boxes. We looked at them and asked an audacious question: What if compiling code wasn't a chore, but an exhilarating journey of discovery? What if every developer could peek behind the curtain of modern silicon and feel the raw pulse of the machine?"}
+    \end{tcolorbox}
+    
+    \vfill
+    {\footnotesize Copyright \copyright\ 2026 Nishit. All Rights Reserved. Proprietary \& Confidential.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ==============================================================================
+\chapter{Introduction \& Design Philosophy}
+% ==============================================================================
+
+The \textbf{Guided Programming eXperience (GPX)} is a statically-typed, target-agnostic systems programming language designed for developers, systems engineers, and students who crave bare-metal speed without cognitive obscurity.
+
+\section{Core Tenets}
+\begin{itemize}
+    \item \textbf{Total Pipeline Introspectability:} Every transformation in GPX---from token streams (\texttt{--tokens}) and Abstract Syntax Trees (\texttt{--ast}) to Three-Address Code (\texttt{--ir}), optimization passes (\texttt{--opt}), and machine code---can be inspected with a single flag.
+    \item \textbf{Zero-Overhead Runtime:} GPX executes without garbage collection pauses, heavy runtimes, or hidden virtualization penalties.
+    \item \textbf{Dual Audience Design:} GPX seamlessly bridges the gap between educational accessibility (friendly loop constructs, turtle graphics, interactive sound synthesis) and rigorous systems programming (raw pointers, unions, direct memory arenas, and RISC-V assembly generation).
+    \item \textbf{Pluggable Multi-Backend Compilation:} Emits high-performance ISO C99 (compiled with GCC) and bare-metal RISC-V RV32I assembly.
+\end{itemize}
+
+% ==============================================================================
+\chapter{Lexical Structure \& Grammar}
+% ==============================================================================
+
+\section{Keywords}
+The following tokens are reserved keywords in GPX:
+\begin{center}
+\begin{tabular}{lllll}
+\texttt{let} & \texttt{const} & \texttt{fn} & \texttt{return} & \texttt{if} \\
+\texttt{else} & \texttt{while} & \texttt{for} & \texttt{repeat} & \texttt{when} \\
+\texttt{break} & \texttt{continue} & \texttt{struct} & \texttt{union} & \texttt{enum} \\
+\texttt{as} & \texttt{sizeof} & \texttt{null} & \texttt{true} & \texttt{false} \\
+\end{tabular}
+\end{center}
+
+\section{Type System}
+GPX is statically typed with explicit annotations and local type inference:
+\begin{itemize}
+    \item \textbf{Primitives:} \texttt{int} (32-bit), \texttt{long} (64-bit), \texttt{short} (16-bit), \texttt{byte} (8-bit), \texttt{char} (8-bit ASCII), \texttt{float} (32-bit IEEE 754), \texttt{double} (64-bit IEEE 754), \texttt{bool}, \texttt{void}, \texttt{string}.
+    \item \textbf{Pointers:} Pointers are denoted with an asterisk prefix (e.g., \texttt{*int}, \texttt{*void}, \texttt{*Player}). The address-of operator is \texttt{\&}, and dereferencing is performed via \texttt{*} or arrow access \texttt{->}.
+    \item \textbf{Fixed-Size Arrays:} Sized arrays use the syntax \texttt{[T; N]}, with zero-cost indexed access \texttt{arr[i]}.
+    \item \textbf{Composite Types:} User-defined records via \texttt{struct}, \texttt{union}, and scoped \texttt{enum}.
+\end{itemize}
+
+% ==============================================================================
+\chapter{Object-Oriented Programming (OOP) in GPX}
+% ==============================================================================
+
+GPX adopts a zero-overhead receiver method syntax modeled after modern systems languages:
+
+\begin{lstlisting}[language=gpx,caption={Receiver Method and Struct Definition}]
+struct Vector2D {
+    x: double,
+    y: double,
+}
+
+// Method with pointer receiver
+fn (v: *Vector2D) translate(dx: double, dy: double) {
+    v->x = v->x + dx;
+    v->y = v->y + dy;
+}
+
+fn (v: *Vector2D) length_squared() -> double {
+    return v->x * v->x + v->y * v->y;
+}
+
+fn main() -> int {
+    let pos = Vector2D { x: 10.0, y: 20.0 };
+    pos.translate(5.0, -2.0);
+    print(pos.length_squared());
+    return 0;
+}
+\end{lstlisting}
+
+% ==============================================================================
+\chapter{Data Structures \& Algorithms (DSA) Suite}
+% ==============================================================================
+
+GPX includes a high-performance, modular standard library for core algorithms and collections:
+
+\begin{description}
+    \item[\texttt{<list.gpx>}:] Contiguous growable dynamic array with geometric capacity scaling ($2\times$).
+    \item[\texttt{<linkedlist.gpx>}:] Singly and doubly linked node structures for constant-time head/tail insertion.
+    \item[\texttt{<stack.gpx>} \& \texttt{<queue.gpx>}:] LIFO stack and FIFO circular ring buffer.
+    \item[\texttt{<hashmap.gpx>}:] Key-value associative map with open-addressing and FNV-1a hashing.
+    \item[\texttt{<tree.gpx>}:] Self-balancing and binary search trees with recursive traversals.
+    \item[\texttt{<graph.gpx>}:] Adjacency-list graphs with Breadth-First (BFS) and Depth-First (DFS) search.
+    \item[\texttt{<algorithms.gpx>}:] Quicksort, Mergesort, Insertion sort, and Binary search.
+    \item[\texttt{<pool.gpx>}:] O(1) fixed-size block memory pool allocator for deterministic embedded targets.
+\end{description}
+
+% ==============================================================================
+\chapter{Interactive REPL, Audio Synthesizer \& Debugger}
+% ==============================================================================
+
+\section{Interactive REPL (\texttt{gpx --repl})}
+The GPX shell provides immediate feedback with type reflection (\texttt{type(x)}), state persistence across inputs, and meta commands (\texttt{.vars}, \texttt{.funcs}, \texttt{.mem}, \texttt{.ir}, \texttt{.ast}, \texttt{.load}).
+
+\section{8-Bit Audio Synthesis (\texttt{<sound.gpx>})}
+Direct hardware audio synthesis without external dependencies:
+\begin{itemize}
+    \item Real-time tones: \texttt{sound\_beep(freq, duration)}
+    \item Note notation: \texttt{sound\_play\_note("C4", 250)}
+    \item Retro game SFX: \texttt{sound\_sfx\_coin()}, \texttt{sound\_sfx\_laser()}, \texttt{sound\_sfx\_jump()}
+    \item Multi-wave synthesis: Square, Sine, Triangle, Sawtooth, and Noise with direct WAV export.
+\end{itemize}
+
+\section{Real-Time Memory \& Instruction Inspector (\texttt{gpx --step} / \texttt{gpx-dbg})}
+An interactive debugger providing:
+\begin{itemize}
+    \item Time-travel step rewinding (\texttt{b})
+    \item Live Three-Address Code (TAC) instruction cursor
+    \item Real-time heap block visualization (allocation id, size, freed status, raw words)
+    \item Full Debug Adapter Protocol (DAP) compliance for VS Code and Antigravity IDE.
+\end{itemize}
+
+% ==============================================================================
+\chapter{Interactive Story \& Adventure Tutorial}
+% ==============================================================================
+
+Launched via \texttt{gpx --tutorial}, the adventure mode (*"The Chronicles of the Motherboard"*) features 7 gamified quest chapters:
+\begin{enumerate}
+    \item \textbf{The Awakening:} Core generator power calculation and integer arithmetic.
+    \item \textbf{The Security Gate:} Cryptographic cipher door with boolean branching.
+    \item \textbf{The Power Turbine:} Cycling hyperdrive turbine coils via loop accumulation.
+    \item \textbf{The Star Beacon:} Projecting 2D turtle vector diagrams into space.
+    \item \textbf{Signal of Hope:} Transmitting 8-bit audio homing frequencies.
+    \item \textbf{The Autonomous Drone:} Constructing robots with OOP struct receiver methods.
+    \item \textbf{The Data Core:} Mainframe stabilization using dynamic arrays (<list.gpx>).
+\end{enumerate}
+
+% ==============================================================================
+\chapter{CLI Command Reference}
+% ==============================================================================
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llp{7.5cm}}
+\toprule
+\textbf{Category} & \textbf{Flag / Command} & \textbf{Description} \\
+\midrule
+Execution & \texttt{--run} & Direct Virtual Machine execution without intermediate files \\
+          & \texttt{--repl} & Launches the interactive shell \\
+          & \texttt{--tutorial} & Launches the gamified Story / Adventure Mode \\
+\midrule
+Debugging & \texttt{--step} / \texttt{--debugger} & Launches the interactive Memory Inspector \\
+          & \texttt{--dap} & Launches the headless Debug Adapter Protocol server \\
+\midrule
+Inspection& \texttt{--tokens} & Emits token stream \\
+          & \texttt{--ast} & Emits Abstract Syntax Tree hierarchy \\
+          & \texttt{--ir} & Emits Three-Address Code (TAC) IR \\
+          & \texttt{--opt} & Emits optimized TAC IR \\
+          & \texttt{--check} & Semantic analysis and type checking \\
+\midrule
+Codegen   & \texttt{-o <file.exe>} & Compiles to standalone native binary via GCC \\
+          & \texttt{--emit-c} & Transpiles to ISO C99 \\
+          & \texttt{--target riscv} & Emits bare-metal RISC-V RV32I assembly \\
+\bottomrule
+\end{tabular}
+\caption{GPX Compiler Command Line Interface}
+\end{table}
+
+\end{document}

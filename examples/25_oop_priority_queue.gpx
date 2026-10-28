@@ -1,0 +1,139 @@
+// ============================================================================
+// GPX Example 25: OOP Min-Heap / Priority Queue (DSA + OOP Fusion)
+//
+// Demonstrates encapsulating algorithmic heap operations (sift-up & sift-down)
+// inside a clean, object-oriented PriorityQueue struct with receiver methods.
+// ============================================================================
+
+#include <memory.gpx>
+
+struct PriorityQueue {
+    data: *int,
+    size: int,
+    capacity: int
+}
+
+// 1. Constructor
+fn PriorityQueue::new(capacity: int) -> PriorityQueue {
+    let cap: int = capacity;
+    if cap <= 0 { cap = 16; }
+    return PriorityQueue {
+        data: malloc(cap * sizeof(int)),
+        size: 0,
+        capacity: cap
+    };
+}
+
+// 2. Push element into heap with sift-up
+fn (self: *PriorityQueue) push(val: int) {
+    if self->size >= self->capacity {
+        print("  [Error] Priority queue capacity exceeded!");
+        return;
+    }
+    let idx: int = self->size;
+    self->data[idx] = val;
+    self->size = self->size + 1;
+
+    // Sift-up to maintain Min-Heap property
+    while idx > 0 {
+        let parent: int = (idx - 1) / 2;
+        if self->data[parent] > self->data[idx] {
+            let tmp: int = self->data[parent];
+            self->data[parent] = self->data[idx];
+            self->data[idx] = tmp;
+            idx = parent;
+        } else {
+            break;
+        }
+    }
+}
+
+// 3. Pop the minimum element with sift-down
+fn (self: *PriorityQueue) pop() -> int {
+    if self->size <= 0 {
+        return 0;
+    }
+    let min_val: int = self->data[0];
+    self->size = self->size - 1;
+    self->data[0] = self->data[self->size];
+
+    // Sift-down
+    let idx: int = 0;
+    while true {
+        let left: int = 2 * idx + 1;
+        let right: int = 2 * idx + 2;
+        let smallest: int = idx;
+
+        if left < self->size {
+            if self->data[left] < self->data[smallest] {
+                smallest = left;
+            }
+        }
+        if right < self->size {
+            if self->data[right] < self->data[smallest] {
+                smallest = right;
+            }
+        }
+        if smallest != idx {
+            let tmp: int = self->data[idx];
+            self->data[idx] = self->data[smallest];
+            self->data[smallest] = tmp;
+            idx = smallest;
+        } else {
+            break;
+        }
+    }
+    return min_val;
+}
+
+// 4. Read-only peek method
+fn (self: PriorityQueue) peek() -> int {
+    if self.size <= 0 { return 0; }
+    return self.data[0];
+}
+
+fn (self: PriorityQueue) len() -> int {
+    return self.size;
+}
+
+fn (self: PriorityQueue) is_empty() -> bool {
+    return self.size == 0;
+}
+
+// 5. Destructor / cleanup
+fn (self: *PriorityQueue) destroy() {
+    if self->data != null {
+        free(self->data);
+    }
+}
+
+fn main() {
+    print("=== GPX OOP Priority Queue (Min-Heap) Demo ===");
+
+    let pq = PriorityQueue::new(10);
+    print("Is empty:", pq.is_empty());
+
+    print("\n--- Inserting Unordered Priorities ---");
+    // Insert: 45, 12, 89, 3, 27, 8
+    print("Pushing: 45, 12, 89, 3, 27, 8");
+    pq.push(45);
+    pq.push(12);
+    pq.push(89);
+    pq.push(3);
+    pq.push(27);
+    pq.push(8);
+
+    print("Current queue size:     ", pq.len());
+    print("Highest priority (peek):", pq.peek(), "(smallest number = highest priority)");
+
+    print("\n--- Extracting Elements in Sorted Priority Order ---");
+    while !pq.is_empty() {
+        print("  Dispatched task priority:", pq.pop());
+    }
+
+    print("Queue size after popping all:", pq.len());
+    print("Is queue empty?", pq.is_empty());
+
+    pq.destroy();
+    print("\nPriority queue memory successfully reclaimed!");
+}

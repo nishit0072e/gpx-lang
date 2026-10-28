@@ -1,0 +1,42 @@
+// ============================================================================
+// GPX Example 22: Memory Arena & Bump Allocator (Storage Management)
+//
+// Demonstrates fast sub-allocation without per-object heap fragmentation,
+// offset alignment, memory usage monitoring, and instant bulk resets.
+// ============================================================================
+
+#include <pool.gpx>
+
+fn main() {
+    print("=== GPX Memory Arena (Bump Allocator) Demo ===");
+
+    // Allocate a 1024-byte arena block
+    let arena: *Arena = arena_create(1024);
+    print("Total capacity: ", 1024);
+    print("Initial used:   ", arena_used(arena));
+    print("Initial left:   ", arena_remaining(arena));
+
+    // Allocate small blocks from the contiguous buffer
+    print("\n--- Sub-Allocating from Arena ---");
+    let block1: *byte = arena_alloc(arena, 64);
+    print("Allocated 64 bytes  -> Used:", arena_used(arena), "Remaining:", arena_remaining(arena));
+
+    let block2: *byte = arena_alloc(arena, 128);
+    print("Allocated 128 bytes -> Used:", arena_used(arena), "Remaining:", arena_remaining(arena));
+
+    let block3: *byte = arena_alloc(arena, 256);
+    print("Allocated 256 bytes -> Used:", arena_used(arena), "Remaining:", arena_remaining(arena));
+
+    // Instant O(1) bulk reset: all sub-allocated memory is reused without free() overhead
+    print("\n--- Resetting Arena ---");
+    arena_reset(arena);
+    print("After reset -> Used:", arena_used(arena), "Remaining:", arena_remaining(arena));
+
+    // Re-allocating cleanly
+    let fresh_block: *byte = arena_alloc(arena, 512);
+    print("Re-allocated 512 bytes -> Used:", arena_used(arena));
+
+    // Clean up
+    arena_free(arena);
+    print("\nArena allocator successfully demonstrated and freed!");
+}

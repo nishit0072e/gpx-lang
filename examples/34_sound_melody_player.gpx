@@ -1,0 +1,47 @@
+// ============================================================================
+// Example 34: Musical Melody Player (<sound.gpx>)
+// Demonstrates musical notation parsing, frequency calculations,
+// note playback, and rests to play a classic tune.
+// ============================================================================
+
+#include <sound.gpx>
+
+fn play_tune_note(note: string, duration_ms: int) -> int {
+    let freq: int = sound_note_to_freq(note);
+    if (freq > 0) {
+        printf("Playing note %s (%lld Hz) for %lld ms\n", note, freq, duration_ms);
+        sound_play_note(note, duration_ms);
+    } else {
+        printf("Rest (%lld ms)\n", duration_ms);
+        sound_rest(duration_ms);
+    }
+    return 1;
+}
+
+fn main() -> int {
+    print("=== GPX MUSICAL MELODY PLAYER ===");
+    print("Song: 'Ode to Joy' (Beethoven)");
+
+    // Notes: E4, E4, F4, G4, G4, F4, E4, D4, C4, C4, D4, E4, E4, D4, D4
+    let notes: [string; 15] = [
+        "E4", "E4", "F4", "G4",
+        "G4", "F4", "E4", "D4",
+        "C4", "C4", "D4", "E4",
+        "E4", "D4", "D4",
+    ];
+
+    let beat: int = 220;
+
+    for i in 0..15 {
+        let dur: int = beat;
+        // Last note of phrase held longer
+        if (i == 3 || i == 7 || i == 11 || i == 14) {
+            dur = beat * 2;
+        }
+        play_tune_note(notes[i], dur);
+        sound_rest(40);
+    }
+
+    print("Melody finished playing successfully!");
+    return 0;
+}

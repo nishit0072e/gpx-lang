@@ -1,0 +1,49 @@
+// ============================================================================
+// GPX Example 15: Dynamic Growable Array (Vector / List)
+//
+// Demonstrates automatic capacity doubling, push, pop, indexing, and cleanup.
+// ============================================================================
+
+#include <list.gpx>
+
+fn main() {
+    print("=== GPX Dynamic Array (List) Demo ===");
+
+    // Create a new dynamic list with initial capacity of 2
+    let nums: *List = list_create(2);
+    print("Initial capacity:", list_capacity(nums));
+    print("Initial length:  ", list_len(nums));
+
+    // Push elements - notice how the list automatically grows
+    print("\n--- Appending Elements ---");
+    list_push(nums, 10);
+    list_push(nums, 20);
+    print("After 2 pushes -> len:", list_len(nums), "capacity:", list_capacity(nums));
+
+    list_push(nums, 30); // Triggers capacity doubling to 4!
+    list_push(nums, 40);
+    list_push(nums, 50); // Triggers capacity doubling to 8!
+    print("After 5 pushes -> len:", list_len(nums), "capacity:", list_capacity(nums));
+
+    // Access elements by index
+    print("\n--- Reading Elements ---");
+    for i in 0..list_len(nums) {
+        print("  Index", i, "=>", list_get(nums, i));
+    }
+
+    // Modify an element in-place
+    print("\n--- Modifying Element ---");
+    print("Replacing index 2 (was", list_get(nums, 2), ") with 999...");
+    list_set(nums, 2, 999);
+    print("Index 2 is now:", list_get(nums, 2));
+
+    // Pop the last element
+    print("\n--- Popping Last Element ---");
+    let popped: int = list_pop(nums);
+    print("Popped value:", popped);
+    print("Remaining length:", list_len(nums));
+
+    // Safe memory cleanup
+    list_free(nums);
+    print("\nList memory successfully freed!");
+}

@@ -1,0 +1,110 @@
+// ============================================================================
+// GPX Example 31: Merge Sort & Divide-and-Conquer Recursion
+//
+// Demonstrates recursive divide-and-conquer array sorting with O(N log N)
+// guaranteed time complexity and stable element ordering.
+// ============================================================================
+
+#include <memory.gpx>
+
+// 1. Merge two sorted sub-arrays: [left..mid] and [mid+1..right]
+fn merge(arr: *int, left: int, mid: int, right: int, temp: *int) {
+    let i: int = left;
+    let j: int = mid + 1;
+    let k: int = left;
+
+    // Compare elements from left and right halves
+    while i <= mid && j <= right {
+        if arr[i] <= arr[j] {
+            temp[k] = arr[i];
+            i = i + 1;
+        } else {
+            temp[k] = arr[j];
+            j = j + 1;
+        }
+        k = k + 1;
+    }
+
+    // Copy any remaining elements from left half
+    while i <= mid {
+        temp[k] = arr[i];
+        i = i + 1;
+        k = k + 1;
+    }
+
+    // Copy any remaining elements from right half
+    while j <= right {
+        temp[k] = arr[j];
+        j = j + 1;
+        k = k + 1;
+    }
+
+    // Copy merged elements back into original array
+    for p in left..(right + 1) {
+        arr[p] = temp[p];
+    }
+}
+
+// 2. Recursive divide-and-conquer function
+fn merge_sort_range(arr: *int, left: int, right: int, temp: *int) {
+    if left < right {
+        let mid: int = left + (right - left) / 2;
+
+        // Recursively sort left and right halves
+        merge_sort_range(arr, left, mid, temp);
+        merge_sort_range(arr, mid + 1, right, temp);
+
+        // Merge the two sorted halves
+        merge(arr, left, mid, right, temp);
+    }
+}
+
+// 3. User-friendly entry point
+fn merge_sort(arr: *int, n: int) {
+    if arr == null || n <= 1 { return; }
+    let temp: *int = malloc(n * sizeof(int));
+    merge_sort_range(arr, 0, n - 1, temp);
+    free(temp);
+}
+
+fn main() {
+    print("=== GPX Recursive Merge Sort Demo ===");
+
+    let n: int = 8;
+    let numbers: *int = malloc(n * sizeof(int));
+
+    // Populate unsorted dataset
+    numbers[0] = 38;
+    numbers[1] = 27;
+    numbers[2] = 43;
+    numbers[3] = 3;
+    numbers[4] = 9;
+    numbers[5] = 82;
+    numbers[6] = 10;
+    numbers[7] = 19;
+
+    print("\n--- Unsorted Input Array ---");
+    for i in 0..n {
+        print("  Index", i, "=>", numbers[i]);
+    }
+
+    print("\nExecuting Merge Sort (O(N log N) divide-and-conquer)...");
+    merge_sort(numbers, n);
+
+    print("\n--- Sorted Output Array ---");
+    for i in 0..n {
+        print("  Index", i, "=>", numbers[i]);
+    }
+
+    // Verify sort
+    let sorted: bool = true;
+    for i in 0..(n - 1) {
+        if numbers[i] > numbers[i + 1] {
+            sorted = false;
+        }
+    }
+    print("\nArray verified as strictly sorted:", sorted);
+
+    free(numbers);
+    print("Merge sort demonstration finished successfully!");
+}

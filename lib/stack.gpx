@@ -1,0 +1,79 @@
+// ============================================================================
+// GPX Standard Library: LIFO Stack (<stack.gpx>)
+//
+// Fast Last-In-First-Out stack data structure with auto-resizing capacity.
+// ============================================================================
+
+#pragma once
+#include <memory.gpx>
+
+struct Stack {
+    items: *int,
+    top: int,
+    capacity: int
+}
+
+fn stack_create(cap: int) -> *Stack {
+    if cap < 4 {
+        cap = 4;
+    }
+    let s: *Stack = malloc(sizeof(Stack));
+    if s == null {
+        return null;
+    }
+    s->items = malloc(sizeof(int) * cap);
+    s->top = 0;
+    s->capacity = cap;
+    return s;
+}
+
+fn stack_len(s: *Stack) -> int {
+    if s == null {
+        return 0;
+    }
+    return s->top;
+}
+
+fn stack_is_empty(s: *Stack) -> bool {
+    if s == null {
+        return true;
+    }
+    return s->top == 0;
+}
+
+fn stack_push(s: *Stack, val: int) {
+    if s == null {
+        return;
+    }
+    if s->top >= s->capacity {
+        let new_cap: int = s->capacity * 2;
+        s->items = realloc(s->items, sizeof(int) * new_cap);
+        s->capacity = new_cap;
+    }
+    s->items[s->top] = val;
+    s->top = s->top + 1;
+}
+
+fn stack_pop(s: *Stack) -> int {
+    if s == null or s->top == 0 {
+        return 0;
+    }
+    s->top = s->top - 1;
+    return s->items[s->top];
+}
+
+fn stack_peek(s: *Stack) -> int {
+    if s == null or s->top == 0 {
+        return 0;
+    }
+    return s->items[s->top - 1];
+}
+
+fn stack_free(s: *Stack) {
+    if s != null {
+        if s->items != null {
+            free(s->items);
+        }
+        free(s);
+    }
+}

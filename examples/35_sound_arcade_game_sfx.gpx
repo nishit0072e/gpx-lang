@@ -1,0 +1,85 @@
+// ============================================================================
+// Example 35: 8-Bit Retro Arcade Game SFX Engine (<sound.gpx>)
+// Demonstrates realistic arcade sound effects triggering in a simulated
+// platformer game loop (jumping, coin pickup, firing lasers, powerup, gameover).
+// ============================================================================
+
+#include <sound.gpx>
+
+struct Player {
+    score: int,
+    lives: int,
+    coins: int,
+    x: int,
+    y: int,
+}
+
+fn (p: *Player) jump() {
+    printf("[Action] Player jumped from y=%lld to y=%lld\n", p->y, p->y + 20);
+    p->y = p->y + 20;
+    sound_sfx_jump();
+}
+
+fn (p: *Player) collect_coin(value: int) {
+    p->coins = p->coins + 1;
+    p->score = p->score + value;
+    printf("[Action] Coin collected! (+%lld pts) Total Coins: %lld | Score: %lld\n", value, p->coins, p->score);
+    sound_sfx_coin();
+}
+
+fn (p: *Player) fire_laser() {
+    printf("[Action] Laser blast fired at enemy!\n");
+    sound_sfx_laser();
+}
+
+fn (p: *Player) grab_powerup() {
+    p->lives = p->lives + 1;
+    p->score = p->score + 500;
+    printf("[Action] POWERUP ACQUIRED! (+1 Life, +500 pts) Lives: %lld\n", p->lives);
+    sound_sfx_powerup();
+}
+
+fn (p: *Player) hit_obstacle() {
+    p->lives = p->lives - 1;
+    printf("[Action] BOOM! Obstacle hit! (-1 Life) Remaining Lives: %lld\n", p->lives);
+    sound_sfx_explosion();
+    if (p->lives <= 0) {
+        printf("[Game Over] No lives remaining! Final Score: %lld\n", p->score);
+        sound_sfx_gameover();
+    }
+}
+
+fn main() -> int {
+    print("=== GPX 8-BIT RETRO ARCADE SIMULATION ===");
+
+    let hero: Player = Player {
+        score: 0,
+        lives: 3,
+        coins: 0,
+        x: 0,
+        y: 0,
+    };
+
+    // Stage 1: Jump across gaps & collect coins
+    hero.jump();
+    hero.collect_coin(100);
+    hero.collect_coin(100);
+    hero.jump();
+    hero.collect_coin(100);
+
+    // Stage 2: Encounter alien enemy -> Fire laser!
+    hero.fire_laser();
+    hero.fire_laser();
+
+    // Stage 3: Collect rare super mushroom powerup!
+    hero.grab_powerup();
+
+    // Stage 4: Take damage and trigger gameover
+    hero.hit_obstacle();
+    hero.hit_obstacle();
+    hero.hit_obstacle();
+    hero.hit_obstacle();
+
+    print("Arcade simulation completed!");
+    return 0;
+}

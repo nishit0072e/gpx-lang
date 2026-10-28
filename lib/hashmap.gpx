@@ -1,0 +1,151 @@
+#pragma once
+#include <memory.gpx>
+#include <string.gpx>
+
+// ============================================================================
+// GPX Standard Library: Hash Map (Chaining Bucket Table)
+// ============================================================================
+
+struct HashEntry {
+    key: string,
+    val: int,
+    next: *HashEntry
+}
+
+struct HashMap {
+    buckets: **HashEntry,
+    bucket_count: int,
+    size: int
+}
+
+fn hash_string(s: string) -> int {
+    let h: int = 5381;
+    let len: int = strlen(s);
+    for i in 0..len {
+        let c: int = str_char_at(s, i) as int;
+        h = ((h * 33) + c) & 2147483647;
+    }
+    return h;
+}
+
+fn hash_int(x: int) -> int {
+    let h: int = (x * 2654435761) & 2147483647;
+    if h < 0 { h = -h; }
+    return h;
+}
+
+fn map_create(num_buckets: int) -> *HashMap {
+    let b_count: int = num_buckets;
+    if b_count <= 0 { b_count = 16; }
+    let m: *HashMap = malloc(sizeof(HashMap));
+    m->bucket_count = b_count;
+    m->size = 0;
+    m->buckets = calloc(b_count, sizeof(*HashEntry));
+    return m;
+}
+
+fn map_len(m: *HashMap) -> int {
+    if m == null { return 0; }
+    return m->size;
+}
+
+fn map_is_empty(m: *HashMap) -> bool {
+    if m == null { return true; }
+    return m->size == 0;
+}
+
+fn map_put(m: *HashMap, key: string, val: int) {
+    if m == null || m->bucket_count <= 0 { return; }
+    let h: int = hash_string(key);
+    let idx: int = h % m->bucket_count;
+    if idx < 0 { idx = idx + m->bucket_count; }
+    let curr: *HashEntry = m->buckets[idx];
+    while curr != null {
+        if str_cmp(curr->key, key) == 0 {
+            curr->val = val;
+            return;
+        }
+        curr = curr->next;
+    }
+    let entry: *HashEntry = malloc(sizeof(HashEntry));
+    entry->key = key;
+    entry->val = val;
+    entry->next = m->buckets[idx];
+    m->buckets[idx] = entry;
+    m->size = m->size + 1;
+}
+
+fn map_has(m: *HashMap, key: string) -> bool {
+    if m == null || m->bucket_count <= 0 { return false; }
+    let h: int = hash_string(key);
+    let idx: int = h % m->bucket_count;
+    if idx < 0 { idx = idx + m->bucket_count; }
+    let curr: *HashEntry = m->buckets[idx];
+    while curr != null {
+        if str_cmp(curr->key, key) == 0 {
+            return true;
+        }
+        curr = curr->next;
+    }
+    return false;
+}
+
+fn map_get(m: *HashMap, key: string) -> int {
+    if m == null || m->bucket_count <= 0 { return 0; }
+    let h: int = hash_string(key);
+    let idx: int = h % m->bucket_count;
+    if idx < 0 { idx = idx + m->bucket_count; }
+    let curr: *HashEntry = m->buckets[idx];
+    while curr != null {
+        if str_cmp(curr->key, key) == 0 {
+            return curr->val;
+        }
+        curr = curr->next;
+    }
+    return 0;
+}
+
+fn map_remove(m: *HashMap, key: string) -> bool {
+    if m == null || m->bucket_count <= 0 { return false; }
+    let h: int = hash_string(key);
+    let idx: int = h % m->bucket_count;
+    if idx < 0 { idx = idx + m->bucket_count; }
+    let curr: *HashEntry = m->buckets[idx];
+    let prev: *HashEntry = null;
+    while curr != null {
+        if str_cmp(curr->key, key) == 0 {
+            if prev == null {
+                m->buckets[idx] = curr->next;
+            } else {
+                prev->next = curr->next;
+            }
+            free(curr);
+            m->size = m->size - 1;
+            return true;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    return false;
+}
+
+fn map_clear(m: *HashMap) {
+    if m == null { return; }
+    for i in 0..m->bucket_count {
+        let curr: *HashEntry = m->buckets[i];
+        while curr != null {
+            let next_entry: *HashEntry = curr->next;
+            free(curr);
+            curr = next_entry;
+        }
+        m->buckets[i] = null;
+    }
+    m->size = 0;
+}
+
+fn map_free(m: *HashMap) {
+    if m == null { return; }
+    map_clear(m);
+    free(m->buckets);
+    free(m);
+}

@@ -1,0 +1,134 @@
+// ============================================================================
+// GPX Example 28: Trie (Prefix Tree) & Fast Autocomplete
+//
+// Demonstrates a 26-way branching prefix tree (Trie) for fast O(L) dictionary
+// word lookup, prefix matching, and word insertions.
+// ============================================================================
+
+#include <memory.gpx>
+#include <string.gpx>
+
+struct TrieNode {
+    children: **TrieNode,
+    is_terminal: bool
+}
+
+// 1. Create a fresh Trie node with 26 null child pointers
+fn trie_node_create() -> *TrieNode {
+    let node: *TrieNode = malloc(sizeof(TrieNode));
+    node->is_terminal = false;
+    node->children = calloc(26, sizeof(*TrieNode));
+    return node;
+}
+
+// 2. Insert a lowercase word into the Trie
+fn trie_insert(root: *TrieNode, word: string) {
+    if root == null { return; }
+    let curr: *TrieNode = root;
+    let len: int = strlen(word);
+
+    for i in 0..len {
+        let ch: char = str_char_at(word, i);
+        let idx: int = (ch as int) - 97; // 97 is ASCII 'a'
+
+        if idx >= 0 && idx < 26 {
+            let next_node: *TrieNode = curr->children[idx];
+            if next_node == null {
+                next_node = trie_node_create();
+                curr->children[idx] = next_node;
+            }
+            curr = next_node;
+        }
+    }
+    curr->is_terminal = true;
+}
+
+// 3. Exact word search: returns true if word exists
+fn trie_search(root: *TrieNode, word: string) -> bool {
+    if root == null { return false; }
+    let curr: *TrieNode = root;
+    let len: int = strlen(word);
+
+    for i in 0..len {
+        let ch: char = str_char_at(word, i);
+        let idx: int = (ch as int) - 97;
+        if idx < 0 || idx >= 26 { return false; }
+
+        let next_node: *TrieNode = curr->children[idx];
+        if next_node == null { return false; }
+        curr = next_node;
+    }
+    return curr->is_terminal;
+}
+
+// 4. Prefix search: returns true if any word begins with prefix
+fn trie_starts_with(root: *TrieNode, prefix: string) -> bool {
+    if root == null { return false; }
+    let curr: *TrieNode = root;
+    let len: int = strlen(prefix);
+
+    for i in 0..len {
+        let ch: char = str_char_at(prefix, i);
+        let idx: int = (ch as int) - 97;
+        if idx < 0 || idx >= 26 { return false; }
+
+        let next_node: *TrieNode = curr->children[idx];
+        if next_node == null { return false; }
+        curr = next_node;
+    }
+    return true;
+}
+
+// 5. Recursive memory reclamation
+fn trie_free(node: *TrieNode) {
+    if node == null { return; }
+    if node->children != null {
+        for i in 0..26 {
+            let child: *TrieNode = node->children[i];
+            if child != null {
+                trie_free(child);
+            }
+        }
+        free(node->children);
+    }
+    free(node);
+}
+
+fn main() {
+    print("=== GPX Trie (Prefix Tree) Autocomplete Demo ===");
+
+    let root: *TrieNode = trie_node_create();
+
+    // Populate dictionary
+    print("\n--- Inserting Vocabulary ---");
+    print("Adding: apple, app, application, bat, ball, banana, code, coder");
+    trie_insert(root, "apple");
+    trie_insert(root, "app");
+    trie_insert(root, "application");
+    trie_insert(root, "bat");
+    trie_insert(root, "ball");
+    trie_insert(root, "banana");
+    trie_insert(root, "code");
+    trie_insert(root, "coder");
+
+    // Exact word searches
+    print("\n--- Exact Word Lookup ---");
+    print("Search 'app':        ", trie_search(root, "app"));
+    print("Search 'apple':      ", trie_search(root, "apple"));
+    print("Search 'appl':       ", trie_search(root, "appl"), "(prefix only, not full word)");
+    print("Search 'banana':     ", trie_search(root, "banana"));
+    print("Search 'orange':     ", trie_search(root, "orange"));
+    print("Search 'coder':      ", trie_search(root, "coder"));
+    print("Search 'coding':     ", trie_search(root, "coding"));
+
+    // Prefix autocomplete tests
+    print("\n--- Autocomplete Prefix Matching ---");
+    print("Any words start with 'app'?  ", trie_starts_with(root, "app"));
+    print("Any words start with 'ba'?   ", trie_starts_with(root, "ba"));
+    print("Any words start with 'cod'?  ", trie_starts_with(root, "cod"));
+    print("Any words start with 'xyz'?  ", trie_starts_with(root, "xyz"));
+
+    // Cleanup
+    trie_free(root);
+    print("\nTrie tree memory safely reclaimed!");
+}

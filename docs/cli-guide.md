@@ -22,7 +22,11 @@ python -m compiler.main <source_file.gpx> [options]
 | Category | Flag | Description |
 | :--- | :--- | :--- |
 | **Execution** | `--run` | Directly executes the program in the internal IR VM without creating any disk files |
-| **Inspection** | `--inspect` / `--debug` | Runs the full pipeline and displays tokens, AST, raw IR, optimized IR, C code, and RISC-V assembly |
+| | `--repl` | Launches the interactive GPX Read-Eval-Print Loop shell (see [repl-guide.md](repl-guide.md)) |
+| | `--tutorial` | Launches the interactive Story & Adventure Tutorial Mode (`gpx tutorial`) |
+| **Debugging** | `--step` / `--debugger` | Launches the Real-Time Memory & Instruction Step Debugger with time-travel rewind |
+| | `--dap` | Launches the headless Debug Adapter Protocol (DAP) server for IDEs |
+| **Inspection** | `--inspect` | Runs the full pipeline and displays tokens, AST, raw IR, optimized IR, C code, and RISC-V assembly |
 | | `--tokens` | Prints lexical token stream and exits |
 | | `--ast` | Prints the parsed Abstract Syntax Tree (AST) hierarchy and exits |
 | | `--check` | Performs semantic analysis and type checking without compiling |

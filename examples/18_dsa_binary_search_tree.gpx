@@ -1,0 +1,37 @@
+// ============================================================================
+// GPX Example 18: Binary Search Tree (BST)
+//
+// Demonstrates logarithmic search, tree insertion, min/max values, and node counting.
+// ============================================================================
+
+#include <tree.gpx>
+
+fn main() {
+    print("=== GPX Binary Search Tree (BST) Demo ===");
+
+    let bst: *BST = bst_create();
+    print("Tree is initially empty:", bst_is_empty(bst));
+
+    print("\n--- Inserting Values into BST ---");
+    // Insert: Root 50, left branch 30, right branch 70, etc.
+    bst_insert(bst, 50);
+    bst_insert(bst, 30);
+    bst_insert(bst, 70);
+    bst_insert(bst, 20);
+    bst_insert(bst, 40);
+    bst_insert(bst, 60);
+    bst_insert(bst, 80);
+
+    print("Total nodes in tree:", bst_count(bst));
+    print("Smallest value (min):", bst_min(bst));
+    print("Largest value  (max):", bst_max(bst));
+
+    print("\n--- Searching for Keys ---");
+    print("Is 40 in tree?", bst_search(bst, 40));
+    print("Is 60 in tree?", bst_search(bst, 60));
+    print("Is 99 in tree?", bst_search(bst, 99));
+
+    // Cleanup
+    bst_free(bst);
+    print("\nBST memory safely cleaned up!");
+}

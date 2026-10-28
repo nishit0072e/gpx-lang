@@ -1,0 +1,84 @@
+// ============================================================================
+// GPX Example 23: Object-Oriented Programming (OOP) & Struct Receivers
+//
+// Demonstrates constructor conventions (Type::new), struct receiver methods
+// (fn (self: *T) method), value and pointer receivers, and method call syntax sugar.
+// ============================================================================
+
+struct Point {
+    x: int,
+    y: int
+}
+
+// 1. Static Constructor convention
+fn Point::new(x: int, y: int) -> Point {
+    return Point { x: x, y: y };
+}
+
+// 2. Mutable Pointer Receiver Method (mutates the object in-place)
+fn (self: *Point) translate(dx: int, dy: int) {
+    self->x = self->x + dx;
+    self->y = self->y + dy;
+}
+
+// 3. Immutable Value Receiver Method (computes from self without mutating)
+fn (self: Point) manhattan_distance() -> int {
+    let dist_x: int = self.x;
+    let dist_y: int = self.y;
+    if dist_x < 0 { dist_x = -dist_x; }
+    if dist_y < 0 { dist_y = -dist_y; }
+    return dist_x + dist_y;
+}
+
+// 4. Rectangle struct utilizing Point
+struct Rectangle {
+    width: int,
+    height: int
+}
+
+fn Rectangle::new(w: int, h: int) -> Rectangle {
+    return Rectangle { width: w, height: h };
+}
+
+fn (self: Rectangle) area() -> int {
+    return self.width * self.height;
+}
+
+fn (self: Rectangle) perimeter() -> int {
+    return 2 * (self.width + self.height);
+}
+
+fn (self: *Rectangle) scale(factor: int) {
+    self->width = self->width * factor;
+    self->height = self->height * factor;
+}
+
+fn main() {
+    print("=== GPX Object-Oriented (OOP) Struct Methods Demo ===");
+
+    // Instantiate using constructor
+    let p = Point::new(3, 4);
+    print("\nInitial Point: (", p.x, ",", p.y, ")");
+    print("Manhattan distance:", p.manhattan_distance());
+
+    // Call mutating method with automatic referencing (&p)
+    print("\nTranslating point by (+2, +6)...");
+    p.translate(2, 6);
+    print("New Point: (", p.x, ",", p.y, ")");
+    print("New Manhattan distance:", p.manhattan_distance());
+
+    // Rectangle demonstration
+    print("\n--- Rectangle OOP Demo ---");
+    let rect = Rectangle::new(10, 5);
+    print("Initial dimensions:", rect.width, "x", rect.height);
+    print("Area:     ", rect.area());
+    print("Perimeter:", rect.perimeter());
+
+    print("\nScaling rectangle by 3x...");
+    rect.scale(3);
+    print("Scaled dimensions:", rect.width, "x", rect.height);
+    print("Scaled Area:     ", rect.area());
+    print("Scaled Perimeter:", rect.perimeter());
+
+    print("\nOOP struct receiver methods demonstrated successfully!");
+}

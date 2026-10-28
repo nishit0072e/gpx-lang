@@ -1,0 +1,28 @@
+// ============================================================================
+// GPX Standard Library: 8-Bit Audio & Sound Synthesizer Header (<sound.gpx>)
+// ============================================================================
+
+#pragma once
+
+let SOUND_WAVE_SQUARE: int = 0;
+let SOUND_WAVE_SINE: int = 1;
+let SOUND_WAVE_TRIANGLE: int = 2;
+let SOUND_WAVE_SAWTOOTH: int = 3;
+let SOUND_WAVE_NOISE: int = 4;
+
+fn sound_beep(frequency_hz: int, duration_ms: int): int;
+fn sound_play_note(note_name: string, duration_ms: int): int;
+fn sound_note_to_freq(note_name: string): int;
+fn sound_rest(duration_ms: int): int;
+
+fn sound_sfx_laser(): int;
+fn sound_sfx_jump(): int;
+fn sound_sfx_coin(): int;
+fn sound_sfx_explosion(): int;
+fn sound_sfx_powerup(): int;
+fn sound_sfx_gameover(): int;
+
+fn sound_synth_tone(wave_type: int, start_freq: int, end_freq: int, duration_ms: int, volume: int): int;
+
+fn sound_export_wav(filepath: string, wave_type: int, freq_hz: int, duration_ms: int): int;
+fn sound_save_sfx_wav(filepath: string, sfx_id: int): int;

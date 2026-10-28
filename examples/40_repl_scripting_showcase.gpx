@@ -1,0 +1,61 @@
+// ============================================================================
+// Example 40: Interactive REPL Scripting & Multi-Feature Showcase
+// Demonstrates how GPX combines OOP structs, dynamic DSA collections,
+// and audio feedback into a clean, rapid scripting workflow.
+//
+// Usage in REPL:
+//   gpx --repl
+//   gpx> .load examples/40_repl_scripting_showcase.gpx
+// ============================================================================
+
+#include <list.gpx>
+#include <sound.gpx>
+
+struct Task {
+    title: string,
+    priority: int,
+    completed: bool,
+}
+
+fn (t: *Task) mark_done() {
+    t->completed = true;
+    printf("[Task Completed] %s (Priority %lld)\n", t->title, t->priority);
+    sound_sfx_coin();
+}
+
+fn main() -> int {
+    print("=== GPX REPL INTERACTIVE SCRIPTING SHOWCASE ===");
+
+    // 1. Dynamic collections with <list.gpx>
+    let scores: *List = list_create(8);
+    list_push(scores, 95);
+    list_push(scores, 88);
+    list_push(scores, 100);
+    list_push(scores, 72);
+
+    printf("Total scores entered: %lld\n", list_len(scores));
+    printf("Highest score popped: %lld\n", list_pop(scores));
+
+    // 2. Struct receivers & audio feedback
+    let t1: Task = Task {
+        title: "Build GPX REPL",
+        priority: 1,
+        completed: false,
+    };
+
+    let t2: Task = Task {
+        title: "Synthesize 8-Bit Audio",
+        priority: 1,
+        completed: false,
+    };
+
+    t1.mark_done();
+    t2.mark_done();
+
+    // 3. Victory fanfare sound
+    sound_sfx_powerup();
+    print("All tasks verified and completed!");
+
+    list_free(scores);
+    return 0;
+}

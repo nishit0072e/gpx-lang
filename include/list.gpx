@@ -1,0 +1,92 @@
+// ============================================================================
+// GPX Standard Library: Dynamic List / Vector (<list.gpx>)
+//
+// A high-performance, contiguous, dynamically resizing growable array.
+// ============================================================================
+
+#pragma once
+#include <memory.gpx>
+
+struct List {
+    data: *int,
+    size: int,
+    capacity: int
+}
+
+fn list_create(initial_cap: int) -> *List {
+    if initial_cap < 4 {
+        initial_cap = 4;
+    }
+    let l: *List = malloc(sizeof(List));
+    if l == null {
+        return null;
+    }
+    l->size = 0;
+    l->capacity = initial_cap;
+    l->data = malloc(sizeof(int) * initial_cap);
+    return l;
+}
+
+fn list_len(l: *List) -> int {
+    if l == null {
+        return 0;
+    }
+    return l->size;
+}
+
+fn list_capacity(l: *List) -> int {
+    if l == null {
+        return 0;
+    }
+    return l->capacity;
+}
+
+fn list_push(l: *List, val: int) {
+    if l == null {
+        return;
+    }
+    if l->size >= l->capacity {
+        let new_cap = l->capacity * 2;
+        l->data = realloc(l->data, sizeof(int) * new_cap);
+        l->capacity = new_cap;
+    }
+    l->data[l->size] = val;
+    l->size = l->size + 1;
+}
+
+fn list_pop(l: *List) -> int {
+    if l == null or l->size == 0 {
+        return 0;
+    }
+    l->size = l->size - 1;
+    return l->data[l->size];
+}
+
+fn list_get(l: *List, idx: int) -> int {
+    if l == null or idx < 0 or idx >= l->size {
+        return 0;
+    }
+    return l->data[idx];
+}
+
+fn list_set(l: *List, idx: int, val: int) {
+    if l == null or idx < 0 or idx >= l->size {
+        return;
+    }
+    l->data[idx] = val;
+}
+
+fn list_clear(l: *List) {
+    if l != null {
+        l->size = 0;
+    }
+}
+
+fn list_free(l: *List) {
+    if l != null {
+        if l->data != null {
+            free(l->data);
+        }
+        free(l);
+    }
+}

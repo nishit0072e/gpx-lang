@@ -1,0 +1,131 @@
+#pragma once
+
+// ============================================================================
+// GPX Standard Library: Algorithms (Sorting, Searching & Array Utilities)
+// ============================================================================
+
+fn sort_quick_partition(arr: *int, low: int, high: int) -> int {
+    let pivot: int = arr[high];
+    let i: int = low - 1;
+    for j in low..high {
+        if arr[j] <= pivot {
+            i = i + 1;
+            let temp: int = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    let temp2: int = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp2;
+    return i + 1;
+}
+
+fn sort_quick_range(arr: *int, low: int, high: int) {
+    if low < high {
+        let pi: int = sort_quick_partition(arr, low, high);
+        if pi > low {
+            sort_quick_range(arr, low, pi - 1);
+        }
+        sort_quick_range(arr, pi + 1, high);
+    }
+}
+
+fn sort_quick(arr: *int, n: int) {
+    if arr == null || n <= 1 { return; }
+    sort_quick_range(arr, 0, n - 1);
+}
+
+fn sort_insertion(arr: *int, n: int) {
+    if arr == null || n <= 1 { return; }
+    for i in 1..n {
+        let key: int = arr[i];
+        let j: int = i - 1;
+        while j >= 0 {
+            if arr[j] <= key { break; }
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+fn sort_bubble(arr: *int, n: int) {
+    if arr == null || n <= 1 { return; }
+    for i in 0..n {
+        let swapped: bool = false;
+        let limit: int = n - i - 1;
+        for j in 0..limit {
+            if arr[j] > arr[j + 1] {
+                let temp: int = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        if !swapped { break; }
+    }
+}
+
+fn search_binary(arr: *int, n: int, target: int) -> int {
+    if arr == null || n <= 0 { return -1; }
+    let low: int = 0;
+    let high: int = n - 1;
+    while low <= high {
+        let mid: int = low + (high - low) / 2;
+        if arr[mid] == target {
+            return mid;
+        }
+        if arr[mid] < target {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+fn search_linear(arr: *int, n: int, target: int) -> int {
+    if arr == null { return -1; }
+    for i in 0..n {
+        if arr[i] == target {
+            return i;
+        }
+    }
+    return -1;
+}
+
+fn algo_reverse(arr: *int, n: int) {
+    if arr == null || n <= 1 { return; }
+    let i: int = 0;
+    let j: int = n - 1;
+    while i < j {
+        let temp: int = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        i = i + 1;
+        j = j - 1;
+    }
+}
+
+fn algo_min(arr: *int, n: int) -> int {
+    if arr == null || n <= 0 { return 0; }
+    let m: int = arr[0];
+    for i in 1..n {
+        if arr[i] < m {
+            m = arr[i];
+        }
+    }
+    return m;
+}
+
+fn algo_max(arr: *int, n: int) -> int {
+    if arr == null || n <= 0 { return 0; }
+    let m: int = arr[0];
+    for i in 1..n {
+        if arr[i] > m {
+            m = arr[i];
+        }
+    }
+    return m;
+}

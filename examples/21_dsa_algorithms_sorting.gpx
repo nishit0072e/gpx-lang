@@ -1,0 +1,70 @@
+// ============================================================================
+// GPX Example 21: Algorithms (Sorting, Searching & Utilities)
+//
+// Demonstrates Quicksort, Insertion Sort, Bubble Sort, Binary Search,
+// Linear Search, Array Reverse, Min, and Max.
+// ============================================================================
+
+#include <algorithms.gpx>
+#include <memory.gpx>
+
+fn main() {
+    print("=== GPX Algorithms Suite Demo ===");
+
+    // 1. Quicksort & Binary Search
+    print("\n--- 1. Quicksort & Binary Search ---");
+    let n1: int = 6;
+    let arr1: *int = malloc(n1 * sizeof(int));
+    arr1[0] = 64; arr1[1] = 25; arr1[2] = 12; arr1[3] = 22; arr1[4] = 11; arr1[5] = 90;
+
+    print("Before Quicksort:");
+    for i in 0..n1 { print(" ", arr1[i]); }
+
+    sort_quick(arr1, n1);
+
+    print("After Quicksort (sorted ascending):");
+    for i in 0..n1 { print(" ", arr1[i]); }
+
+    print("Smallest element (min):", algo_min(arr1, n1));
+    print("Largest element  (max):", algo_max(arr1, n1));
+
+    // Binary search on sorted array
+    let target: int = 25;
+    let found_idx: int = search_binary(arr1, n1, target);
+    print("Binary search for 25 => found at index:", found_idx);
+    print("Binary search for 99 => found at index:", search_binary(arr1, n1, 99));
+
+    // In-place reverse
+    algo_reverse(arr1, n1);
+    print("After array reverse:");
+    for i in 0..n1 { print(" ", arr1[i]); }
+    free(arr1);
+
+
+    // 2. Insertion Sort
+    print("\n--- 2. Insertion Sort ---");
+    let n2: int = 5;
+    let arr2: *int = malloc(n2 * sizeof(int));
+    arr2[0] = 5; arr2[1] = 2; arr2[2] = 4; arr2[3] = 6; arr2[4] = 1;
+
+    sort_insertion(arr2, n2);
+    print("After Insertion Sort:");
+    for i in 0..n2 { print(" ", arr2[i]); }
+    free(arr2);
+
+
+    // 3. Bubble Sort & Linear Search
+    print("\n--- 3. Bubble Sort & Linear Search ---");
+    let n3: int = 4;
+    let arr3: *int = malloc(n3 * sizeof(int));
+    arr3[0] = 30; arr3[1] = 10; arr3[2] = 40; arr3[3] = 20;
+
+    print("Linear search for 40 => index:", search_linear(arr3, n3, 40));
+
+    sort_bubble(arr3, n3);
+    print("After Bubble Sort:");
+    for i in 0..n3 { print(" ", arr3[i]); }
+    free(arr3);
+
+    print("\nAlgorithms demonstration completed successfully!");
+}

@@ -1,0 +1,142 @@
+#pragma once
+#include <memory.gpx>
+
+// ============================================================================
+// GPX Standard Library: Graph (Adjacency Matrix with BFS & DFS)
+// ============================================================================
+
+struct Graph {
+    vertices: int,
+    is_directed: bool,
+    matrix: *int
+}
+
+fn graph_create(num_vertices: int, is_directed: bool) -> *Graph {
+    let v_count: int = num_vertices;
+    if v_count <= 0 { v_count = 1; }
+    let g: *Graph = malloc(sizeof(Graph));
+    g->vertices = v_count;
+    g->is_directed = is_directed;
+    g->matrix = calloc(v_count * v_count, sizeof(int));
+    return g;
+}
+
+fn graph_add_edge(g: *Graph, u: int, v: int, weight: int) {
+    if g == null || u < 0 || u >= g->vertices || v < 0 || v >= g->vertices { return; }
+    let w: int = weight;
+    if w == 0 { w = 1; }
+    let idx1: int = u * g->vertices + v;
+    g->matrix[idx1] = w;
+    if !g->is_directed {
+        let idx2: int = v * g->vertices + u;
+        g->matrix[idx2] = w;
+    }
+}
+
+fn graph_has_edge(g: *Graph, u: int, v: int) -> bool {
+    if g == null || u < 0 || u >= g->vertices || v < 0 || v >= g->vertices { return false; }
+    let idx: int = u * g->vertices + v;
+    return g->matrix[idx] != 0;
+}
+
+fn graph_get_edge(g: *Graph, u: int, v: int) -> int {
+    if g == null || u < 0 || u >= g->vertices || v < 0 || v >= g->vertices { return 0; }
+    let idx: int = u * g->vertices + v;
+    return g->matrix[idx];
+}
+
+fn graph_remove_edge(g: *Graph, u: int, v: int) {
+    if g == null || u < 0 || u >= g->vertices || v < 0 || v >= g->vertices { return; }
+    let idx1: int = u * g->vertices + v;
+    g->matrix[idx1] = 0;
+    if !g->is_directed {
+        let idx2: int = v * g->vertices + u;
+        g->matrix[idx2] = 0;
+    }
+}
+
+fn graph_degree(g: *Graph, u: int) -> int {
+    if g == null || u < 0 || u >= g->vertices { return 0; }
+    let deg: int = 0;
+    for v in 0..g->vertices {
+        let idx: int = u * g->vertices + v;
+        if g->matrix[idx] != 0 {
+            deg = deg + 1;
+        }
+    }
+    return deg;
+}
+
+fn graph_bfs(g: *Graph, start: int, visited_out: *int) -> int {
+    if g == null || start < 0 || start >= g->vertices || visited_out == null { return 0; }
+    let seen: *int = calloc(g->vertices, sizeof(int));
+    let q: *int = malloc(g->vertices * sizeof(int));
+    let head: int = 0;
+    let tail: int = 0;
+    let count: int = 0;
+
+    seen[start] = 1;
+    q[tail] = start;
+    tail = tail + 1;
+
+    while head < tail {
+        let u: int = q[head];
+        head = head + 1;
+        visited_out[count] = u;
+        count = count + 1;
+
+        for v in 0..g->vertices {
+            let idx: int = u * g->vertices + v;
+            if g->matrix[idx] != 0 && seen[v] == 0 {
+                seen[v] = 1;
+                q[tail] = v;
+                tail = tail + 1;
+            }
+        }
+    }
+    free(seen);
+    free(q);
+    return count;
+}
+
+fn graph_dfs(g: *Graph, start: int, visited_out: *int) -> int {
+    if g == null || start < 0 || start >= g->vertices || visited_out == null { return 0; }
+    let seen: *int = calloc(g->vertices, sizeof(int));
+    let stack: *int = malloc(g->vertices * sizeof(int));
+    let top: int = 0;
+    let count: int = 0;
+
+    stack[top] = start;
+    top = top + 1;
+
+    while top > 0 {
+        top = top - 1;
+        let u: int = stack[top];
+        if seen[u] == 0 {
+            seen[u] = 1;
+            visited_out[count] = u;
+            count = count + 1;
+
+            let v: int = g->vertices - 1;
+            while v >= 0 {
+                let idx: int = u * g->vertices + v;
+                if g->matrix[idx] != 0 && seen[v] == 0 {
+                    stack[top] = v;
+                    top = top + 1;
+                }
+                v = v - 1;
+            }
+        }
+    }
+    free(seen);
+    free(stack);
+    return count;
+}
+
+fn graph_free(g: *Graph) {
+    if g == null { return; }
+    if g->matrix != null {
+        free(g->matrix);
+    }
+    free(g);
+}

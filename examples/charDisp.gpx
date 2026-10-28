@@ -1,0 +1,33 @@
+// ============================================================================
+// Original Program (commented out):
+// ============================================================================
+// let a: int = 67
+// let b: int = 2
+// let c = a + b;
+// // printf("%c",c);
+// 
+// fn main() -> char{
+//     //return 'c';
+//     return c;
+// }
+
+// ============================================================================
+// Corrected Program:
+//
+// What was wrong:
+// 1. In GPX, 'a' and 'b' are integers ('int'), so 'c = a + b' has type 'int' (value 69).
+// 2. Function 'main()' is declared with return type 'char' (-> char), but 'return c;'
+//    attempts to return an 'int' without an explicit cast.
+// 3. In GPX, narrowing an integer to a char requires an explicit cast:
+//       c as char
+//    In ASCII, 67 ('C') + 2 = 69 ('E').
+// ============================================================================
+
+let a: int = 67;
+let b: int = 2;
+let c: int = a + b;
+
+fn main() -> char {
+    // Explicitly cast int (69) to char ('E')
+    return c as char;
+}
