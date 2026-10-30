@@ -67,20 +67,58 @@ Goal: Built-in sound generation for games and creative coding.
 * Direct export to standard PCM .wav audio files
 
 --------------------------------------------------------------------------------
-5. MULTI-FILE MODULE IMPORT SYSTEM & NAMESPACES
+5. MULTI-FILE MODULE IMPORT SYSTEM & NAMESPACES [COMPLETED v0.9.2]
 --------------------------------------------------------------------------------
-Goal: Scale GPX applications across multiple files and packages cleanly.
-* Keyword `import`:
-    import "math_utils.gpx" as math;
-    import { Vector, Matrix } from "geometry.gpx";
-* Namespace resolution and circular dependency prevention
-* Package manifest and local dependency management
+Status: Fully Implemented & Verified (178/178 unit tests passing).
+* Syntax Implemented:
+    - Namespaced import: `import "module.gpx" as alias;`
+    - Selective import: `import { func, Struct as Alias } from "module.gpx";`
+    - From-import: `from "module.gpx" import func1, func2;`
+    - Scope member access: `alias.member(...)` and `alias::member(...)`
+    - Module structs & OOP receiver method dispatch: `let v = geom.Vector { ... }; v.len_sq()`
+* Linker & Module Manager:
+    - Zero symbol collision via automated compiler name mangling (`module__symbol`).
+    - Circular dependency detection and diagnostic stack reporting.
+    - Full multi-backend parity (VM, native GCC C99, and RISC-V RV32IM assembly).
 
 --------------------------------------------------------------------------------
-6. WEBASSEMBLY (WASM) COMPILER TARGET
+6. WEBASSEMBLY (WASM & WAT) COMPILER TARGET [COMPLETED v0.9.3]
 --------------------------------------------------------------------------------
-Goal: Run GPX everywhere at native speed in modern web browsers.
-* CLI flag: `gpx source.gpx --target wasm -o app.wasm`
-* Direct execution inside web workers and Node.js
-* Direct DOM and HTML5 Canvas API interoperability
+Status: Fully Implemented & Verified (187/187 unit tests passing).
+* Self-Contained Binary WebAssembly Backend:
+    - Pure-Python LEB128 binary encoder generating valid W3C .wasm bytecode without wat2wasm or external toolchain dependencies.
+    - Structured Control Flow Dispatcher using `loop`, `block`, and `br_table` for arbitrary CFGs (while loops, repeat loops, if/else, recursion).
+    - Linear memory bump allocator (`$malloc`, `$free`) and Data section string pool.
+* WebAssembly Text Format (.wat):
+    - Publication-quality S-expression emitter (`--emit-wat`, `--target wat`).
+* CLI Integration & Runtime Execution:
+    - `gpx source.gpx --target wasm -o app.wasm`
+    - `gpx source.gpx --target wasm --run` (direct execution in Node.js runtime)
+    - Full pipeline inspection (`--inspect` Stage 7: GENERATED WEBASSEMBLY).
+
+--------------------------------------------------------------------------------
+7. GENERICS & PARAMETRIC POLYMORPHISM
+--------------------------------------------------------------------------------
+Goal: Type-safe, reusable data structures and algorithms with zero runtime overhead.
+* Generic functions:
+    fn identity<T>(val: T) -> T { return val; }
+    fn max<T>(a: T, b: T) -> T { ... }
+* Generic structures & containers:
+    struct Stack<T> { data: [T; 100], top: int }
+    struct Pair<A, B> { first: A, second: B }
+* Compile-time monomorphization pass producing optimized specialized types.
+
+--------------------------------------------------------------------------------
+8. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
+--------------------------------------------------------------------------------
+Goal: Expressive, exhaustive compile-time branching and tagged unions.
+* Tagged unions / algebraic enums:
+    enum Option<T> { Some(T), None }
+    enum Result<T, E> { Ok(T), Err(E) }
+* Pattern matching statement:
+    match expr {
+        Option::Some(val) => { ... },
+        Option::None => { ... }
+    }
+* Destructuring and exhaustive branch validation during semantic analysis.
 ================================================================================

@@ -1,0 +1,62 @@
+// ==============================================================================
+// GPX Example 44: WebAssembly (WASM & WAT) Target Showcase
+// ==============================================================================
+// Demonstrates:
+// 1. Direct compilation to pure-Python binary WebAssembly (.wasm)
+// 2. Compilation to human-readable WebAssembly Text Format (.wat)
+// 3. Execution inside modern Node.js and Web browser runtimes
+// 4. Loops, struct allocations via linear memory heap, and receiver methods
+//
+// Usage:
+//   gpx examples/44_webassembly_demo.gpx --emit-wat
+//   gpx examples/44_webassembly_demo.gpx --target wasm -o demo.wasm
+//   gpx examples/44_webassembly_demo.gpx --target wasm --run
+// ==============================================================================
+
+struct Particle {
+    x: int,
+    y: int,
+    vx: int,
+    vy: int
+}
+
+fn (p: Particle) step() -> int {
+    p.x = p.x + p.vx;
+    p.y = p.y + p.vy;
+    return p.x + p.y;
+}
+
+fn fibonacci(n: int) -> int {
+    if n <= 1 {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+fn main() -> int {
+    print("=== GPX WEBASSEMBLY (WASM) RUNTIME SHOWCASE ===");
+
+    // 1. Dynamic linear memory heap allocation for structs
+    let part = Particle { x: 10, y: 20, vx: 3, vy: 5 };
+    part.step();
+    print("Particle moved (x + y):");
+    print(part.x + part.y);
+
+    // 2. Control flow & loops
+    let total: int = 0;
+    let i: int = 1;
+    while i <= 10 {
+        total = total + i;
+        i = i + 1;
+    }
+    print("Accumulated while loop sum (1..10):");
+    print(total);
+
+    // 3. Recursive Fibonacci
+    let fib7: int = fibonacci(7);
+    print("fibonacci(7):");
+    print(fib7);
+
+    print("=== WASM EXECUTION FINISHED SUCCESSFULLY ===");
+    return 42;
+}

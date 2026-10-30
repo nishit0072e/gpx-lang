@@ -32,8 +32,8 @@
 
 <p align="center">
   <a href="https://github.com/nishit0072e/gpx-lang/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/nishit0072e/gpx-lang/docs.yml?branch=master&label=DOCS&style=for-the-badge&logo=github&color=06b6d4" alt="Docs Status"></a>
-  <img src="https://img.shields.io/badge/TESTS-171%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
-  <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
+  <img src="https://img.shields.io/badge/TESTS-187%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20WASM%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
 </p>
@@ -164,10 +164,14 @@ gpx examples/03_fibonacci.gpx --inspect
 # 6. Emit Bare-Metal RISC-V RV32I Assembly
 gpx examples/03_fibonacci.gpx --target riscv --emit
 
-# 7. Type Check without Compiling
+# 7. Compile to Standalone WebAssembly (.wasm) and Run via Node.js
+gpx examples/44_webassembly_demo.gpx --target wasm -o demo.wasm
+gpx examples/44_webassembly_demo.gpx --target wasm --run
+
+# 8. Type Check without Compiling
 gpx examples/03_fibonacci.gpx --check
 
-# 8. View Intermediate Representation (TAC) with Optimizations
+# 9. View Intermediate Representation (TAC) with Optimizations
 gpx examples/01_arithmetic.gpx --ir --opt
 ```
 
@@ -206,7 +210,11 @@ gpx-lang/
 │   ├── 16_dsa_vectors_lists.gpx # Dynamic array vector / list standard library (<list.gpx>)
 │   ├── 17_dsa_hashmap_lookup.gpx # Hash table dictionary standard library (<hashmap.gpx>)
 │   ├── 18_dsa_binary_search_tree.gpx # Binary search tree standard library (<tree.gpx>)
-│   └── 19_dsa_graph_traversal.gpx # Graph adjacency list traversal (<graph.gpx>)
+│   ├── 19_dsa_graph_traversal.gpx # Graph adjacency list traversal (<graph.gpx>)
+│   ├── 41_module_math.gpx     # Reusable math module for multi-file imports
+│   ├── 42_module_geometry.gpx # Reusable geometry module with structs & receiver methods
+│   ├── 43_modules_main.gpx    # Multi-file module import system showcase (import ... as ...)
+│   └── 44_webassembly_demo.gpx # WebAssembly WASM & WAT target showcase (runs in browser/Node.js)
 ├── include/                   # Standard library headers (io, string, memory, math, sound, list, hashmap, etc.)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license

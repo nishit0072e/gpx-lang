@@ -39,6 +39,11 @@ python -m compiler.main <source_file.gpx> [options]
 | | `--target riscv` | Selects the RISC-V RV32I assembly backend |
 | | `--emit-asm` | Prints RISC-V assembly directly to stdout |
 | | `-o <filename.s>` | Saves RISC-V assembly to a file |
+| | `--target wasm` | Compiles to pure W3C binary WebAssembly (`.wasm`) without external tools |
+| | `--target wat` | Compiles to WebAssembly Text format (`.wat`) |
+| | `--emit-wat` | Prints generated WebAssembly Text directly to stdout |
+| | `--emit-wasm` | Emits binary WebAssembly (`.wasm`) |
+| | `-o <filename.wasm>` | Saves binary WebAssembly module to a file |
 
 ---
 
@@ -88,6 +93,20 @@ gpx examples/03_fibonacci.gpx --emit-c
 gpx examples/03_fibonacci.gpx -o fib.c
 ```
 
+### 2.4 WebAssembly (WASM & WAT) Target
+GPX features a self-contained, pure-Python WebAssembly binary generator (`.wasm`) compliant with the W3C WebAssembly Core Specification. Zero external toolchains (`wat2wasm` or `emscripten`) are required!
+
+```powershell
+# Option A: Print WebAssembly Text Format (.wat) to stdout
+gpx examples/44_webassembly_demo.gpx --emit-wat
+
+# Option B: Compile directly to standalone WebAssembly binary (.wasm)
+gpx examples/44_webassembly_demo.gpx --target wasm -o demo.wasm
+
+# Option C: Execute directly inside Node.js runtime
+gpx examples/44_webassembly_demo.gpx --target wasm --run
+```
+
 ---
 
 ## 3. Debugging & Inspection Flags
@@ -106,6 +125,7 @@ gpx examples/01_arithmetic.gpx --inspect
 4. **Stage 4 (Optimized TAC IR):** IR after constant folding, algebraic simplification, and DCE.
 5. **Stage 5 (C Code):** Generated C99 source.
 6. **Stage 6 (RISC-V Assembly):** Generated bare-metal RV32I assembly.
+7. **Stage 7 (WebAssembly WAT):** Generated WebAssembly Text format.
 
 ### 3.2 Individual Inspection Flags
 
@@ -135,7 +155,43 @@ gpx examples/01_arithmetic.gpx --ir --opt
 
 ---
 
-## 4. RISC-V Bare-Metal Target
+## 4. Multi-File Module System & Namespaces
+
+GPX provides a modern, zero-overhead module system allowing projects to scale across multiple files with complete symbol isolation:
+
+### Namespaced Imports
+```gpx
+import "math_utils.gpx" as math;
+import "geometry.gpx" as geom;
+
+fn main() -> int {
+    let sum = math.add(10, 20);
+    let clamped = math::clamp(150, 0, 100);
+    let v = geom.Vector2D { x: 3.0, y: 4.0 };
+    print(v.length_squared());
+    return 0;
+}
+```
+
+### Selective Named Imports
+```gpx
+from "math_utils.gpx" import multiply, abs_val as my_abs;
+import { Point, Vector2D } from "geometry.gpx";
+
+fn main() -> int {
+    let prod = multiply(6, 7);
+    return 0;
+}
+```
+
+### Key Highlights
+- **Zero Symbol Collisions:** Top-level functions, structs, and variables are automatically namespaced.
+- **Circular Import Protection:** Clear diagnostic chain reporting if circular dependencies occur.
+- **Multi-Backend Parity:** Works seamlessly with direct VM execution (`--run`), native GCC binary generation (`-o`), and RISC-V codegen (`--target riscv`).
+
+---
+
+## 5. RISC-V Bare-Metal Target
 
 GPX has built-in code generation for RISC-V (RV32I/RV32IM) architectures:
 
@@ -149,7 +205,7 @@ gpx examples/03_fibonacci.gpx --target riscv -o fib.s
 
 ---
 
-## 5. Testing & Verification
+## 6. Testing & Verification
 
 Run the automated test suite covering lexing, parsing, semantic checking, IR generation, VM execution, optimization, and code generation:
 

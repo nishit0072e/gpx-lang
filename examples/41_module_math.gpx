@@ -1,0 +1,32 @@
+// ==============================================================================
+// GPX Module Example: Math & Statistics Library (41_module_math.gpx)
+// ==============================================================================
+
+const PI: double = 3.141592653589793;
+const E: double = 2.718281828459045;
+
+fn add(a: int, b: int) -> int {
+    return a + b;
+}
+
+fn multiply(a: int, b: int) -> int {
+    return a * b;
+}
+
+fn clamp(val: int, low: int, high: int) -> int {
+    if val < low {
+        return low;
+    }
+    if val > high {
+        return high;
+    }
+    return val;
+}
+
+fn abs_val(n: int) -> int {
+    if n < 0 {
+        return -n;
+    }
+    return n;
+}
+

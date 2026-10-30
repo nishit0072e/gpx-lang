@@ -11,6 +11,8 @@ __pycache__/
 *.s
 *.c
 *.wav
+*.wasm
+*.wat
 *.egg-info/
 dist/
 build/

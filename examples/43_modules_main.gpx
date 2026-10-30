@@ -1,0 +1,49 @@
+// ==============================================================================
+// GPX Example 43: Multi-File Module Imports & Namespaces Showcase
+// ==============================================================================
+// Demonstrates:
+// 1. Namespaced module import (`import "..." as alias;`)
+// 2. Member function calls (`math.add(...)`) and scope access (`math::clamp(...)`)
+// 3. Selective symbol imports (`import { ... } from "..."`)
+// 4. Module structs and OOP pointer receiver methods (`pos.length_squared()`)
+// 5. Zero-collision symbols across multiple modules
+// ==============================================================================
+
+import "41_module_math.gpx" as math;
+import "42_module_geometry.gpx" as geom;
+from "41_module_math.gpx" import multiply, abs_val as my_abs;
+
+fn main() -> int {
+    print("=== GPX MULTI-FILE MODULE SYSTEM SHOWCASE ===");
+
+    // 1. Namespaced function calls
+    let sum: int = math.add(18, 24);
+    print("math.add(18, 24) =");
+    print(sum);
+
+    // 2. Scope access operator (::)
+    let clamped: int = math::clamp(150, 0, 100);
+    print("math::clamp(150, 0, 100) =");
+    print(clamped);
+
+    // 3. Selective from-imports & aliasing
+    let prod: int = multiply(7, 6);
+    let neg: int = my_abs(-42);
+    print("multiply(7, 6) =");
+    print(prod);
+    print("my_abs(-42) =");
+    print(neg);
+
+    // 4. Module Structs & OOP receiver methods
+    let pos: geom.Vector2D = geom.Vector2D { x: 3.0, y: 4.0 };
+    print("Vector2D initial length_squared =");
+    print(pos.length_squared());
+
+    pos.translate(3.0, 4.0);
+    print("Vector2D translated (6, 8) length_squared =");
+    print(pos.length_squared());
+
+    print("=== MULTI-FILE MODULE SYSTEM SUCCESS ===");
+    return 0;
+}
+
