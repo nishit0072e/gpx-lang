@@ -1,0 +1,27 @@
+// ============================================================================
+// GPX Standard Library: Time & Clocks Header (<time.gpx>)
+// High-resolution clocks, millisecond sleep, and Stopwatch timer.
+// ============================================================================
+
+#pragma once
+
+fn time_now_ms() -> int;
+fn time_now_sec() -> int;
+fn sleep_ms(ms: int) -> int;
+
+struct Stopwatch {
+    start_ms: int
+}
+
+fn Stopwatch::start() -> Stopwatch {
+    return Stopwatch { start_ms: time_now_ms() };
+}
+
+fn Stopwatch.elapsed_ms(self: Stopwatch) -> int {
+    return time_now_ms() - self.start_ms;
+}
+
+fn Stopwatch.reset(self: *Stopwatch) {
+    self.start_ms = time_now_ms();
+}
+

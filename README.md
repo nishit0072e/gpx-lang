@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="https://github.com/nishit0072e/gpx-lang/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/nishit0072e/gpx-lang/docs.yml?branch=master&label=DOCS&style=for-the-badge&logo=github&color=06b6d4" alt="Docs Status"></a>
-  <img src="https://img.shields.io/badge/TESTS-195%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-208%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20WASM%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -215,8 +215,10 @@ gpx-lang/
 │   ├── 42_module_geometry.gpx # Reusable geometry module with structs & receiver methods
 │   ├── 43_modules_main.gpx    # Multi-file module import system showcase (import ... as ...)
 │   ├── 44_webassembly_demo.gpx # WebAssembly WASM & WAT target showcase (runs in browser/Node.js)
-│   └── 45_generics_showcase.gpx # Generics, parametric polymorphism & monomorphization showcase
-├── include/                   # Standard library headers (io, string, memory, math, sound, list, hashmap, etc.)
+│   ├── 45_generics_showcase.gpx # Generics, parametric polymorphism & monomorphization showcase
+│   ├── 46_oop_constructors_and_composition.gpx # Advanced OOP (Type::new, embedded composition & forwarding)
+│   └── 47_standard_libraries_showcase.gpx      # Standard libraries showcase (<time>, <random>, <path>, <env>, <test>)
+├── include/                   # Standard library headers (io, string, memory, math, sound, time, random, path, env, test, etc.)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license
 └── README.md                  # Quickstart & documentation

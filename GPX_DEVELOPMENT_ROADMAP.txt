@@ -113,7 +113,27 @@ Status: Fully Implemented & Verified (195/195 unit tests passing).
     - Automatic pruning of unused generic templates.
 
 --------------------------------------------------------------------------------
-8. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
+8. OOP ADVANCEMENTS & ESSENTIAL STANDARD LIBRARIES [COMPLETED v0.9.5]
+--------------------------------------------------------------------------------
+Status: Fully Implemented & Verified (208/208 unit tests passing).
+* Advanced Object-Oriented Programming (OOP):
+    - Associated static functions & constructors: Type::new(...) and Type.new(...).
+    - Struct composition / inheritance forwarding: embedded structs automatically forward both member fields and methods without boilerplate (e.g. c.move() delegates to Shape.move(&c.shape)).
+    - Auto-dereferencing pointer receivers on member access and mutation (s.x on s: *Shape).
+    - Full multi-backend parity (IR VM, native C99 with GCC, WebAssembly WASM/WAT).
+* Practical Standard Libraries (in include/ and compiler/include/):
+    - <time.gpx>: High-resolution clocks (time_now_ms, time_now_sec, sleep_ms), OOP Stopwatch struct with receiver methods.
+    - <random.gpx>: Linear congruential PRNG with OOP RNG struct (next, rand_int, rand_float, rand_bool, rand_choice).
+    - <test.gpx>: Automated unit test framework with TestSuite struct (assert_true, assert_false, assert_eq, assert_str_eq, summary).
+    - <path.gpx>: File path utilities (path_join, path_basename, path_dirname, path_extension).
+    - <env.gpx>: Environment & OS utilities (env_get, env_os_name, exit_process).
+* Verification & Parity:
+    - examples/46_oop_constructors_and_composition.gpx
+    - examples/47_standard_libraries_showcase.gpx
+    - tests/test_oop_advanced.py and tests/test_stdlib_new.py
+
+--------------------------------------------------------------------------------
+9. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
 --------------------------------------------------------------------------------
 Goal: Expressive, exhaustive compile-time branching and tagged unions.
 * Tagged unions / algebraic enums:

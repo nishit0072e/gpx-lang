@@ -1,0 +1,84 @@
+// ============================================================================
+// GPX Milestone: Advanced OOP Constructors and Struct Composition Showcase
+// Demonstrates:
+// 1. Static constructors (Type::new and Type.new)
+// 2. Struct composition with automatic field forwarding
+// 3. Method delegation across embedded types
+// 4. Pointer receivers with auto-dereferencing
+// ============================================================================
+
+#include <io.gpx>
+
+struct Vector2D {
+    x: int,
+    y: int
+}
+
+fn Vector2D::new(x: int, y: int) -> Vector2D {
+    return Vector2D { x: x, y: y };
+}
+
+fn Vector2D.add(self: *Vector2D, dx: int, dy: int) {
+    self.x = self.x + dx;
+    self.y = self.y + dy;
+}
+
+struct RigidBody {
+    pos: Vector2D,
+    mass: int
+}
+
+fn RigidBody::new(x: int, y: int, mass: int) -> RigidBody {
+    return RigidBody {
+        pos: Vector2D::new(x, y),
+        mass: mass
+    };
+}
+
+fn RigidBody.move(self: *RigidBody, dx: int, dy: int) {
+    self.pos.add(dx, dy);
+}
+
+struct Player {
+    body: RigidBody,
+    name: string,
+    health: int
+}
+
+fn Player::new(name: string, x: int, y: int) -> Player {
+    return Player {
+        body: RigidBody::new(x, y, 70),
+        name: name,
+        health: 100
+    };
+}
+
+fn Player.take_damage(self: *Player, dmg: int) {
+    self.health = self.health - dmg;
+}
+
+fn main() -> int {
+    print("--- GPX OOP Constructors and Composition ---");
+
+    // 1. Constructing with Type::new
+    let hero = Player::new("Aria", 10, 20);
+    print("Player Name:");
+    print(hero.name);
+    print("Initial Health:");
+    print(hero.health);
+
+    // 2. Embedded struct method delegation
+    // Calling hero.move forwards directly to hero.body.move!
+    hero.move(15, 25);
+    print("Position after move:");
+    print(hero.body.pos.x);
+    print(hero.body.pos.y);
+
+    // 3. Pointer receiver method mutation
+    hero.take_damage(25);
+    print("Health after damage:");
+    print(hero.health);
+
+    print("OOP Showcase completed successfully!");
+    return 0;
+}

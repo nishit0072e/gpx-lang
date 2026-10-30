@@ -1,0 +1,84 @@
+// ============================================================================
+// GPX Standard Library: File Path Utilities (<path.gpx>)
+// Path joining, basename, dirname, and file extensions.
+// ============================================================================
+
+#pragma once
+
+#include <string.gpx>
+
+fn path_join(dir: string, file: string) -> string {
+    if str_is_empty(dir) {
+        return file;
+    }
+    if str_is_empty(file) {
+        return dir;
+    }
+    let d_len = strlen(dir);
+    let last_ch = str_char_at(dir, d_len - 1);
+    if last_ch == '/' || last_ch == '\\' {
+        return dir + file;
+    }
+    return dir + "/" + file;
+}
+
+fn path_basename(path: string) -> string {
+    let p_len = strlen(path);
+    if p_len == 0 {
+        return "";
+    }
+    let last_sep = -1;
+    let i = 0;
+    while i < p_len {
+        let ch = str_char_at(path, i);
+        if ch == '/' || ch == '\\' {
+            last_sep = i;
+        }
+        i = i + 1;
+    }
+    if last_sep == -1 {
+        return path;
+    }
+    return substr(path, last_sep + 1, p_len - (last_sep + 1));
+}
+
+fn path_dirname(path: string) -> string {
+    let p_len = strlen(path);
+    if p_len == 0 {
+        return ".";
+    }
+    let last_sep = -1;
+    let i = 0;
+    while i < p_len {
+        let ch = str_char_at(path, i);
+        if ch == '/' || ch == '\\' {
+            last_sep = i;
+        }
+        i = i + 1;
+    }
+    if last_sep == -1 {
+        return ".";
+    }
+    if last_sep == 0 {
+        return "/";
+    }
+    return substr(path, 0, last_sep);
+}
+
+fn path_extension(path: string) -> string {
+    let bname = path_basename(path);
+    let b_len = strlen(bname);
+    let last_dot = -1;
+    let i = 0;
+    while i < b_len {
+        if str_char_at(bname, i) == '.' {
+            last_dot = i;
+        }
+        i = i + 1;
+    }
+    if last_dot <= 0 {
+        return "";
+    }
+    return substr(bname, last_dot, b_len - last_dot);
+}
+

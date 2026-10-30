@@ -1,0 +1,64 @@
+// ============================================================================
+// GPX Standard Library: Automated Testing Framework (<test.gpx>)
+// TestSuite struct, assertions, and formatted result reporting.
+// ============================================================================
+
+#pragma once
+
+#include <string.gpx>
+
+struct TestSuite {
+    passed: int,
+    failed: int
+}
+
+fn TestSuite::new() -> TestSuite {
+    return TestSuite { passed: 0, failed: 0 };
+}
+
+fn TestSuite.assert_true(self: *TestSuite, cond: bool, test_name: string) -> bool {
+    if cond {
+        self.passed = self.passed + 1;
+        print("[PASS] " + test_name);
+        return true;
+    } else {
+        self.failed = self.failed + 1;
+        print("[FAIL] " + test_name + " (expected true, got false)");
+        return false;
+    }
+}
+
+fn TestSuite.assert_false(self: *TestSuite, cond: bool, test_name: string) -> bool {
+    return self.assert_true(!cond, test_name);
+}
+
+fn TestSuite.assert_eq(self: *TestSuite, actual: int, expected: int, test_name: string) -> bool {
+    if actual == expected {
+        self.passed = self.passed + 1;
+        print("[PASS] " + test_name);
+        return true;
+    } else {
+        self.failed = self.failed + 1;
+        print("[FAIL] " + test_name + ": expected " + int_to_str(expected) + ", got " + int_to_str(actual));
+        return false;
+    }
+}
+
+fn TestSuite.assert_str_eq(self: *TestSuite, actual: string, expected: string, test_name: string) -> bool {
+    if str_cmp(actual, expected) == 0 {
+        self.passed = self.passed + 1;
+        print("[PASS] " + test_name);
+        return true;
+    } else {
+        self.failed = self.failed + 1;
+        print("[FAIL] " + test_name + ": expected '" + expected + "', got '" + actual + "'");
+        return false;
+    }
+}
+
+fn TestSuite.summary(self: TestSuite) -> int {
+    print("------------------------------------------");
+    print("Test Summary: " + int_to_str(self.passed) + " passed, " + int_to_str(self.failed) + " failed");
+    print("------------------------------------------");
+    return self.failed;
+}

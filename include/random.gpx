@@ -1,0 +1,51 @@
+// ============================================================================
+// GPX Standard Library: Pseudo-Random Number Generator (<random.gpx>)
+// RNG struct, Linear Congruential PRNG with integer, float, boolean, and range choices.
+// ============================================================================
+
+#pragma once
+
+struct RNG {
+    state: int
+}
+
+fn RNG::new(seed: int) -> RNG {
+    let s = seed;
+    if s == 0 {
+        s = 123456789;
+    }
+    return RNG { state: s };
+}
+
+fn RNG.next(self: *RNG) -> int {
+    self.state = (self.state * 1103515245 + 12345) % 2147483647;
+    if self.state < 0 {
+        self.state = -self.state;
+    }
+    return self.state;
+}
+
+fn RNG.rand_int(self: *RNG, min_val: int, max_val: int) -> int {
+    if min_val >= max_val {
+        return min_val;
+    }
+    let range = (max_val - min_val) + 1;
+    let n = self.next();
+    return min_val + (n % range);
+}
+
+fn RNG.rand_float(self: *RNG) -> double {
+    let n = self.rand_int(0, 1000000);
+    return (n as double) / 1000000.0;
+}
+
+fn RNG.rand_bool(self: *RNG) -> bool {
+    return (self.next() % 2) == 1;
+}
+
+fn RNG.rand_choice(self: *RNG, a: int, b: int) -> int {
+    if self.rand_bool() {
+        return a;
+    }
+    return b;
+}

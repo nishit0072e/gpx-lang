@@ -1,0 +1,79 @@
+// ============================================================================
+// GPX Standard Library Showcase (<time.gpx>, <random.gpx>, <path.gpx>, <env.gpx>, <test.gpx>)
+// Demonstrates practical standard libraries for real-world GPX programming.
+// ============================================================================
+
+#include <time.gpx>
+#include <random.gpx>
+#include <path.gpx>
+#include <env.gpx>
+#include <test.gpx>
+
+fn main() -> int {
+    print("==========================================");
+    print("      GPX Standard Library Showcase       ");
+    print("==========================================");
+
+    let suite = TestSuite::new();
+
+    // --- 1. System Time & Stopwatch Timer ---
+    print("\n--- 1. Testing <time.gpx> ---");
+    let sw = Stopwatch::start();
+    let t_now = time_now_ms();
+    print("Current timestamp (ms):");
+    print(t_now);
+    suite.assert_true(t_now > 0, "time_now_ms returned positive timestamp");
+    let elapsed = sw.elapsed_ms();
+    print("Elapsed stopwatch time (ms):");
+    print(elapsed);
+    suite.assert_true(elapsed >= 0, "stopwatch elapsed time is non-negative");
+
+    // --- 2. Random Number Generator ---
+    print("\n--- 2. Testing <random.gpx> ---");
+    let rng = RNG::new(42);
+    let die_roll = rng.rand_int(1, 6);
+    print("Simulated 6-sided die roll:");
+    print(die_roll);
+    suite.assert_true(die_roll >= 1 && die_roll <= 6, "die roll between 1 and 6");
+
+    let prob = rng.rand_float();
+    print("Random probability (0.0 to 1.0):");
+    print(prob);
+    suite.assert_true(prob >= 0.0 && prob <= 1.0, "probability in range [0, 1]");
+
+    // --- 3. Path Utilities ---
+    print("\n--- 3. Testing <path.gpx> ---");
+    let file_path = path_join("projects/game", "main.gpx");
+    print("Joined path:");
+    print(file_path);
+    suite.assert_str_eq(file_path, "projects/game/main.gpx", "path_join correct");
+
+    let base = path_basename(file_path);
+    print("Basename:");
+    print(base);
+    suite.assert_str_eq(base, "main.gpx", "path_basename correct");
+
+    let dir = path_dirname(file_path);
+    print("Dirname:");
+    print(dir);
+    suite.assert_str_eq(dir, "projects/game", "path_dirname correct");
+
+    let ext = path_extension(file_path);
+    print("Extension:");
+    print(ext);
+    suite.assert_str_eq(ext, ".gpx", "path_extension correct");
+
+    // --- 4. OS Environment ---
+    print("\n--- 4. Testing <env.gpx> ---");
+    let os = env_os_name();
+    print("Operating System detected:");
+    print(os);
+    suite.assert_true(strlen(os) > 0, "env_os_name is non-empty");
+
+    // --- 5. Test Suite Summary ---
+    print("\n--- 5. Test Suite Report ---");
+    let failures = suite.summary();
+
+    return failures;
+}
+
