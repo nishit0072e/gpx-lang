@@ -31,3 +31,13 @@ editors/vscode/gpx-lang/
 desktop.ini
 Thumbs.db
 .DS_Store
+
+# External Toolchain & Reference SDK
+vega-sdk/
+vega-tools-windows/
+*.elf
+*.bin
+*.hex
+*.dump
+*.map
+*.lst
