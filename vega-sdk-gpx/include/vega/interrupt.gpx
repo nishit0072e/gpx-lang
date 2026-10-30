@@ -1,0 +1,23 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Interrupt Controller (<vega/interrupt.gpx>)
+// ============================================================================
+
+#pragma once
+
+// IRQ Numbers for 32-bit Core (THEJAS32)
+const UART_0_IRQ: int  = 0;
+const UART_1_IRQ: int  = 1;
+const UART_2_IRQ: int  = 2;
+const SPI_0_IRQ: int   = 3;
+const SPI_1_IRQ: int   = 4;
+const I2C_0_IRQ: int   = 5;
+const I2C_1_IRQ: int   = 6;
+const TIMER_0_IRQ: int = 7;
+const TIMER_1_IRQ: int = 8;
+const TIMER_2_IRQ: int = 9;
+const GPIO_0_IRQ: int  = 10;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn enable_irq() -> void;
+fn interrupt_enable(intr_number: int) -> void;
+fn irq_register_handler(irq_no: int, handler: *void) -> void;

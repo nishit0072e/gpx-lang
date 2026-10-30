@@ -1,0 +1,23 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: System Configuration (<vega/config.gpx>)
+// ============================================================================
+
+#pragma once
+
+// Target Hardware Frequencies (ARIES v2.0 Board / THEJAS32 Core)
+const SYSTEM_CLOCK_FREQ: int = 100000000; // 100 MHz
+const SYSTEM_FREQUENCY: int  = 100000000;
+const UART_CLOCK_FREQ: int   = 100000000;
+const BAUD_9600: int         = 9600;
+const BAUD_115200: int       = 115200;
+
+// Peripheral Base Addresses
+const UART_0_BASE: int  = 0x10000000;
+const UART_1_BASE: int  = 0x10000100;
+const UART_2_BASE: int  = 0x10000200;
+const SPI_0_BASE: int   = 0x20000000;
+const I2C_0_BASE: int   = 0x10002000;
+const TIMER_BASE: int   = 0x10003000;
+const GPIO_BASE: int    = 0x10004000;
+const PWMC_BASE: int    = 0x10005000;
+const ADC_BASE: int     = 0x10006000;

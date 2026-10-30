@@ -32,7 +32,8 @@
 
 <p align="center">
   <a href="https://github.com/nishit0072e/gpx-lang/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/nishit0072e/gpx-lang/docs.yml?branch=master&label=DOCS&style=for-the-badge&logo=github&color=06b6d4" alt="Docs Status"></a>
-  <img src="https://img.shields.io/badge/TESTS-208%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <img src="https://img.shields.io/badge/TESTS-211%20PASSING-059669.svg?style=for-the-badge" alt="Tests">
+  <a href="vega-sdk-gpx/"><img src="https://img.shields.io/badge/VEGA%20RISC--V-12%2F12%20PASSING-9333ea.svg?style=for-the-badge" alt="VEGA RISC-V"></a>
   <img src="https://img.shields.io/badge/TARGETS-RV32I%20%7C%20WASM%20%7C%20X86%20%7C%20ARM-d97706.svg?style=for-the-badge" alt="Targets">
   <img src="https://img.shields.io/badge/OPTIMIZER-TAC%20IR-db2777.svg?style=for-the-badge" alt="Optimizer">
   <img src="https://img.shields.io/badge/CODE%20STYLE-PEP8-111827.svg?logo=python&style=for-the-badge" alt="Code Style">
@@ -218,6 +219,11 @@ gpx-lang/
 │   ├── 45_generics_showcase.gpx # Generics, parametric polymorphism & monomorphization showcase
 │   ├── 46_oop_constructors_and_composition.gpx # Advanced OOP (Type::new, embedded composition & forwarding)
 │   └── 47_standard_libraries_showcase.gpx      # Standard libraries showcase (<time>, <random>, <path>, <env>, <test>)
+├── vega-sdk-gpx/              # Dedicated VEGA RISC-V SDK (THEJAS32 / ARIES v2.0 board)
+│   ├── include/vega/          # Hardware HAL headers (bsp, gpio, led, uart, timer, adc, pwm, i2c, spi, interrupt)
+│   ├── common/gpx_vega.mk     # Cross-compilation build system (GPX -> C -> RISC-V ELF/BIN/HEX/DUMP)
+│   ├── examples/              # 12 complete bare-metal example projects across all peripherals
+│   └── build_all.py           # Automated test suite building all 12 projects
 ├── include/                   # Standard library headers (io, string, memory, math, sound, time, random, path, env, test, etc.)
 ├── editors/                   # Official IDE extensions (VSIX for VS Code / Antigravity)
 ├── LICENSE                    # Proprietary copyright license

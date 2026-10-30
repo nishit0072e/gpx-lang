@@ -1,0 +1,40 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: UART Bidirectional Transmit & Receive
+// Ported from: vega-sdk/examples/uart/uart_tx_rx
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/uart.gpx>
+#include <vega/timer.gpx>
+
+fn send_test_message() -> int {
+    print("Transmitting string buffer via UART_0...");
+    uart_write_line(UART_0, "=== VEGA RISC-V GPX Serial Channel ===");
+    uart_write_line(UART_0, "Transmitting packets [OK]");
+
+    // Transmit individual status character
+    let err: char = '\0';
+    uart_putchar(UART_0, 'G', &err);
+    uart_putchar(UART_0, 'P', &err);
+    uart_putchar(UART_0, 'X', &err);
+    uart_putchar(UART_0, '\n', &err);
+
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("  VEGA RISC-V GPX: UART TX/RX Demo      ");
+    print("========================================");
+
+    // Initialize UART_0 at 115200 baud
+    uart_init(UART_0);
+    uart_set_baud_rate(UART_0, 115200, SYSTEM_FREQUENCY);
+
+    send_test_message();
+
+    delay_ms(100);
+    print("UART transmission routine completed.");
+    return 0;
+}

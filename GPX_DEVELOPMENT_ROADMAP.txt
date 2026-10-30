@@ -3,7 +3,7 @@
 ================================================================================
 Generated: October 2026
 Lead Architect: Nishit (@nishit0072e)
-Current Version: v0.9.0
+Current Version: v0.9.6
 
 --------------------------------------------------------------------------------
 1. OBJECT-ORIENTED STRUCT METHODS & RECEIVER SYNTAX
@@ -133,7 +133,42 @@ Status: Fully Implemented & Verified (208/208 unit tests passing).
     - tests/test_oop_advanced.py and tests/test_stdlib_new.py
 
 --------------------------------------------------------------------------------
-9. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
+9. VEGA RISC-V EMBEDDED SDK & BARE-METAL HARDWARE HAL [COMPLETED v0.9.6]
+--------------------------------------------------------------------------------
+Status: Fully Implemented & Verified (12/12 SDK example projects passing).
+* Core Target Architecture:
+    - Microprocessor: CDAC THEJAS32 Core (RISC-V rv32im / ilp32 / medany).
+    - Evaluation Platform: ARIES v2.0 Micro development boards.
+    - Low-level BSP: Direct linking against libvega.a and mbl.lds bare-metal linker script.
+* Dedicated Hardware SDK (<vega-sdk-gpx/>):
+    - Umbrella HAL header: <vega/bsp.gpx>
+    - Peripherals: GPIO (<vega/gpio.gpx>), LED (<vega/led.gpx>), UART (<vega/uart.gpx>),
+      Timer (<vega/timer.gpx>), ADC (<vega/adc.gpx>), PWMC (<vega/pwm.gpx>),
+      I2C (<vega/i2c.gpx>), SPI (<vega/spi.gpx>), Interrupts (<vega/interrupt.gpx>),
+      System Clock & Config (<vega/config.gpx>).
+* Unified Build System (<vega-sdk-gpx/common/gpx_vega.mk>):
+    - Cross-platform Makefile compiling GPX -> C99 -> RISC-V ELF -> Raw Binary -> Intel HEX -> Disassembly Dump -> Symbol Map.
+    - Full toolchain detection and environment isolation.
+* 12 Complete Ported SDK Examples:
+    - gpio/led_toggle (LED blinking with hardware delays)
+    - gpio/led_breathing (Smooth breathing effect with software PWM)
+    - gpio/buzzer_demo (Tone generation and musical note playback)
+    - gpio/gpio_write_read (Digital switch inputs and LED outputs)
+    - uart/hello_world (Startup serial console banner at 115200 baud)
+    - uart/uart_tx_rx (Bidirectional character & string transmission)
+    - timer/timer_sample (Hardware timers 0/1/2 polling delays)
+    - adc/adc_demo (Multi-channel analog voltage readings)
+    - pwm/pwm_led_brightness (Hardware PWMC controller duty-cycle modulation)
+    - i2c/i2c_scanner (7-bit address discovery across I2C bus)
+    - spi/spi_demo (SPI master command packets and initialization)
+    - interrupt/software_interrupt (Software IRQ registration and callback execution)
+* Automated Test & Build Suite (vega-sdk-gpx/build_all.py):
+    - Iterates over all SDK projects, builds them with riscv64-vega-elf-gcc, and verifies 100% artifact generation.
+* Unit Test Integration:
+    - tests/test_vega_sdk.py (Hex/binary integer literals, VEGA include preprocessor resolution, bare-metal C guards).
+
+--------------------------------------------------------------------------------
+10. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
 --------------------------------------------------------------------------------
 Goal: Expressive, exhaustive compile-time branching and tagged unions.
 * Tagged unions / algebraic enums:

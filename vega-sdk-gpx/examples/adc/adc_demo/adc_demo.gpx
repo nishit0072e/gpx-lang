@@ -1,0 +1,37 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Analog-to-Digital Converter (ADC) Demo
+// Ported from: vega-sdk/examples/adc/adc_demo
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/adc.gpx>
+#include <vega/timer.gpx>
+
+fn read_all_adc_channels() -> int {
+    let ch = 0;
+    while ch < 4 {
+        let mv = adc_read_voltage_mv(ch);
+        print("ADC Channel reading (mV):");
+        print(mv);
+        ch = ch + 1;
+    }
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("  VEGA RISC-V GPX: ADC Sampler Demo     ");
+    print("========================================");
+
+    let sample = 0;
+    while sample < 2 {
+        print("Sampling ADC channels...");
+        read_all_adc_channels();
+        delay_ms(100);
+        sample = sample + 1;
+    }
+
+    print("ADC Sampling completed.");
+    return 0;
+}

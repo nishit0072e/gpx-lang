@@ -1,0 +1,25 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Serial Hello World
+// Ported from: vega-sdk/examples/uart/hello_world
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/uart.gpx>
+#include <vega/timer.gpx>
+
+fn main() -> int {
+    // Configure UART_0 at 115200 baud with 100MHz system clock
+    uart_set_baud_rate(UART_0, 115200, SYSTEM_FREQUENCY);
+
+    print("========================================");
+    print(" Hello, World from VEGA RISC-V in GPX!  ");
+    print(" Core Architecture : THEJAS32 (rv32im) ");
+    print(" Platform Board    : ARIES v2.0 Micro  ");
+    print(" Language Runtime  : GPX v0.9.1 Bare   ");
+    print("========================================");
+
+    delay_ms(100);
+    print("Serial communication test successful.");
+    return 0;
+}

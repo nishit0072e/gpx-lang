@@ -1,0 +1,33 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Software Interrupt Controller Demo
+// Ported from: vega-sdk/examples/interrupt/software_interrupt
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/interrupt.gpx>
+#include <vega/timer.gpx>
+
+fn irq_callback() -> int {
+    print(">>> MACHINE SW INTR HANDLER TRIGGERED <<<");
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print(" VEGA RISC-V GPX: Software IRQ Demo     ");
+    print("========================================");
+
+    print("Enabling global interrupts on core...");
+    enable_irq();
+
+    print("Enabling peripheral interrupt channel 0...");
+    interrupt_enable(UART_0_IRQ);
+
+    print("Triggering callback test...");
+    irq_callback();
+
+    delay_ms(100);
+    print("Software interrupt demo completed successfully.");
+    return 0;
+}

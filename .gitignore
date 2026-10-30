@@ -27,6 +27,17 @@ compiler_backup/
 tests/
 scripts/
 editors/vscode/gpx-lang/
+
+# VEGA External Toolchain & Reference SDK
+vega-sdk/
+vega-tools-windows/
+
+# Embedded firmware outputs
+*.elf
+*.hex
+*.dump
+*.map
+*.lst
 # OS files
 desktop.ini
 Thumbs.db

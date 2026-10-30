@@ -1,0 +1,41 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Universal Asynchronous Receiver-Transmitter (<vega/uart.gpx>)
+// ============================================================================
+
+#pragma once
+
+#include <string.gpx>
+#include <vega/config.gpx>
+
+// UART Channels
+const UART_0: int = 0;
+const UART_1: int = 1;
+const UART_2: int = 2;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn uart_init(uart_number: int);
+fn uart_configure(uart_number: int, baud_rate: int, frame_value: int, uart_clock: int);
+fn uart_set_baud_rate(uart_number: int, baud_rate: int, uart_clock: int);
+fn uart_putchar(uart_number: int, ch: char, err: *char);
+fn uart_getchar(uart_number: int, err: *char) -> char;
+fn uart_getchar_async(uart_number: int, err: *char) -> char;
+fn uart_intr_enable(uart_number: int, tx_intr: int, rx_intr: int);
+
+// High-Level GPX String Serial Transmitter
+fn uart_write_string(uart_number: int, msg: string) {
+    let len = strlen(msg);
+    let i = 0;
+    while i < len {
+        let ch = str_char_at(msg, i);
+        let dummy_err: char = '\0';
+        uart_putchar(uart_number, ch, &dummy_err);
+        i = i + 1;
+    }
+}
+
+fn uart_write_line(uart_number: int, msg: string) {
+    uart_write_string(uart_number, msg);
+    let dummy_err: char = '\0';
+    uart_putchar(uart_number, '\r', &dummy_err);
+    uart_putchar(uart_number, '\n', &dummy_err);
+}

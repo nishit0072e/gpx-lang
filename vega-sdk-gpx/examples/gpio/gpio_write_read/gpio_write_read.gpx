@@ -1,0 +1,60 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: GPIO Digital Write & Read Demo
+// Ported from: vega-sdk/examples/gpio/gpio_write_read_pgm
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/gpio.gpx>
+#include <vega/timer.gpx>
+
+fn test_gpio_pins() -> int {
+    print("Testing GPIO Input/Output lines...");
+
+    let sw0_val = GPIO_read_pin(PIN_22);
+    let sw1_val = GPIO_read_pin(PIN_23);
+    let sw2_val = GPIO_read_pin(PIN_24);
+
+    print("Switch States:");
+    if sw0_val == HIGH {
+        print("  SW0 (PIN_22): HIGH");
+        gpio_set_high(PIN_16);
+    } else {
+        print("  SW0 (PIN_22): LOW");
+        gpio_set_low(PIN_16);
+    }
+
+    if sw1_val == HIGH {
+        print("  SW1 (PIN_23): HIGH");
+        gpio_set_high(PIN_17);
+    } else {
+        print("  SW1 (PIN_23): LOW");
+        gpio_set_low(PIN_17);
+    }
+
+    if sw2_val == HIGH {
+        print("  SW2 (PIN_24): HIGH");
+        gpio_set_high(PIN_18);
+    } else {
+        print("  SW2 (PIN_24): LOW");
+        gpio_set_low(PIN_18);
+    }
+
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("  VEGA RISC-V GPX: GPIO Read/Write Demo ");
+    print("========================================");
+
+    let round = 0;
+    while round < 3 {
+        test_gpio_pins();
+        delay_ms(200);
+        round = round + 1;
+    }
+
+    print("GPIO Test Run Complete.");
+    return 0;
+}

@@ -1,0 +1,41 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Hardware PWM LED Brightness Controller
+// Ported from: vega-sdk/examples/pwm/pwm_led_brightness
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/pwm.gpx>
+#include <vega/timer.gpx>
+
+fn configure_pwm_channel(channel: int, period: int, on_time: int) -> int {
+    PWMC_Set_Period(channel, period);
+    PWMC_Set_OnOffTime(channel, on_time);
+    PWMC_init(channel, PWM_CONTINUOUS_MODE, PWM_LEFT_ALIGN, PWM_LOC_INTR_DIS, 0, PWM_REPEAT_COUNT);
+    PWMC_Enable();
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print(" VEGA RISC-V GPX: Hardware PWMC Demo    ");
+    print("========================================");
+
+    let pwm_channel = PWM_CH0;
+    let period = 400;
+
+    print("Configuring PWM Channel 0 at varying duty cycles...");
+
+    let duty = 50;
+    while duty <= 350 {
+        configure_pwm_channel(pwm_channel, period, duty);
+        print("PWM Duty cycle step configured:");
+        print(duty);
+        delay_ms(100);
+        duty = duty + 100;
+    }
+
+    PWMC_Disable();
+    print("Hardware PWM demo completed.");
+    return 0;
+}

@@ -1,0 +1,21 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Inter-Integrated Circuit Driver (<vega/i2c.gpx>)
+// ============================================================================
+
+#pragma once
+
+// I2C Channels
+const I2C_0: int   = 0;
+const I2C_1: int   = 1;
+const I2C_ADC: int = 8;
+
+const I2C_WRITE: int = 0;
+const I2C_READ: int  = 1;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn i2c_initialize(i2c_number: int);
+fn i2c_configure(i2c_number: int, system_clock: int, i2c_clock: int);
+fn i2c_start(i2c_number: int, read_length: int, is_read: int) -> int;
+fn i2c_stop(i2c_number: int);
+fn i2c_data_write(i2c_number: int, write_data: *void, write_length: int) -> int;
+fn i2c_data_read(i2c_number: int, read_data: *void, read_length: int) -> int;

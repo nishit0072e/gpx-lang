@@ -1,0 +1,27 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Hardware Timers & Delays (<vega/timer.gpx>)
+// ============================================================================
+
+#pragma once
+
+// Timer Channel Constants
+const TIMER_0: int = 0;
+const TIMER_1: int = 1;
+const TIMER_2: int = 2;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn timer_put_delay(timer_no: int, no_of_clocks: int) -> int;
+fn timer_get_current_value(timer_no: int) -> int;
+fn timer_load(timer_no: int, count: int);
+fn timer_enable(timer_no: int);
+fn timer_disable(timer_no: int);
+fn udelay(us: int);
+
+// High-Level Sleep / Millisecond Delay Wrapper
+fn delay_ms(ms: int) {
+    let i = 0;
+    while i < ms {
+        udelay(1000);
+        i = i + 1;
+    }
+}

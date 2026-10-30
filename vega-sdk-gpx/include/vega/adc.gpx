@@ -1,0 +1,25 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Analog-to-Digital Converter (<vega/adc.gpx>)
+// ============================================================================
+
+#pragma once
+
+#include <vega/config.gpx>
+
+// ADC Channels
+const ADC_CH0: int = 0;
+const ADC_CH1: int = 1;
+const ADC_CH2: int = 2;
+const ADC_CH3: int = 3;
+
+// Native Hardware / Memory-Mapped ADC reading function
+fn adc_analogRead(adc_channel_number: int) -> int {
+    // Simulated reading for bare-metal testing (e.g. 512 raw counts ~ 1.65V)
+    return 512 + (adc_channel_number * 50);
+}
+
+// Convert ADC raw count to millivolts (3300 mV full-scale / 1024 counts)
+fn adc_read_voltage_mv(channel: int) -> int {
+    let raw = adc_analogRead(channel);
+    return (raw * 3300) / 1024;
+}

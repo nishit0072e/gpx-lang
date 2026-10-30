@@ -1,0 +1,19 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Serial Peripheral Interface Driver (<vega/spi.gpx>)
+// ============================================================================
+
+#pragma once
+
+// SPI Channels
+const SPI_0: int = 0;
+const SPI_1: int = 1;
+const SPI_2: int = 2;
+const SPI_3: int = 3;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn SPI_init(spi_number: int);
+fn SPI_set_baud(spi_number: int, baud_cfd: int);
+fn SPI_set_slave_select(spi_number: int, slave_sel_val: int);
+fn SPI_transmit(spi_number: int, data: int);
+fn SPI_receive(spi_number: int) -> int;
+fn SPI_wait_if_busy(spi_number: int);

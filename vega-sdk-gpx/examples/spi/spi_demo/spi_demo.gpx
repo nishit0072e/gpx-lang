@@ -1,0 +1,39 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: SPI Bus Master Transceiver Demo
+// Ported from: vega-sdk/examples/spi/led_dot_matrix_demo
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/spi.gpx>
+#include <vega/timer.gpx>
+
+fn send_spi_command(reg: int, data: int) -> int {
+    SPI_transmit(SPI_0, reg);
+    SPI_wait_if_busy(SPI_0);
+
+    SPI_transmit(SPI_0, data);
+    SPI_wait_if_busy(SPI_0);
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("   VEGA RISC-V GPX: SPI Master Demo     ");
+    print("========================================");
+
+    // Initialize SPI_0 peripheral
+    SPI_init(SPI_0);
+    print("SPI controller 0 initialized.");
+
+    // Transmit commands
+    print("Transmitting SPI command packets...");
+    send_spi_command(0x09, 0x00); // Decode mode: none
+    send_spi_command(0x0A, 0x03); // Intensity: 3/15
+    send_spi_command(0x0B, 0x07); // Scan limit: 8 digits
+    send_spi_command(0x0C, 0x01); // Shutdown: normal operation
+
+    delay_ms(100);
+    print("SPI transaction sequence completed.");
+    return 0;
+}

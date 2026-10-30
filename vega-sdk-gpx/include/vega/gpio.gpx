@@ -1,0 +1,68 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: General Purpose I/O (<vega/gpio.gpx>)
+// ============================================================================
+
+#pragma once
+
+// Pin Identifiers (0-31)
+const PIN_0: int  = 0;
+const PIN_1: int  = 1;
+const PIN_2: int  = 2;
+const PIN_3: int  = 3;
+const PIN_4: int  = 4;
+const PIN_5: int  = 5;
+const PIN_6: int  = 6;
+const PIN_7: int  = 7;
+const PIN_8: int  = 8;
+const PIN_9: int  = 9;
+const PIN_10: int = 10;
+const PIN_11: int = 11;
+const PIN_12: int = 12;
+const PIN_13: int = 13;
+const PIN_14: int = 14;
+const PIN_15: int = 15;
+const PIN_16: int = 16;
+const PIN_17: int = 17;
+const PIN_18: int = 18;
+const PIN_19: int = 19;
+const PIN_20: int = 20;
+const PIN_21: int = 21;
+const PIN_22: int = 22;
+const PIN_23: int = 23;
+const PIN_24: int = 24;
+const PIN_25: int = 25;
+const PIN_26: int = 26;
+const PIN_27: int = 27;
+const PIN_28: int = 28;
+const PIN_29: int = 29;
+const PIN_30: int = 30;
+const PIN_31: int = 31;
+
+// Logic Levels
+const LOW: int  = 0;
+const HIGH: int = 1;
+const OFF: int  = 0;
+const ON: int   = 1;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn GPIO_read_pin(pin_no: int) -> int;
+fn GPIO_write_pin(pin_no: int, data: int);
+fn pulse_duration(pin_number: int, val: int) -> int;
+
+// Convenient GPX Wrapper Functions
+fn gpio_set_high(pin: int) {
+    GPIO_write_pin(pin, 1);
+}
+
+fn gpio_set_low(pin: int) {
+    GPIO_write_pin(pin, 0);
+}
+
+fn gpio_toggle(pin: int) {
+    let curr = GPIO_read_pin(pin);
+    if curr == 0 {
+        GPIO_write_pin(pin, 1);
+    } else {
+        GPIO_write_pin(pin, 0);
+    }
+}

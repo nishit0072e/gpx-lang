@@ -1,0 +1,17 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Master Hardware Header (<vega/bsp.gpx>)
+// Guided Programming eXperience (GPX) Hardware Abstraction Layer
+// ============================================================================
+
+#pragma once
+
+#include <vega/config.gpx>
+#include <vega/gpio.gpx>
+#include <vega/led.gpx>
+#include <vega/uart.gpx>
+#include <vega/timer.gpx>
+#include <vega/adc.gpx>
+#include <vega/pwm.gpx>
+#include <vega/i2c.gpx>
+#include <vega/spi.gpx>
+#include <vega/interrupt.gpx>

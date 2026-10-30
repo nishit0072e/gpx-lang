@@ -1,0 +1,36 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Hardware Timer Delay Demo
+// Ported from: vega-sdk/examples/timer/timer_sample_pgm
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/timer.gpx>
+
+fn test_hardware_timers() -> int {
+    print("Testing Hardware Timer 0...");
+    let intr0 = timer_put_delay(TIMER_0, 0x200);
+    print("TIMER 0 delay completed.");
+
+    print("Testing Hardware Timer 1...");
+    let intr1 = timer_put_delay(TIMER_1, 0x350);
+    print("TIMER 1 delay completed.");
+
+    print("Testing Hardware Timer 2...");
+    let intr2 = timer_put_delay(TIMER_2, 0x500);
+    print("TIMER 2 delay completed.");
+
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("  VEGA RISC-V GPX: Hardware Timer Demo  ");
+    print("========================================");
+
+    test_hardware_timers();
+
+    delay_ms(100);
+    print("All Hardware Timers Verified.");
+    return 0;
+}

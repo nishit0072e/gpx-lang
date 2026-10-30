@@ -1,0 +1,41 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: Pulse Width Modulation (<vega/pwm.gpx>)
+// ============================================================================
+
+#pragma once
+
+// PWM Channels (0-7)
+const PWM_CH_0: int = 0;
+const PWM_CH_1: int = 1;
+const PWM_CH_2: int = 2;
+const PWM_CH_3: int = 3;
+const PWM_CH_4: int = 4;
+const PWM_CH_5: int = 5;
+const PWM_CH_6: int = 6;
+const PWM_CH_7: int = 7;
+
+const PWM_CH0: int = 0;
+const PWM_CH1: int = 1;
+const PWM_CH2: int = 2;
+const PWM_CH3: int = 3;
+
+// PWM Modes
+const PWM_IDLE_MODE: int       = 0;
+const PWM_ONE_SHORT_MODE: int  = 1;
+const PWM_CONTINUOUS_MODE: int = 2;
+
+const PWM_LEFT_ALIGN: int  = 0;
+const PWM_RIGHT_ALIGN: int = 1;
+
+const PWM_LOC_INTR_DIS: int = 0;
+const PWM_LOC_INTR_EN: int  = 1;
+const PWM_REPEAT_COUNT: int = 0;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn PWMC_init(channel_no: int, mode: int, align: int, intr_en_dis: int, opc: int, repeatCount: int);
+fn PWMC_Set_Period(channel_no: int, period: int);
+fn PWMC_Set_OnOffTime(channel_no: int, time: int);
+fn PWMC_Enable();
+fn PWMC_Disable();
+fn gen_LeftAlign_PWM_Continuous_Mode(channel_no: int, on_time: int, period: int);
+fn gen_RightAlign_PWM_Continuous_Mode(channel_no: int, on_time: int, period: int);

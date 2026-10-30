@@ -1,0 +1,20 @@
+// ============================================================================
+// VEGA RISC-V Processor SDK: On-Board LED & Switch Control (<vega/led.gpx>)
+// ============================================================================
+
+#pragma once
+
+#include <vega/gpio.gpx>
+
+// Status Constants
+const OFF_LED: int        = 1;
+const ON_LED: int         = 0;
+const OFF_LED_ARIES: int  = 0;
+const ON_LED_ARIES: int   = 1;
+
+// Native Hardware Functions (defined in BSP libvega.a)
+fn on_LED(pin_no: int);
+fn off_LED(pin_no: int);
+fn on_LED_RGB(pin_no: int);
+fn off_LED_RGB(pin_no: int);
+fn read_switch(pin_no: int) -> int;

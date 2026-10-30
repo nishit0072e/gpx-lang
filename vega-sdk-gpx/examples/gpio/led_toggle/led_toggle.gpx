@@ -1,0 +1,33 @@
+// ============================================================================
+// VEGA RISC-V SDK in GPX: LED Blinking Toggle Program
+// Ported from: vega-sdk/examples/gpio/led_toggle_pgm
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/led.gpx>
+#include <vega/timer.gpx>
+
+fn main() -> int {
+    print("--- GPX LED Toggle Demo Starting on VEGA Processor ---");
+
+    let led_pin = PIN_31;
+    let iterations = 5;
+    let count = 0;
+
+    while count < iterations {
+        // Turn ON LED
+        on_LED(led_pin);
+        print("LED Status: ON");
+        udelay(250000); // 250 ms delay
+
+        // Turn OFF LED
+        off_LED(led_pin);
+        print("LED Status: OFF");
+        udelay(250000); // 250 ms delay
+
+        count = count + 1;
+    }
+
+    print("--- GPX LED Toggle Demo Completed Successfully ---");
+    return 0;
+}

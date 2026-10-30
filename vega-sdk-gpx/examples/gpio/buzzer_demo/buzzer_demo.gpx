@@ -1,0 +1,67 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: Buzzer Musical Melody Demo
+// Ported from: vega-sdk/examples/gpio/buzzer_demo
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/gpio.gpx>
+#include <vega/timer.gpx>
+
+const BUZZER_PIN: int = PIN_0;
+
+// Plays a square wave frequency tone for a duration in milliseconds
+fn play_tone(tone_delay_us: int, duration_ms: int) -> int {
+    if tone_delay_us <= 0 {
+        udelay(duration_ms * 1000);
+        return 0;
+    }
+    let elapsed = 0;
+    let period_us = tone_delay_us * 2;
+    let total_us = duration_ms * 1000;
+
+    while elapsed < total_us {
+        GPIO_write_pin(BUZZER_PIN, HIGH);
+        udelay(tone_delay_us);
+        GPIO_write_pin(BUZZER_PIN, LOW);
+        udelay(tone_delay_us);
+        elapsed = elapsed + period_us;
+    }
+    return 0;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("  VEGA RISC-V GPX: Buzzer Melody Demo   ");
+    print("========================================");
+
+    print("Playing musical notes on GPIO PIN 0...");
+
+    // C4 note (~1915 us half-period)
+    print("Note C4");
+    play_tone(1915, 200);
+    delay_ms(50);
+
+    // D4 note (~1700 us half-period)
+    print("Note D4");
+    play_tone(1700, 200);
+    delay_ms(50);
+
+    // E4 note (~1519 us half-period)
+    print("Note E4");
+    play_tone(1519, 200);
+    delay_ms(50);
+
+    // F4 note (~1432 us half-period)
+    print("Note F4");
+    play_tone(1432, 200);
+    delay_ms(50);
+
+    // G4 note (~1275 us half-period)
+    print("Note G4");
+    play_tone(1275, 400);
+    delay_ms(100);
+
+    print("Buzzer melody playback complete.");
+    return 0;
+}

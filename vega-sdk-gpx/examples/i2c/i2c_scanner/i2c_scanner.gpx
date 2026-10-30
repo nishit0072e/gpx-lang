@@ -1,0 +1,46 @@
+// ============================================================================
+// VEGA RISC-V SDK Example in GPX: I2C Bus Address Scanner
+// Ported from: vega-sdk/examples/i2c/i2c_scanner
+// Target: ARIES v2.0 Board (THEJAS32 RISC-V Core)
+// ============================================================================
+
+#include <vega/bsp.gpx>
+#include <vega/i2c.gpx>
+#include <vega/timer.gpx>
+
+fn scan_i2c_bus() -> int {
+    print("Beginning I2C Bus Scan (addresses 0x08 - 0x77)...");
+    let devices_found = 0;
+    let addr = 8;
+
+    while addr < 120 {
+        // Probe I2C address by attempting communication
+        let res = i2c_start(I2C_0, 1, 1);
+        if res == 0 {
+            print("Found I2C device at address index:");
+            print(addr);
+            devices_found = devices_found + 1;
+        }
+        i2c_stop(I2C_0);
+        addr = addr + 1;
+    }
+
+    print("Total I2C Devices Found:");
+    print(devices_found);
+    return devices_found;
+}
+
+fn main() -> int {
+    print("========================================");
+    print("   VEGA RISC-V GPX: I2C Scanner Demo    ");
+    print("========================================");
+
+    // Initialize I2C controller 0
+    i2c_initialize(I2C_0);
+
+    scan_i2c_bus();
+
+    delay_ms(100);
+    print("I2C Scanner execution completed.");
+    return 0;
+}
