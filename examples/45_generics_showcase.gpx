@@ -1,0 +1,70 @@
+// ==============================================================================
+// GPX Example 45: Generics & Parametric Polymorphism Showcase (Milestone 7)
+// ==============================================================================
+// Demonstrates:
+// 1. Parametric generic functions: fn max<T>(a: T, b: T) -> T
+// 2. Generic structs with multiple type parameters: struct Pair<A, B> { ... }
+// 3. Generic receiver methods on structs: fn (p: Pair<A, B>) get_first() -> A
+// 4. Compile-time monomorphization: zero runtime overhead, specialized types
+// 5. Native compilation to C99, RISC-V, and WebAssembly (WASM)
+//
+// Usage:
+//   gpx examples/45_generics_showcase.gpx --run
+//   gpx examples/45_generics_showcase.gpx --target wasm --run
+//   gpx examples/45_generics_showcase.gpx --emit-c
+// ==============================================================================
+
+struct Pair<A, B> {
+    first: A,
+    second: B
+}
+
+fn (p: Pair<A, B>) get_first() -> A {
+    return p.first;
+}
+
+fn (p: Pair<A, B>) get_second() -> B {
+    return p.second;
+}
+
+fn max<T>(a: T, b: T) -> T {
+    if a > b {
+        return a;
+    }
+    return b;
+}
+
+fn identity<T>(val: T) -> T {
+    return val;
+}
+
+fn main() -> int {
+    print("=== GPX GENERICS & MONOMORPHIZATION SHOWCASE ===");
+
+    // 1. Generic function with explicit type argument
+    let m1: int = max<int>(35, 78);
+    print("max<int>(35, 78) =");
+    print(m1);
+
+    // 2. Generic function with type inference
+    let val: int = 42;
+    let ident: int = identity(val);
+    print("identity(42) =");
+    print(ident);
+
+    // 3. Generic struct instantiation
+    let coords = Pair<int, int> { first: 10, second: 30 };
+    print("Pair<int, int> coords.first =");
+    print(coords.first);
+    print("Pair<int, int> coords.second =");
+    print(coords.second);
+
+    // 4. Generic receiver methods
+    let f: int = coords.get_first();
+    let s: int = coords.get_second();
+    print("coords.get_first() + coords.get_second() =");
+    print(f + s);
+
+    print("=== GENERICS SHOWCASE COMPLETED SUCCESSFULLY ===");
+    return f + s; // 40
+}

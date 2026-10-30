@@ -97,16 +97,20 @@ Status: Fully Implemented & Verified (187/187 unit tests passing).
     - Full pipeline inspection (`--inspect` Stage 7: GENERATED WEBASSEMBLY).
 
 --------------------------------------------------------------------------------
-7. GENERICS & PARAMETRIC POLYMORPHISM
+7. GENERICS & PARAMETRIC POLYMORPHISM [COMPLETED v0.9.4]
 --------------------------------------------------------------------------------
-Goal: Type-safe, reusable data structures and algorithms with zero runtime overhead.
-* Generic functions:
-    fn identity<T>(val: T) -> T { return val; }
-    fn max<T>(a: T, b: T) -> T { ... }
-* Generic structures & containers:
-    struct Stack<T> { data: [T; 100], top: int }
-    struct Pair<A, B> { first: A, second: B }
-* Compile-time monomorphization pass producing optimized specialized types.
+Status: Fully Implemented & Verified (195/195 unit tests passing).
+* Syntax & Parser Extensions:
+    - Generic functions with type parameters: `fn max<T>(a: T, b: T) -> T`
+    - Generic struct declarations: `struct Pair<A, B> { first: A, second: B }`
+    - Generic receiver methods: `fn (p: Pair<A, B>) get_first() -> A`
+    - Generic struct initializers: `Pair<int, int> { first: 1, second: 2 }`
+    - Generic call expressions with explicit or inferred arguments: `max<int>(1, 2)` or `identity(x)`
+* Compile-Time Monomorphization Engine (`compiler/monomorphize.py`):
+    - Full template AST cloning and recursive type substitution.
+    - Zero runtime overhead: produces concrete specialized types (e.g. `Pair__int__int`, `max__int`).
+    - Multi-Backend Parity: 100% compatible out-of-the-box with C99, RISC-V RV32I, WebAssembly (WASM), and the IR VM.
+    - Automatic pruning of unused generic templates.
 
 --------------------------------------------------------------------------------
 8. ADVANCED PATTERN MATCHING & ALGEBRAIC DATA TYPES (ADTs)
